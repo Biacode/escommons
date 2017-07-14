@@ -1,0 +1,39 @@
+buildscript {
+	ext {
+		springBootVersion = '1.5.4.RELEASE'
+		elasticSearchVersion = '5.4.0'
+        log4jVersion = '2.7'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-jersey')
+	compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.6'
+    compile group: 'commons-io', name: 'commons-io', version: '2.5'
+    compile group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
+	compile "org.elasticsearch:elasticsearch:${elasticSearchVersion}"
+	compile "org.elasticsearch.client:transport:${elasticSearchVersion}"
+	compile "org.elasticsearch.plugin:transport-netty4-client:${elasticSearchVersion}"
+    compile "org.apache.logging.log4j:log4j-core:${log4jVersion}"
+    testCompile group: 'org.easymock', name: 'easymock', version: '3.4'
+    testCompile group: 'org.easymock', name: 'easymockclassextension', version: '3.2'
+    testCompile group: 'org.objenesis', name: 'objenesis', version: '2.6'
+    testCompile group: 'cglib', name: 'cglib', version: '3.2.5'
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+}
