@@ -1,4 +1,4 @@
-package com.sfl.coolmonkey.escommons.core.impl;
+package com.sfl.coolmonkey.escommons.core.component.impl;
 
 import com.sfl.coolmonkey.escommons.core.model.document.AbstractEsDocument;
 import org.apache.commons.lang3.builder.EqualsBuilder;

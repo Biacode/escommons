@@ -1,8 +1,7 @@
-package com.sfl.coolmonkey.escommons.core.impl;
+package com.sfl.coolmonkey.escommons.core.component.impl;
 
 import com.sfl.coolmonkey.escommons.core.component.ClasspathResourceReaderComponent;
 import com.sfl.coolmonkey.escommons.core.component.MappingsComponent;
-import com.sfl.coolmonkey.escommons.core.component.impl.MappingsComponentImpl;
 import com.sfl.coolmonkey.escommons.core.exception.EsCoreRuntimeException;
 import com.sfl.coolmonkey.escommons.core.test.AbstractCoreUnitTest;
 import org.easymock.Mock;

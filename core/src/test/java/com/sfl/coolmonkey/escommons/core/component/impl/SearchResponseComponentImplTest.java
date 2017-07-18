@@ -1,8 +1,7 @@
-package com.sfl.coolmonkey.escommons.core.impl;
+package com.sfl.coolmonkey.escommons.core.component.impl;
 
 import com.sfl.coolmonkey.escommons.core.component.JsonComponent;
 import com.sfl.coolmonkey.escommons.core.component.SearchResponseComponent;
-import com.sfl.coolmonkey.escommons.core.component.impl.SearchResponseComponentImpl;
 import com.sfl.coolmonkey.escommons.core.model.document.AbstractEsDocument;
 import com.sfl.coolmonkey.escommons.core.model.response.DocumentsAndTotalCount;
 import com.sfl.coolmonkey.escommons.core.test.AbstractCoreUnitTest;

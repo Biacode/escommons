@@ -1,7 +1,6 @@
-package com.sfl.coolmonkey.escommons.core.impl;
+package com.sfl.coolmonkey.escommons.core.component.impl;
 
 import com.sfl.coolmonkey.escommons.core.component.ElasticsearchClientWrapper;
-import com.sfl.coolmonkey.escommons.core.component.impl.ElasticsearchClientWrapperImpl;
 import com.sfl.coolmonkey.escommons.core.test.AbstractCoreUnitTest;
 import org.easymock.Mock;
 import org.easymock.TestSubject;

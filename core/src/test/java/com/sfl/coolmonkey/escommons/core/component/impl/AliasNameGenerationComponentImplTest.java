@@ -1,8 +1,7 @@
-package com.sfl.coolmonkey.escommons.core.impl;
+package com.sfl.coolmonkey.escommons.core.component.impl;
 
 import com.sfl.coolmonkey.escommons.core.component.ClockComponent;
 import com.sfl.coolmonkey.escommons.core.component.IndexNameGenerationComponent;
-import com.sfl.coolmonkey.escommons.core.component.impl.IndexNameGenerationComponentImpl;
 import com.sfl.coolmonkey.escommons.core.test.AbstractCoreUnitTest;
 import org.easymock.Mock;
 import org.easymock.TestSubject;
