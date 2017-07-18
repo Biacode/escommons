@@ -65,7 +65,7 @@ sonarqube {
         property "sonar.language", "java"
         property "sonar.login", System.getenv("SONAR_TOKEN")
         property "sonar.jacoco.reportPaths", "${project.buildDir}/jacoco/test.exec"
-        property "sonar.exclusions", ["**com/sfl/coolmonkey/escommons/api/model/**/*", "**com/sfl/coolmonkey/escommons/api/client/**/*"]
+        property "sonar.exclusions", ["**com/sfl/coolmonkey/escommons/api/model/**", "**com/sfl/coolmonkey/escommons/api/client/**"]
     }
 }
 
