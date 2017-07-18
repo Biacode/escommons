@@ -2,6 +2,7 @@ include 'core'
 
 include ':api:api-client'
 include ':api:api-model'
-include ':api:api-rest'
+include ':api:api-rest-rs'
+include ':api:api-rest-boot'
 
 include 'integration-tests'
