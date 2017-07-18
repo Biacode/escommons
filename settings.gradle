@@ -1,0 +1,7 @@
+include 'core'
+
+include ':api:api-client'
+include ':api:api-model'
+include ':api:api-rest'
+
+include 'integration-tests'

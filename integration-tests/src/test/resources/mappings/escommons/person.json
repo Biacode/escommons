@@ -1,0 +1,9 @@
+{
+  "person": {
+    "properties": {
+      "firstName": {
+        "type": "keyword"
+      }
+    }
+  }
+}
