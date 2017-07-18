@@ -19,7 +19,7 @@ import java.util.List;
  * Time: 1:16 PM
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:applicationContext-elasticsearch-test.xml")
+@ContextConfiguration("classpath:applicationContext-escommons-core-test.xml")
 public abstract class AbstractIntegrationTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractIntegrationTest.class);
@@ -78,7 +78,7 @@ public abstract class AbstractIntegrationTest {
         if (elasticsearchClientWrapper.indexExists(indexName)) {
             elasticsearchClientWrapper.deleteIndex(indexName);
         } else {
-            elasticsearchClientWrapper.createIndex(indexName, null);
+            elasticsearchClientWrapper.createIndex(indexName);
         }
     }
     //endregion
