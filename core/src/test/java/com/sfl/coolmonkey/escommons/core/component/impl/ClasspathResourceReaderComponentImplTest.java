@@ -1,7 +1,6 @@
-package com.sfl.coolmonkey.escommons.core.impl;
+package com.sfl.coolmonkey.escommons.core.component.impl;
 
 import com.sfl.coolmonkey.escommons.core.component.ClasspathResourceReaderComponent;
-import com.sfl.coolmonkey.escommons.core.component.impl.ClasspathResourceReaderComponentImpl;
 import com.sfl.coolmonkey.escommons.core.test.AbstractCoreUnitTest;
 import org.apache.commons.lang3.StringUtils;
 import org.easymock.TestSubject;

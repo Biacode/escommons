@@ -1,7 +1,6 @@
-package com.sfl.coolmonkey.escommons.core.impl;
+package com.sfl.coolmonkey.escommons.core.component.impl;
 
 import com.sfl.coolmonkey.escommons.core.component.ClockComponent;
-import com.sfl.coolmonkey.escommons.core.component.impl.ClockComponentImpl;
 import com.sfl.coolmonkey.escommons.core.test.AbstractCoreUnitTest;
 import org.easymock.TestSubject;
 import org.joda.time.DateTime;

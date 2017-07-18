@@ -1,10 +1,9 @@
-package com.sfl.coolmonkey.escommons.core.impl;
+package com.sfl.coolmonkey.escommons.core.component.impl;
 
 import com.sfl.coolmonkey.escommons.core.component.ElasticsearchClientWrapper;
 import com.sfl.coolmonkey.escommons.core.component.IndexNameGenerationComponent;
 import com.sfl.coolmonkey.escommons.core.component.IndexingComponent;
 import com.sfl.coolmonkey.escommons.core.component.MappingsComponent;
-import com.sfl.coolmonkey.escommons.core.component.impl.IndexingComponentImpl;
 import com.sfl.coolmonkey.escommons.core.test.AbstractCoreUnitTest;
 import org.easymock.Mock;
 import org.easymock.TestSubject;

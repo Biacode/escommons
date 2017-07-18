@@ -12,9 +12,14 @@ buildscript {
         jsr305Version = '3.0.2'
         junitVersion = '4.12'
         easymockVersion = '3.4'
+
+        sonarqubeVersion = '2.5'
     }
     repositories {
         mavenCentral()
+    }
+    dependencies {
+        classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:$sonarqubeVersion")
     }
 }
 
@@ -44,6 +49,23 @@ allprojects {
         compile "com.google.code.findbugs:jsr305:$jsr305Version"
         testCompile "junit:junit:$junitVersion"
         testCompile "org.easymock:easymock:$easymockVersion"
+    }
+}
+
+apply plugin: "org.sonarqube"
+apply plugin: 'jacoco'
+
+sonarqube {
+    properties {
+        property "sonar.sourceEncoding", "UTF-8"
+        property "sonar.projectName", "escommons"
+        property "sonar.projectKey", "escommons"
+        property "sonar.organization", "escommons"
+        property "sonar.host.url", "https://sonarcloud.io"
+        property "sonar.language", "java"
+        property "sonar.login", System.getenv("SONAR_TOKEN")
+        property "sonar.jacoco.reportPaths", "${project.buildDir}/jacoco/test.exec"
+        property "sonar.exclusions", ["**com/sfl/coolmonkey/escommons/api/model/**/*", "**com/sfl/coolmonkey/escommons/api/client/**/*"]
     }
 }
 
