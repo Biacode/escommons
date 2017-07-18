@@ -1,6 +1,7 @@
 buildscript {
     ext {
         springVersion = '4.3.9.RELEASE'
+        springBootVersion = "1.5.4.RELEASE"
         elasticSearchVersion = '5.4.0'
         javaxServletApiVersion = '3.1.0'
         javaxRsApiVersion = '2.0.1'
@@ -69,12 +70,21 @@ sonarqube {
     }
 }
 
-project(':api:api-rest') {
+project(':api:api-rest-rs') {
     dependencies {
         compile project(':core')
         compile project(':api:api-model')
         compile "javax.ws.rs:javax.ws.rs-api:$javaxRsApiVersion"
         compileOnly "javax.servlet:javax.servlet-api:$javaxServletApiVersion"
+    }
+}
+
+project(':api:api-rest-boot') {
+    dependencies {
+        compile project(':core')
+        compile project(':api:api-model')
+        compile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+        compile "org.springframework.boot:spring-boot-starter-jersey:$springBootVersion"
     }
 }
 
