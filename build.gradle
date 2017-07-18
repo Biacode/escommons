@@ -1,8 +1,10 @@
 buildscript {
     ext {
         springVersion = '4.3.9.RELEASE'
-        slfj4ApiVersion = '1.7.25'
         elasticSearchVersion = '5.4.0'
+        javaxServletApiVersion = '3.1.0'
+        javaxRsApiVersion = '2.0.1'
+        slfj4ApiVersion = '1.7.25'
         log4jVersion = '2.7'
         jacksonVersion = '2.8.9'
         apacheCommonsLang3Version = '3.6'
@@ -21,12 +23,14 @@ allprojects {
     apply plugin: 'java'
     apply plugin: 'maven'
 
+    group = 'com.sfl.coolmonkey.escommons'
     version = '0.1.0-SNAPSHOT'
     sourceCompatibility = 1.8
 
     repositories {
         mavenLocal()
         mavenCentral()
+        jcenter()
     }
 
     dependencies {
@@ -47,6 +51,8 @@ project(':api:api-rest') {
     dependencies {
         compile project(':core')
         compile project(':api:api-model')
+        compile "javax.ws.rs:javax.ws.rs-api:$javaxRsApiVersion"
+        compileOnly "javax.servlet:javax.servlet-api:$javaxServletApiVersion"
     }
 }
 
