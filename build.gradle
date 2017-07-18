@@ -27,7 +27,6 @@ buildscript {
 allprojects {
 
     apply plugin: 'java'
-    apply plugin: 'maven'
 
     group = 'com.sfl.coolmonkey.escommons'
     version = '0.1.0-SNAPSHOT'
@@ -71,6 +70,9 @@ sonarqube {
 }
 
 project(':api:api-rest-rs') {
+
+    apply plugin: 'maven'
+
     dependencies {
         compile project(':core')
         compile project(':api:api-model')
@@ -80,6 +82,9 @@ project(':api:api-rest-rs') {
 }
 
 project(':api:api-rest-boot') {
+
+    apply plugin: 'maven'
+
     dependencies {
         compile project(':core')
         compile project(':api:api-model')
@@ -96,6 +101,9 @@ project(':api:api-client') {
 }
 
 project(':core') {
+
+    apply plugin: 'maven'
+
     dependencies {
         compile "org.elasticsearch:elasticsearch:${elasticSearchVersion}"
         compile "org.elasticsearch.client:transport:${elasticSearchVersion}"
