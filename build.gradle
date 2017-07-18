@@ -81,6 +81,7 @@ project(':api:api-rest') {
 project(':api:api-client') {
     dependencies {
         compile project(':api:api-model')
+        compile "javax.ws.rs:javax.ws.rs-api:$javaxRsApiVersion"
     }
 }
 

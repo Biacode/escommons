@@ -21,11 +21,11 @@ import javax.ws.rs.core.Response;
  * Time: 2:12 PM
  */
 @Component
-@Path("setup")
+@Path("escommons")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class IndexationResource {
-    private static final Logger LOGGER = LoggerFactory.getLogger(IndexationResource.class);
+public class EsCommonsResource {
+    private static final Logger LOGGER = LoggerFactory.getLogger(EsCommonsResource.class);
 
     //region Dependencies
     @Autowired
@@ -33,7 +33,7 @@ public class IndexationResource {
     //endregion
 
     //region Constructors
-    public IndexationResource() {
+    public EsCommonsResource() {
         LOGGER.debug("Initializing");
     }
     //endregion
@@ -47,8 +47,8 @@ public class IndexationResource {
     }
 
     @POST
-    @Path("change-index-alias")
-    public Response changeIndexAlias(final ChangeIndexAliasRequest request) {
+    @Path("change-alias")
+    public Response changeAlias(final ChangeIndexAliasRequest request) {
         indexingComponent.createAliasAndDeleteOldIndices(request.getAlias(), request.getIndexName());
         return Response.ok(new EsCommonsResultResponse<>()).build();
     }
