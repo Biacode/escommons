@@ -13,7 +13,7 @@ buildscript {
         jsr305Version = '3.0.2'
         junitVersion = '4.12'
         easymockVersion = '3.4'
-
+        assertJVersion = '3.8.0'
         sonarqubeVersion = '2.5'
     }
     repositories {
@@ -27,6 +27,7 @@ buildscript {
 allprojects {
 
     apply plugin: 'java'
+    apply plugin: 'maven'
 
     group = 'com.sfl.coolmonkey.escommons'
     version = '0.1.0-SNAPSHOT'
@@ -49,6 +50,7 @@ allprojects {
         compile "com.google.code.findbugs:jsr305:$jsr305Version"
         testCompile "junit:junit:$junitVersion"
         testCompile "org.easymock:easymock:$easymockVersion"
+        testCompile "org.assertj:assertj-core:$assertJVersion"
     }
 }
 
@@ -69,40 +71,36 @@ sonarqube {
     }
 }
 
-project(':api:api-rest-rs') {
-
-    apply plugin: 'maven'
+project(':api:rest-rs') {
 
     dependencies {
         compile project(':core')
-        compile project(':api:api-model')
+        compile project(':api:rest-model')
         compile "javax.ws.rs:javax.ws.rs-api:$javaxRsApiVersion"
         compileOnly "javax.servlet:javax.servlet-api:$javaxServletApiVersion"
+        testCompile "org.glassfish.jersey.containers:jersey-container-servlet-core:2.25.1"
     }
 }
 
-project(':api:api-rest-boot') {
-
-    apply plugin: 'maven'
+project(':api:rest-boot') {
 
     dependencies {
         compile project(':core')
-        compile project(':api:api-model')
+        compile project(':api:rest-model')
         compile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
         compile "org.springframework.boot:spring-boot-starter-jersey:$springBootVersion"
     }
 }
 
-project(':api:api-client') {
+project(':api:rest-client') {
+
     dependencies {
-        compile project(':api:api-model')
+        compile project(':api:rest-model')
         compile "javax.ws.rs:javax.ws.rs-api:$javaxRsApiVersion"
     }
 }
 
 project(':core') {
-
-    apply plugin: 'maven'
 
     dependencies {
         compile "org.elasticsearch:elasticsearch:${elasticSearchVersion}"
