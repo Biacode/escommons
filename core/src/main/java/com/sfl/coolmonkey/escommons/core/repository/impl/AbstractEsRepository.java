@@ -54,7 +54,7 @@ public abstract class AbstractEsRepository<T extends AbstractEsDocument> impleme
     private JsonComponent jsonComponent;
     //endregion
 
-    //region Properties
+    //region Protected properties
     private final Class<T> clazz;
     //endregion
 
@@ -153,6 +153,10 @@ public abstract class AbstractEsRepository<T extends AbstractEsDocument> impleme
     //endregion
 
     //region Protected methods
+    public Class<T> getClazz() {
+        return clazz;
+    }
+
     @Nonnull
     protected String[] stringValues(@Nonnull final Object... values) {
         Assert.notNull(values, "The string values should not be null");
