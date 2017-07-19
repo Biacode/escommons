@@ -153,7 +153,7 @@ public abstract class AbstractEsRepository<T extends AbstractEsDocument> impleme
     //endregion
 
     //region Protected methods
-    public Class<T> getClazz() {
+    protected Class<T> getClazz() {
         return clazz;
     }
 
