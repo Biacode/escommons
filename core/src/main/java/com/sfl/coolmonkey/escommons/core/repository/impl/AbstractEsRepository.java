@@ -138,9 +138,10 @@ public abstract class AbstractEsRepository<T extends AbstractEsDocument> impleme
     public Map<Object, Object> findByField(@Nonnull final String searchField,
                                            @Nonnull final List<Object> terms,
                                            @Nonnull final String resultField,
-                                           @Nonnull final String indexName) {
+                                           @Nonnull final String indexName,
+                                           @Nonnull final String documentType) {
         final SearchResponse searchResponse = client.prepareSearch(indexName)
-                .setTypes(getDocumentType())
+                .setTypes(documentType)
                 .setQuery(boolQuery().must(matchAllQuery()).filter(termsQuery(searchField, terms)))
                 .get();
         return Arrays.stream(searchResponse.getHits().getHits())

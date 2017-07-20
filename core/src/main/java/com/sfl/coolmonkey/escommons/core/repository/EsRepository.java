@@ -80,11 +80,12 @@ public interface EsRepository<T extends AbstractEsDocument> {
     /**
      * Finds documents by field map.
      *
-     * @param searchField the search field
-     * @param terms       the terms
-     * @param resultField the result field
+     * @param searchField  the search field
+     * @param terms        the terms
+     * @param resultField  the result field
+     * @param documentType the document type
      * @return the map where the key is search field and the value is result field
      */
     @Nonnull
-    Map<Object, Object> findByField(@Nonnull final String searchField, @Nonnull final List<Object> terms, @Nonnull final String resultField, @Nonnull final String indexName);
+    Map<Object, Object> findByField(@Nonnull final String searchField, @Nonnull final List<Object> terms, @Nonnull final String resultField, @Nonnull final String indexName, @Nonnull final String documentType);
 }
