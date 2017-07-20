@@ -5,7 +5,9 @@ import com.sfl.coolmonkey.escommons.api.model.common.EsCommonsResultResponse;
 import com.sfl.coolmonkey.escommons.api.model.setup.request.ChangeIndexAliasRequest;
 import com.sfl.coolmonkey.escommons.api.model.setup.request.PrepareIndexRequest;
 import com.sfl.coolmonkey.escommons.api.model.setup.request.RemoveIndexByNameRequest;
+import com.sfl.coolmonkey.escommons.api.model.setup.response.ChangeIndexAliasResponse;
 import com.sfl.coolmonkey.escommons.api.model.setup.response.PrepareIndexResponse;
+import com.sfl.coolmonkey.escommons.api.model.setup.response.RemoveIndexByNameResponse;
 import com.sfl.coolmonkey.escommons.core.component.IndexingComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,14 +51,14 @@ public class EsCommonsController {
     }
 
     @RequestMapping(path = "change-alias", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON)
-    public ResponseEntity<EsCommonsResultResponse> changeAlias(final ChangeIndexAliasRequest request) {
+    public ResponseEntity<EsCommonsResultResponse<ChangeIndexAliasResponse>> changeAlias(final ChangeIndexAliasRequest request) {
         assertChangeIndexAliasRequest(request);
         indexingComponent.createAliasAndDeleteOldIndices(request.getAlias(), request.getIndexName());
         return ResponseEntity.ok(new EsCommonsResultResponse<>());
     }
 
     @RequestMapping(path = "remove-index-by-name", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON)
-    public ResponseEntity<EsCommonsResultResponse> removeIndexByName(final RemoveIndexByNameRequest request) {
+    public ResponseEntity<EsCommonsResultResponse<RemoveIndexByNameResponse>> removeIndexByName(final RemoveIndexByNameRequest request) {
         assertRemoveIndexByNameRequest(request);
         indexingComponent.removeIndexByName(request.getIndexName());
         return ResponseEntity.ok(new EsCommonsResultResponse<>());
