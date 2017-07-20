@@ -4,7 +4,9 @@ import com.sfl.coolmonkey.escommons.api.model.common.EsCommonsResultResponse;
 import com.sfl.coolmonkey.escommons.api.model.setup.request.ChangeIndexAliasRequest;
 import com.sfl.coolmonkey.escommons.api.model.setup.request.PrepareIndexRequest;
 import com.sfl.coolmonkey.escommons.api.model.setup.request.RemoveIndexByNameRequest;
+import com.sfl.coolmonkey.escommons.api.model.setup.response.ChangeIndexAliasResponse;
 import com.sfl.coolmonkey.escommons.api.model.setup.response.PrepareIndexResponse;
+import com.sfl.coolmonkey.escommons.api.model.setup.response.RemoveIndexByNameResponse;
 
 /**
  * Created by Arthur Asatryan.
@@ -15,7 +17,7 @@ public interface EsCommonsResourceClient {
 
     EsCommonsResultResponse<PrepareIndexResponse> prepareIndex(final PrepareIndexRequest request);
 
-    EsCommonsResultResponse changeAlias(final ChangeIndexAliasRequest request);
+    EsCommonsResultResponse<ChangeIndexAliasResponse> changeAlias(final ChangeIndexAliasRequest request);
 
-    EsCommonsResultResponse removeIndexByName(final RemoveIndexByNameRequest request);
+    EsCommonsResultResponse<RemoveIndexByNameResponse> removeIndexByName(final RemoveIndexByNameRequest request);
 }
