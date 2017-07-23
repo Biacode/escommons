@@ -29,7 +29,7 @@ allprojects {
     apply plugin: 'java'
     apply plugin: 'maven'
 
-    group = 'com.sfl.coolmonkey.escommons'
+    group = 'com.biacode.escommons'
     version = '0.1.0-SNAPSHOT'
     sourceCompatibility = 1.8
 
@@ -67,7 +67,7 @@ sonarqube {
         property "sonar.language", "java"
         property "sonar.login", System.getenv("SONAR_TOKEN")
         property "sonar.jacoco.reportPaths", "${project.buildDir}/jacoco/test.exec"
-        property "sonar.exclusions", ["**com/sfl/coolmonkey/escommons/api/model/**", "**com/sfl/coolmonkey/escommons/api/client/**"]
+        property "sonar.exclusions", ["**com/biacode/escommons/api/model/**", "**com/biacode/escommons/api/client/**"]
     }
 }
 
