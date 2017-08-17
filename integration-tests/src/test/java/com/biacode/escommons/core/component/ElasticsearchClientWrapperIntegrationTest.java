@@ -27,7 +27,7 @@ public class ElasticsearchClientWrapperIntegrationTest extends AbstractIntegrati
     private ElasticsearchClientWrapper elasticsearchClientWrapper;
 
     @Autowired
-    private Client client;
+    private Client esClient;
     //endregion
 
     //region Constructors
@@ -50,7 +50,7 @@ public class ElasticsearchClientWrapperIntegrationTest extends AbstractIntegrati
         expectedIndices.add("address_" + UUID.randomUUID().toString());
         expectedIndices.add("address_" + UUID.randomUUID().toString());
         expectedIndices.add("address_" + UUID.randomUUID().toString());
-        expectedIndices.forEach(s -> client.admin().indices().prepareCreate(s).get());
+        expectedIndices.forEach(s -> esClient.admin().indices().prepareCreate(s).get());
         // when
         final Set<String> clusterIndices = elasticsearchClientWrapper.getClusterIndices();
         // then

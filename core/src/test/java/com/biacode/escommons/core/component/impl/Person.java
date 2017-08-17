@@ -10,6 +10,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  * Time: 2:57 PM
  */
 public class Person extends AbstractEsDocument {
+    private static final long serialVersionUID = -4857552235251849532L;
+
     private String firstName;
 
     public String getFirstName() {

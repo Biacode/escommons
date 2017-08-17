@@ -41,7 +41,7 @@ public class ElasticsearchClientWrapperImplTest extends AbstractCoreUnitTest {
     private ElasticsearchClientWrapper elasticsearchClientWrapper = new ElasticsearchClientWrapperImpl();
 
     @Mock
-    private Client client;
+    private Client esClient;
     //endregion
 
     //region Constructors
@@ -89,7 +89,7 @@ public class ElasticsearchClientWrapperImplTest extends AbstractCoreUnitTest {
         // Reset
         resetAll();
         // Expectations
-        expect(client.admin()).andReturn(adminClient);
+        expect(esClient.admin()).andReturn(adminClient);
         expect(adminClient.indices()).andReturn(indicesAdminClient);
         expect(indicesAdminClient.prepareCreate(indexName)).andReturn(createIndexRequestBuilder);
         expect(createIndexRequestBuilder.get()).andReturn(createIndexResponse);
@@ -114,7 +114,7 @@ public class ElasticsearchClientWrapperImplTest extends AbstractCoreUnitTest {
         // Reset
         resetAll();
         // Expectations
-        expect(client.admin()).andReturn(adminClient);
+        expect(esClient.admin()).andReturn(adminClient);
         expect(adminClient.indices()).andReturn(indicesAdminClient);
         expect(indicesAdminClient.prepareCreate(indexName)).andReturn(createIndexRequestBuilder);
         expect(createIndexRequestBuilder.setSettings(settings)).andReturn(createIndexRequestBuilder);
@@ -171,7 +171,7 @@ public class ElasticsearchClientWrapperImplTest extends AbstractCoreUnitTest {
         // Reset
         resetAll();
         // Expectations
-        expect(client.admin()).andReturn(adminClient);
+        expect(esClient.admin()).andReturn(adminClient);
         expect(adminClient.indices()).andReturn(indicesAdminClient);
         expect(indicesAdminClient.preparePutMapping(indexName)).andReturn(putMappingRequestBuilder);
         expect(putMappingRequestBuilder.setType(documentType)).andReturn(putMappingRequestBuilder);
@@ -217,7 +217,7 @@ public class ElasticsearchClientWrapperImplTest extends AbstractCoreUnitTest {
         // Reset
         resetAll();
         // Expectations
-        expect(client.admin()).andReturn(adminClient);
+        expect(esClient.admin()).andReturn(adminClient);
         expect(adminClient.indices()).andReturn(indicesAdminClient);
         expect(indicesAdminClient.prepareRefresh(indexName)).andReturn(refreshRequestBuilder);
         expect(refreshRequestBuilder.get()).andReturn(createMock(RefreshResponse.class));
@@ -266,7 +266,7 @@ public class ElasticsearchClientWrapperImplTest extends AbstractCoreUnitTest {
         //Reset
         resetAll();
         //Expectations
-        expect(client.admin()).andReturn(adminClient);
+        expect(esClient.admin()).andReturn(adminClient);
         expect(adminClient.indices()).andReturn(indicesAdminClient);
         expect(indicesAdminClient.prepareAliases()).andReturn(indicesAliasesRequestBuilder);
         expect(indicesAliasesRequestBuilder.addAlias(indexName, aliasName)).andReturn(indicesAliasesRequestBuilder);
@@ -311,7 +311,7 @@ public class ElasticsearchClientWrapperImplTest extends AbstractCoreUnitTest {
         //Reset
         resetAll();
         //Expectations
-        expect(client.admin()).andReturn(adminClient);
+        expect(esClient.admin()).andReturn(adminClient);
         expect(adminClient.indices()).andReturn(indicesAdminClient);
         expect(indicesAdminClient.prepareDelete(indexName)).andReturn(deleteIndexRequestBuilder);
         expect(deleteIndexRequestBuilder.get()).andReturn(deleteIndexResponse);
@@ -356,7 +356,7 @@ public class ElasticsearchClientWrapperImplTest extends AbstractCoreUnitTest {
         //Reset
         resetAll();
         //Expectations
-        expect(client.admin()).andReturn(adminClient);
+        expect(esClient.admin()).andReturn(adminClient);
         expect(adminClient.indices()).andReturn(indicesAdminClient);
         expect(indicesAdminClient.prepareExists(indexName)).andReturn(indicesExistsRequestBuilder);
         expect(indicesExistsRequestBuilder.get()).andReturn(indicesExistsResponse);
