@@ -26,12 +26,12 @@ public class ElasticsearchClientWrapperImpl implements ElasticsearchClientWrappe
 
     //region Dependencies
     @Autowired
-    private Client client;
+    private Client esClient;
     //endregion
 
     //region Constructors
     public ElasticsearchClientWrapperImpl() {
-        LOGGER.debug("Initializing elasticsearch client wrapper");
+        LOGGER.debug("Initializing");
     }
     //endregion
 
@@ -39,7 +39,7 @@ public class ElasticsearchClientWrapperImpl implements ElasticsearchClientWrappe
     @Nonnull
     @Override
     public Set<String> getClusterIndices() {
-        final ObjectLookupContainer<String> indices = client.admin().cluster().prepareState()
+        final ObjectLookupContainer<String> indices = esClient.admin().cluster().prepareState()
                 .execute().actionGet().getState().getMetaData().indices().keys();
         final Set<String> indicesNames = new HashSet<>();
         for (final Object index : indices.toArray()) {
@@ -51,14 +51,14 @@ public class ElasticsearchClientWrapperImpl implements ElasticsearchClientWrappe
     @Override
     public boolean createIndex(@Nonnull final String indexName) {
         assertIndexNameNotNull(indexName);
-        return client.admin().indices().prepareCreate(indexName).get().isAcknowledged();
+        return esClient.admin().indices().prepareCreate(indexName).get().isAcknowledged();
     }
 
     @Override
     public boolean createIndex(@Nonnull final String indexName, @Nonnull final Map<String, Object> settings) {
         assertIndexNameNotNull(indexName);
         Assert.notNull(settings, "The settings should not be null");
-        return client.admin().indices().prepareCreate(indexName).setSettings(settings).get().isAcknowledged();
+        return esClient.admin().indices().prepareCreate(indexName).setSettings(settings).get().isAcknowledged();
     }
 
     @Override
@@ -66,32 +66,32 @@ public class ElasticsearchClientWrapperImpl implements ElasticsearchClientWrappe
         assertIndexNameNotNull(indexName);
         Assert.notNull(documentType, "Document type should not be null");
         Assert.notNull(mappings, "Mappings should not be null");
-        return client.admin().indices().preparePutMapping(indexName).setType(documentType).setSource(mappings).get().isAcknowledged();
+        return esClient.admin().indices().preparePutMapping(indexName).setType(documentType).setSource(mappings).get().isAcknowledged();
     }
 
     @Override
     public void refreshIndex(@Nonnull final String indexName) {
         assertIndexNameNotNull(indexName);
-        client.admin().indices().prepareRefresh(indexName).get();
+        esClient.admin().indices().prepareRefresh(indexName).get();
     }
 
     @Override
     public boolean addAlias(@Nonnull final String indexName, @Nonnull final String aliasName) {
         assertIndexNameNotNull(indexName);
         Assert.notNull(aliasName, "Alias name should not be null");
-        return client.admin().indices().prepareAliases().addAlias(indexName, aliasName).get().isAcknowledged();
+        return esClient.admin().indices().prepareAliases().addAlias(indexName, aliasName).get().isAcknowledged();
     }
 
     @Override
     public boolean deleteIndex(@Nonnull final String indexName) {
         assertIndexNameNotNull(indexName);
-        return client.admin().indices().prepareDelete(indexName).get().isAcknowledged();
+        return esClient.admin().indices().prepareDelete(indexName).get().isAcknowledged();
     }
 
     @Override
     public boolean indexExists(@Nonnull final String indexName) {
         assertIndexNameNotNull(indexName);
-        return client.admin().indices().prepareExists(indexName).get().isExists();
+        return esClient.admin().indices().prepareExists(indexName).get().isExists();
     }
     //endregion
 

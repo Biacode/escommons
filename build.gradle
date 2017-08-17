@@ -30,7 +30,7 @@ allprojects {
     apply plugin: 'maven'
 
     group = 'com.biacode.escommons'
-    version = '0.1.0-SNAPSHOT'
+    version = '0.2.0-SNAPSHOT'
     sourceCompatibility = 1.8
 
     repositories {
@@ -72,7 +72,6 @@ sonarqube {
 }
 
 project(':api:rest-rs') {
-
     dependencies {
         compile project(':core')
         compile project(':api:rest-model')
@@ -83,7 +82,6 @@ project(':api:rest-rs') {
 }
 
 project(':api:rest-boot') {
-
     dependencies {
         compile project(':core')
         compile project(':api:rest-model')
@@ -93,7 +91,6 @@ project(':api:rest-boot') {
 }
 
 project(':api:rest-client') {
-
     dependencies {
         compile project(':api:rest-model')
         compile "javax.ws.rs:javax.ws.rs-api:$javaxRsApiVersion"
@@ -101,7 +98,6 @@ project(':api:rest-client') {
 }
 
 project(':core') {
-
     dependencies {
         compile "org.elasticsearch:elasticsearch:${elasticSearchVersion}"
         compile "org.elasticsearch.client:transport:${elasticSearchVersion}"
@@ -113,7 +109,6 @@ project(':core') {
 project(':integration-tests') {
     dependencies {
         compile project(':core')
-
         compile "org.elasticsearch:elasticsearch:${elasticSearchVersion}"
         compile "org.elasticsearch.client:transport:${elasticSearchVersion}"
         compile "org.elasticsearch.plugin:transport-netty4-client:${elasticSearchVersion}"

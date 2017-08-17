@@ -38,14 +38,14 @@ public abstract class AbstractEsRepository<T extends AbstractEsDocument> impleme
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractEsRepository.class);
 
     //region Constants
-    private static final int MAXIMUM_PAGE_SIZE = 10000;
+    private static final int MAXIMUM_PAGE_SIZE = 10_000;
 
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
     //endregion
 
     //region Dependencies
     @Autowired
-    private Client client;
+    private Client esClient;
 
     @Autowired
     private SearchResponseComponent searchResponseComponent;
@@ -72,7 +72,7 @@ public abstract class AbstractEsRepository<T extends AbstractEsDocument> impleme
     public T save(@Nonnull final T document, @Nonnull final String indexName) {
         Assert.notNull(document, "The document should not be null");
         assertIndexNameNotNull(indexName);
-        client.prepareIndex(indexName, getDocumentType())
+        esClient.prepareIndex(indexName, getDocumentType())
                 .setId(document.getUuid())
                 .setSource(jsonComponent.serialize(document, clazz)).get();
         return document;
@@ -83,9 +83,9 @@ public abstract class AbstractEsRepository<T extends AbstractEsDocument> impleme
     public List<T> save(@Nonnull final List<T> documents, @Nonnull final String indexName) {
         Assert.notNull(documents, "The list of documents should not be null");
         assertIndexNameNotNull(indexName);
-        final BulkRequestBuilder bulkBuilder = client.prepareBulk();
+        final BulkRequestBuilder bulkBuilder = esClient.prepareBulk();
         documents.forEach(document -> {
-            final IndexRequestBuilder indexRequestBuilder = client
+            final IndexRequestBuilder indexRequestBuilder = esClient
                     .prepareIndex(indexName, getDocumentType())
                     .setId(document.getUuid())
                     .setSource(jsonComponent.serialize(document, clazz));
@@ -98,14 +98,14 @@ public abstract class AbstractEsRepository<T extends AbstractEsDocument> impleme
     @Nonnull
     @Override
     public String delete(@Nonnull final String id, @Nonnull final String indexName) {
-        return client.prepareDelete(indexName, getDocumentType(), id).get().getId();
+        return esClient.prepareDelete(indexName, getDocumentType(), id).get().getId();
     }
 
     @Nonnull
     @Override
     public List<String> delete(@Nonnull final List<String> ids, @Nonnull final String indexName) {
-        final BulkRequestBuilder bulkBuilder = client.prepareBulk();
-        ids.forEach(uuid -> bulkBuilder.add(client.prepareDelete(indexName, getDocumentType(), uuid)));
+        final BulkRequestBuilder bulkBuilder = esClient.prepareBulk();
+        ids.forEach(uuid -> bulkBuilder.add(esClient.prepareDelete(indexName, getDocumentType(), uuid)));
         bulkBuilder.get();
         return ids;
     }
@@ -114,7 +114,7 @@ public abstract class AbstractEsRepository<T extends AbstractEsDocument> impleme
     @Override
     public Optional<T> findById(@Nonnull final String id, @Nonnull final String indexName) {
         assertIndexNameNotNull(indexName);
-        final GetResponse response = client.prepareGet(indexName, getDocumentType(), id).get();
+        final GetResponse response = esClient.prepareGet(indexName, getDocumentType(), id).get();
         if (!response.isExists()) {
             return Optional.empty();
         }
@@ -125,7 +125,7 @@ public abstract class AbstractEsRepository<T extends AbstractEsDocument> impleme
     @Override
     public DocumentsAndTotalCount<T> findByIds(@Nonnull final List<String> ids, @Nonnull final String indexName) {
         assertIndexNameNotNull(indexName);
-        final SearchResponse searchResponse = client.prepareSearch(indexName)
+        final SearchResponse searchResponse = esClient.prepareSearch(indexName)
                 .setQuery(boolQuery().filter(termsQuery("uuid", ids)))
                 .setSize(MAXIMUM_PAGE_SIZE)
                 .setTypes(getDocumentType())
@@ -140,7 +140,7 @@ public abstract class AbstractEsRepository<T extends AbstractEsDocument> impleme
                                            @Nonnull final String resultField,
                                            @Nonnull final String indexName,
                                            @Nonnull final String documentType) {
-        final SearchResponse searchResponse = client.prepareSearch(indexName)
+        final SearchResponse searchResponse = esClient.prepareSearch(indexName)
                 .setTypes(documentType)
                 .setQuery(boolQuery().must(matchAllQuery()).filter(termsQuery(searchField, terms)))
                 .get();
