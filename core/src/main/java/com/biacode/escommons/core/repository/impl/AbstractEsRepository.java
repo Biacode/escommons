@@ -18,10 +18,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static com.biacode.escommons.core.model.document.DocumentConstants.DATE_FORMAT;
+import static com.biacode.escommons.core.model.document.DocumentConstants.FETCH_MAX_SIZE;
 import static java.util.stream.Collectors.toMap;
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -37,12 +37,6 @@ public abstract class AbstractEsRepository<T extends AbstractEsDocument> impleme
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractEsRepository.class);
 
-    //region Constants
-    private static final int MAXIMUM_PAGE_SIZE = 10_000;
-
-    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-    //endregion
-
     //region Dependencies
     @Autowired
     private Client esClient;
@@ -54,7 +48,7 @@ public abstract class AbstractEsRepository<T extends AbstractEsDocument> impleme
     private JsonComponent jsonComponent;
     //endregion
 
-    //region Protected properties
+    //region Private properties
     private final Class<T> clazz;
     //endregion
 
@@ -127,7 +121,7 @@ public abstract class AbstractEsRepository<T extends AbstractEsDocument> impleme
         assertIndexNameNotNull(indexName);
         final SearchResponse searchResponse = esClient.prepareSearch(indexName)
                 .setQuery(boolQuery().filter(termsQuery("uuid", ids)))
-                .setSize(MAXIMUM_PAGE_SIZE)
+                .setSize(FETCH_MAX_SIZE)
                 .setTypes(getDocumentType())
                 .get();
         return searchResponseComponent.convertToDocumentsAndTotalCount(searchResponse, clazz);
