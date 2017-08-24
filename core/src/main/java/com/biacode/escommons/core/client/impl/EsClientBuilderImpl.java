@@ -40,16 +40,16 @@ public class EsClientBuilderImpl implements EsClientBuilder {
     //endregion
 
     //region Dependencies
-    @Value("${elasticsearch.host}")
+    @Value("${escommons.host}")
     private String host;
 
-    @Value("${elasticsearch.port}")
+    @Value("${escommons.port}")
     private Integer port;
 
-    @Value("${elasticsearch.cluster.name}")
+    @Value("${escommons.cluster.name}")
     private String clusterName;
 
-    @Value("${elasticsearch.homepath}")
+    @Value("${escommons.homepath}")
     private String homePath;
 
     @Value("${environment.type}")
@@ -88,7 +88,7 @@ public class EsClientBuilderImpl implements EsClientBuilder {
                     plugins
             ).start().client();
         } catch (final NodeValidationException e) {
-            LOGGER.error("Error occurs while initializing elastic search node at {}:{}", host, port, e);
+            LOGGER.error("Error occurs while initializing elastic search node at {}:{} - {}", host, port, e);
             throw new EsCoreRuntimeException("Error occurs while initializing elastic search node at " + host + ":" + port, e);
         }
     }
@@ -102,7 +102,7 @@ public class EsClientBuilderImpl implements EsClientBuilder {
                     .build();
             return new PreBuiltTransportClient(settings).addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(host), port));
         } catch (final UnknownHostException e) {
-            LOGGER.error("Error occurs while initializing elastic search transport client for {}:{}", host, port, e);
+            LOGGER.error("Error occurs while initializing elastic search transport client for {}:{} - {}", host, port, e);
             throw new EsCoreRuntimeException("Error occurs while initializing elastic search transport client for " + host + ":" + port, e);
         }
     }
