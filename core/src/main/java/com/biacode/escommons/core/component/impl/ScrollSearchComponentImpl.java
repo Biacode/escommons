@@ -28,6 +28,10 @@ public class ScrollSearchComponentImpl implements ScrollSearchComponent {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ScrollSearchComponentImpl.class);
 
+    //region Constants
+    private static final int SCROLL_CHUNK_SIZE = 100;
+    //endregions
+
     //region Dependencies
     @Autowired
     private Client esClient;
@@ -53,11 +57,11 @@ public class ScrollSearchComponentImpl implements ScrollSearchComponent {
         Assert.isTrue(keepAlive > 0, "The keep alive should be greater than 0");
         final List<T> documents = new ArrayList<>();
         SearchResponse searchResponse = searchRequestBuilder
-                .setScroll(new TimeValue(60000))
-                .setSize(100).execute().actionGet();
+                .setScroll(new TimeValue(keepAlive))
+                .setSize(SCROLL_CHUNK_SIZE).execute().actionGet();
         while (true) {
             documents.addAll(searchResponseComponent.convertSearchResponseToDocuments(searchResponse, clazz));
-            searchResponse = esClient.prepareSearchScroll(searchResponse.getScrollId()).setScroll(new TimeValue(60000)).execute().actionGet();
+            searchResponse = esClient.prepareSearchScroll(searchResponse.getScrollId()).setScroll(new TimeValue(keepAlive)).execute().actionGet();
             if (searchResponse.getHits().getHits().length == 0) {
                 break;
             }
