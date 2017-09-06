@@ -3,9 +3,11 @@ package com.biacode.escommons.core.client.impl;
 import com.biacode.escommons.core.client.EsClientBuilder;
 import com.biacode.escommons.core.client.node.StandAloneNode;
 import com.biacode.escommons.core.exception.EsCoreRuntimeException;
+import org.apache.commons.io.FileUtils;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.env.Environment;
 import org.elasticsearch.node.InternalSettingsPreparer;
 import org.elasticsearch.node.NodeValidationException;
 import org.elasticsearch.plugins.Plugin;
@@ -14,10 +16,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.InetAddress;
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Collection;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Created by Arthur Asatryan.
@@ -83,16 +89,14 @@ public class EsClientBuilderImpl implements EsClientBuilder {
                 .put(HTTP_ENABLED_SETTING_KEY, false)
                 .build();
         try {
-            return new StandAloneNode(
-                    InternalSettingsPreparer.prepareEnvironment(nodeSettings, null),
-                    plugins
-            ).start().client();
+            final Environment environment = InternalSettingsPreparer.prepareEnvironment(nodeSettings, null);
+            addPlugins(environment.pluginsFile().toFile());
+            return new StandAloneNode(environment, plugins).start().client();
         } catch (final NodeValidationException e) {
             LOGGER.error("Error occurs while initializing elastic search node at {}:{} - {}", host, port, e);
             throw new EsCoreRuntimeException("Error occurs while initializing elastic search node at " + host + ":" + port, e);
         }
     }
-    //endregion
 
     private Client getProductionClient() {
         try {
@@ -106,6 +110,22 @@ public class EsClientBuilderImpl implements EsClientBuilder {
             throw new EsCoreRuntimeException("Error occurs while initializing elastic search transport client for " + host + ":" + port, e);
         }
     }
+
+    private void addPlugins(final File pluginsFile) {
+        getPluginsPath().ifPresent(it -> {
+            try {
+                FileUtils.copyDirectory(new File(it.getFile()), pluginsFile);
+            } catch (IOException e) {
+                LOGGER.error("Error occurred while copying plugins to node. {}", e);
+                throw new EsCoreRuntimeException("Error occurred while copying plugins to node", e);
+            }
+        });
+    }
+
+    private Optional<URL> getPluginsPath() {
+        return Optional.ofNullable(getClass().getClassLoader().getResource("plugins"));
+    }
+    //endregion
 
     //region Properties getters and setters
     public String getHost() {
