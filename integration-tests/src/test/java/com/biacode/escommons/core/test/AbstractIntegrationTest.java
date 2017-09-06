@@ -78,7 +78,7 @@ public abstract class AbstractIntegrationTest {
         if (elasticsearchClientWrapper.indexExists(indexName)) {
             elasticsearchClientWrapper.deleteIndex(indexName);
         } else {
-            elasticsearchClientWrapper.createIndex(indexName);
+            elasticsearchClientWrapper.createIndex(indexName, IntegrationTestHelper.getSettings());
         }
     }
     //endregion
