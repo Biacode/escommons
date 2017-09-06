@@ -7,6 +7,8 @@ import com.biacode.escommons.api.model.setup.request.PrepareIndexRequest;
 import com.biacode.escommons.api.model.setup.request.RemoveIndexByNameRequest;
 import com.biacode.escommons.api.model.setup.response.PrepareIndexResponse;
 import com.biacode.escommons.core.component.IndexingComponent;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +53,7 @@ public class EsCommonsResource {
 
     @POST
     @Path("change-alias")
+    @JacksonFeatures(serializationDisable = {SerializationFeature.FAIL_ON_EMPTY_BEANS})
     public Response changeAlias(final ChangeIndexAliasRequest request) {
         assertChangeIndexAliasRequest(request);
         indexingComponent.createAliasAndDeleteOldIndices(request.getAlias(), request.getIndexName());
@@ -59,6 +62,7 @@ public class EsCommonsResource {
 
     @POST
     @Path("remove-index-by-name")
+    @JacksonFeatures(serializationDisable = {SerializationFeature.FAIL_ON_EMPTY_BEANS})
     public Response removeIndexByName(final RemoveIndexByNameRequest request) {
         assertRemoveIndexByNameRequest(request);
         indexingComponent.removeIndexByName(request.getIndexName());

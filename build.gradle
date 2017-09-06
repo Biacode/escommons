@@ -45,6 +45,7 @@ allprojects {
         compile "com.fasterxml.jackson.core:jackson-core:$jacksonVersion"
         compile "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
         compile "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion"
+        compile "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:$jacksonVersion"
         compile "org.apache.commons:commons-lang3:$apacheCommonsLang3Version"
         compile "commons-io:commons-io:$apacheCommonsIoVersion"
         compile "com.google.code.findbugs:jsr305:$jsr305Version"
