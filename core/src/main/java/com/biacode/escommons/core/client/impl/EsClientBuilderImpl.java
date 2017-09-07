@@ -90,7 +90,7 @@ public class EsClientBuilderImpl implements EsClientBuilder {
                 .build();
         try {
             final Environment environment = InternalSettingsPreparer.prepareEnvironment(nodeSettings, null);
-            addPlugins(environment.pluginsFile().toFile());
+            addPlugins(environment);
             return new StandAloneNode(environment, plugins).start().client();
         } catch (final NodeValidationException e) {
             LOGGER.error("Error occurs while initializing elastic search node at {}:{} - {}", host, port, e);
@@ -111,10 +111,10 @@ public class EsClientBuilderImpl implements EsClientBuilder {
         }
     }
 
-    private void addPlugins(final File pluginsFile) {
+    private void addPlugins(final Environment environment) {
         getPluginsPath().ifPresent(it -> {
             try {
-                FileUtils.copyDirectory(new File(it.getFile()), pluginsFile);
+                FileUtils.copyDirectory(new File(it.getFile()), environment.pluginsFile().toFile());
             } catch (IOException e) {
                 LOGGER.error("Error occurred while copying plugins to node. {}", e);
                 throw new EsCoreRuntimeException("Error occurred while copying plugins to node", e);
