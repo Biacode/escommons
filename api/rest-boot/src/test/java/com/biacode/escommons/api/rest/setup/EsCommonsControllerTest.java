@@ -17,6 +17,7 @@ import org.junit.runner.RunWith;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -49,6 +50,8 @@ public class EsCommonsControllerTest extends EasyMockSupport {
     @Test
     public void testPrepareIndex1() {
         // test data
+        final HashMap<String, Object> settings=new HashMap<>();
+
         resetAll();
         // expectations
         replayAll();
@@ -59,12 +62,12 @@ public class EsCommonsControllerTest extends EasyMockSupport {
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            esCommonsController.prepareIndex(new PrepareIndexRequest(null, Collections.singletonList(UUID.randomUUID().toString())));
+            esCommonsController.prepareIndex(new PrepareIndexRequest(null, Collections.singletonList(UUID.randomUUID().toString()),settings));
             fail();
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            esCommonsController.prepareIndex(new PrepareIndexRequest(UUID.randomUUID().toString(), null));
+            esCommonsController.prepareIndex(new PrepareIndexRequest(UUID.randomUUID().toString(), null,settings));
             fail();
         } catch (final IllegalArgumentException ignore) {
         }
@@ -74,11 +77,12 @@ public class EsCommonsControllerTest extends EasyMockSupport {
     @Test
     public void testPrepareIndex2() {
         // test data
+        final HashMap<String, Object> settings=new HashMap<>();
         resetAll();
         // expectations
         final String newIndexName = UUID.randomUUID().toString();
-        final PrepareIndexRequest request = new PrepareIndexRequest(UUID.randomUUID().toString(), Collections.singletonList(UUID.randomUUID().toString()));
-        expect(indexingComponent.createIndexAndSetupMappings(request.getAlias(), request.getTypes())).andReturn(newIndexName);
+        final PrepareIndexRequest request = new PrepareIndexRequest(UUID.randomUUID().toString(), Collections.singletonList(UUID.randomUUID().toString()),settings);
+        expect(indexingComponent.createIndexAndSetupMappings(request.getAlias(), request.getTypes(),settings)).andReturn(newIndexName);
         replayAll();
         // test scenario
         final ResponseEntity<EsCommonsResultResponse<PrepareIndexResponse>> result = esCommonsController.prepareIndex(request);

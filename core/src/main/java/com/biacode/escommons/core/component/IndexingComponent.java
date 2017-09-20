@@ -1,6 +1,7 @@
 package com.biacode.escommons.core.component;
 
 import javax.annotation.Nonnull;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -17,10 +18,11 @@ public interface IndexingComponent {
      *
      * @param originalIndex the original index
      * @param types         the types
+     * @param settings      settings for index
      * @return new generated index name
      */
     @Nonnull
-    String createIndexAndSetupMappings(@Nonnull final String originalIndex, @Nonnull final List<String> types);
+    String createIndexAndSetupMappings(@Nonnull final String originalIndex, @Nonnull final List<String> types, final HashMap<String, Object> settings);
 
     /**
      * Creates alias with originalIndex's name which points to newIndex
