@@ -47,7 +47,7 @@ public class IndexingComponentImplTest extends AbstractCoreUnitTest {
     @Test
     public void testCreateIndexAndSetupMappingsWithInvalidArguments() {
         // Test data
-        final HashMap<String, Object> settings = new HashMap<>();
+        final Map<String, Object> settings = new HashMap<>();
         // Reset
         resetAll();
         // Expectations
@@ -103,7 +103,7 @@ public class IndexingComponentImplTest extends AbstractCoreUnitTest {
         final String type = UUID.randomUUID().toString();
         final List<String> types = new ArrayList<>();
         final String mappings = "Some dummy mappings";
-        final HashMap<String, Object> settings = new HashMap<>();
+        final Map<String, Object> settings = new HashMap<>();
         types.add(type);
         // Reset
         resetAll();

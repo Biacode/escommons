@@ -46,7 +46,7 @@ public class EsCommonsController {
     @RequestMapping(path = "prepare-index", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON)
     public ResponseEntity<EsCommonsResultResponse<PrepareIndexResponse>> prepareIndex(@RequestBody final PrepareIndexRequest request) {
         assertPrepareIndexRequest(request);
-        final String newIndexName = indexingComponent.createIndexAndSetupMappings(request.getAlias(), request.getTypes(),request.getSettings());
+        final String newIndexName = indexingComponent.createIndexAndSetupMappings(request.getAlias(), request.getTypes(), request.getSettings());
         return ResponseEntity.ok(new EsCommonsResultResponse<>(new PrepareIndexResponse(newIndexName)));
     }
 

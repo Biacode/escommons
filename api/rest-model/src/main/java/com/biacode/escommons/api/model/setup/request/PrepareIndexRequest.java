@@ -26,7 +26,7 @@ public class PrepareIndexRequest implements EsCommonsRequest {
     private List<String> types;
 
     @JsonProperty("settings")
-    private HashMap<String, Object> settings;
+    private Map<String, Object> settings;
     //endregion
 
     //region Constructors
@@ -34,7 +34,7 @@ public class PrepareIndexRequest implements EsCommonsRequest {
         settings = new HashMap<>();
     }
 
-    public PrepareIndexRequest(final String alias, final List<String> types, final HashMap<String, Object> settings) {
+    public PrepareIndexRequest(final String alias, final List<String> types, final Map<String, Object> settings) {
         this.alias = alias;
         this.types = types;
         this.settings = settings;
@@ -94,11 +94,11 @@ public class PrepareIndexRequest implements EsCommonsRequest {
         this.types = types;
     }
 
-    public HashMap<String, Object> getSettings() {
+    public Map<String, Object> getSettings() {
         return settings;
     }
 
-    public void setSettings(final HashMap<String, Object> settings) {
+    public void setSettings(final Map<String, Object> settings) {
         this.settings = settings;
     }
     //endregion
