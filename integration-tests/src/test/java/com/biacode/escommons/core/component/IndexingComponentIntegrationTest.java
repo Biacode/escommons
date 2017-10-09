@@ -44,7 +44,7 @@ public class IndexingComponentIntegrationTest extends AbstractIntegrationTest {
     public void testCreateIndexAndSetupMappings() {
         // given
         // when
-        final String newIndexWithPreparedMappings = indexingComponent.createIndexAndSetupMappings(ALIAS_NAME, TYPES);
+        final String newIndexWithPreparedMappings = indexingComponent.createIndexAndSetupMappings(ALIAS_NAME, TYPES, null);
         // then
         assertNotNull(newIndexWithPreparedMappings);
         assertTrue(elasticsearchClientWrapper.indexExists(newIndexWithPreparedMappings));
@@ -55,7 +55,7 @@ public class IndexingComponentIntegrationTest extends AbstractIntegrationTest {
         // given
         final String aliasName = UUID.randomUUID().toString();
         // when
-        final String newIndexWithPreparedMappings = indexingComponent.createIndexAndSetupMappings(ALIAS_NAME, TYPES);
+        final String newIndexWithPreparedMappings = indexingComponent.createIndexAndSetupMappings(ALIAS_NAME, TYPES, null);
         indexingComponent.createAliasAndDeleteOldIndices(aliasName, newIndexWithPreparedMappings);
         // then
         refreshIndex(newIndexWithPreparedMappings);

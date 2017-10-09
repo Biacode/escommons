@@ -6,7 +6,9 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Arthur Asatryan.
@@ -22,15 +24,20 @@ public class PrepareIndexRequest implements EsCommonsRequest {
 
     @JsonProperty("types")
     private List<String> types;
+
+    @JsonProperty("settings")
+    private Map<String, Object> settings;
     //endregion
 
     //region Constructors
     public PrepareIndexRequest() {
+        settings = new HashMap<>();
     }
 
-    public PrepareIndexRequest(final String alias, final List<String> types) {
+    public PrepareIndexRequest(final String alias, final List<String> types, final Map<String, Object> settings) {
         this.alias = alias;
         this.types = types;
+        this.settings = settings;
     }
     //endregion
 
@@ -47,6 +54,7 @@ public class PrepareIndexRequest implements EsCommonsRequest {
         return new EqualsBuilder()
                 .append(alias, that.alias)
                 .append(types, that.types)
+                .append(settings, that.settings)
                 .isEquals();
     }
 
@@ -55,6 +63,7 @@ public class PrepareIndexRequest implements EsCommonsRequest {
         return new HashCodeBuilder()
                 .append(alias)
                 .append(types)
+                .append(settings)
                 .toHashCode();
     }
 
@@ -63,6 +72,7 @@ public class PrepareIndexRequest implements EsCommonsRequest {
         return new ToStringBuilder(this)
                 .append("alias", alias)
                 .append("types", types)
+                .append("settings", settings)
                 .toString();
     }
     //endregion
@@ -82,6 +92,14 @@ public class PrepareIndexRequest implements EsCommonsRequest {
 
     public void setTypes(final List<String> types) {
         this.types = types;
+    }
+
+    public Map<String, Object> getSettings() {
+        return settings;
+    }
+
+    public void setSettings(final Map<String, Object> settings) {
+        this.settings = settings;
     }
     //endregion
 }
