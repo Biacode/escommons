@@ -47,7 +47,7 @@ public class EsCommonsResource {
     @Path("prepare-index")
     public Response prepareIndex(final PrepareIndexRequest request) {
         assertPrepareIndexRequest(request);
-        final String newIndexName = indexingComponent.createIndexAndSetupMappings(request.getAlias(), request.getTypes());
+        final String newIndexName = indexingComponent.createIndexAndSetupMappings(request.getAlias(), request.getTypes(), request.getSettings());
         return Response.ok(new EsCommonsResultResponse<>(new PrepareIndexResponse(newIndexName))).build();
     }
 

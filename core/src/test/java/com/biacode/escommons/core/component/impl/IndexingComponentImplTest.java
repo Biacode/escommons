@@ -47,6 +47,7 @@ public class IndexingComponentImplTest extends AbstractCoreUnitTest {
     @Test
     public void testCreateIndexAndSetupMappingsWithInvalidArguments() {
         // Test data
+        final Map<String, Object> settings = new HashMap<>();
         // Reset
         resetAll();
         // Expectations
@@ -54,13 +55,13 @@ public class IndexingComponentImplTest extends AbstractCoreUnitTest {
         replayAll();
         // Run test scenario
         try {
-            indexingComponent.createIndexAndSetupMappings(null, Collections.singletonList(UUID.randomUUID().toString()));
+            indexingComponent.createIndexAndSetupMappings(null, Collections.singletonList(UUID.randomUUID().toString()), settings);
             fail("Exception should be thrown");
         } catch (final IllegalArgumentException ex) {
             // Expected
         }
         try {
-            indexingComponent.createIndexAndSetupMappings(UUID.randomUUID().toString(), null);
+            indexingComponent.createIndexAndSetupMappings(UUID.randomUUID().toString(), null, settings);
             fail("Exception should be thrown");
         } catch (final IllegalArgumentException ex) {
             // Expected
@@ -70,7 +71,7 @@ public class IndexingComponentImplTest extends AbstractCoreUnitTest {
     }
 
     @Test
-    public void testCreateIndexAndSetupMappings() {
+    public void testCreateIndexAndSetupMappingsWithoutSettings() {
         // Test data
         final String newIndexName = UUID.randomUUID().toString();
         final String originalIndex = UUID.randomUUID().toString();
@@ -89,7 +90,33 @@ public class IndexingComponentImplTest extends AbstractCoreUnitTest {
         // Replay
         replayAll();
         // Run test scenario
-        indexingComponent.createIndexAndSetupMappings(originalIndex, types);
+        indexingComponent.createIndexAndSetupMappings(originalIndex, types, null);
+        // Verify
+        verifyAll();
+    }
+
+    @Test
+    public void testCreateIndexAndSetupMappingsWithSettings() {
+        // Test data
+        final String newIndexName = UUID.randomUUID().toString();
+        final String originalIndex = UUID.randomUUID().toString();
+        final String type = UUID.randomUUID().toString();
+        final List<String> types = new ArrayList<>();
+        final String mappings = "Some dummy mappings";
+        final Map<String, Object> settings = new HashMap<>();
+        types.add(type);
+        // Reset
+        resetAll();
+        // Expectations
+        expect(indexNameGenerationComponent.generateNameForGivenIndex(originalIndex)).andReturn(newIndexName);
+        expect(elasticsearchClientWrapper.createIndex(newIndexName, settings)).andReturn(true);
+        expect(mappingsComponent.readMappings(originalIndex, type)).andReturn(mappings);
+        expect(elasticsearchClientWrapper.putMapping(newIndexName, type, mappings)).andReturn(true);
+        elasticsearchClientWrapper.refreshIndex(newIndexName);
+        // Replay
+        replayAll();
+        // Run test scenario
+        indexingComponent.createIndexAndSetupMappings(originalIndex, types, settings);
         // Verify
         verifyAll();
     }
