@@ -115,7 +115,7 @@ public class EsClientBuilderImpl implements EsClientBuilder {
         getPluginsPath().ifPresent(it -> {
             try {
                 FileUtils.copyDirectory(new File(it.getFile()), environment.pluginsFile().toFile());
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 LOGGER.error("Error occurred while copying plugins to node. {}", e);
                 throw new EsCoreRuntimeException("Error occurred while copying plugins to node", e);
             }
