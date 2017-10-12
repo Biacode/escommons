@@ -92,12 +92,16 @@ public abstract class AbstractEsRepository<T extends AbstractEsDocument> impleme
     @Nonnull
     @Override
     public String delete(@Nonnull final String id, @Nonnull final String indexName) {
+        assertDocumentIdNotNull(id);
+        assertIndexNameNotNull(indexName);
         return esClient.prepareDelete(indexName, getDocumentType(), id).get().getId();
     }
 
     @Nonnull
     @Override
     public List<String> delete(@Nonnull final List<String> ids, @Nonnull final String indexName) {
+        Assert.notNull(ids, "The list of document ids should not be null");
+        assertIndexNameNotNull(indexName);
         final BulkRequestBuilder bulkBuilder = esClient.prepareBulk();
         ids.forEach(uuid -> bulkBuilder.add(esClient.prepareDelete(indexName, getDocumentType(), uuid)));
         bulkBuilder.get();
@@ -107,6 +111,7 @@ public abstract class AbstractEsRepository<T extends AbstractEsDocument> impleme
     @Nonnull
     @Override
     public Optional<T> findById(@Nonnull final String id, @Nonnull final String indexName) {
+        assertDocumentIdNotNull(id);
         assertIndexNameNotNull(indexName);
         final GetResponse response = esClient.prepareGet(indexName, getDocumentType(), id).get();
         if (!response.isExists()) {
@@ -180,6 +185,10 @@ public abstract class AbstractEsRepository<T extends AbstractEsDocument> impleme
     //region Utility methods
     private void assertIndexNameNotNull(final String indexName) {
         Assert.notNull(indexName, "The index name should not be null");
+    }
+
+    private void assertDocumentIdNotNull(final String id) {
+        Assert.notNull(id, "The document id should not be null");
     }
     //endregion
 }
