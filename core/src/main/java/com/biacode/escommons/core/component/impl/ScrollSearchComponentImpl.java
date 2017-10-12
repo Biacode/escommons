@@ -11,6 +11,7 @@ import org.elasticsearch.common.unit.TimeValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
@@ -29,10 +30,13 @@ public class ScrollSearchComponentImpl implements ScrollSearchComponent {
     private static final Logger LOGGER = LoggerFactory.getLogger(ScrollSearchComponentImpl.class);
 
     //region Constants
-    private static final int SCROLL_CHUNK_SIZE = 100;
-    //endregions
+    private static final int DEFAULT_SCROLL_CHUNK_SIZE = 100;
+    //endregion
 
     //region Dependencies
+    @Value("${escommons.scroll.chunk.size}")
+    private Integer scrollChunkSize;
+
     @Autowired
     private Client esClient;
 
@@ -51,17 +55,17 @@ public class ScrollSearchComponentImpl implements ScrollSearchComponent {
     @Override
     public <T extends AbstractEsDocument> DocumentsAndTotalCount<T> getScrollResponse(@Nonnull final SearchRequestBuilder searchRequestBuilder,
                                                                                       @Nonnull final Class<T> clazz,
-                                                                                      final long keepAlive) {
+                                                                                      final long timeoutMillis) {
         Assert.notNull(searchRequestBuilder, "The search request builder should not be null");
         Assert.notNull(clazz, "The document clazz should not be null");
-        Assert.isTrue(keepAlive > 0, "The keep alive should be greater than 0");
+        Assert.isTrue(timeoutMillis > 0, "The timeout millis should be greater than 0");
         final List<T> documents = new ArrayList<>();
         SearchResponse searchResponse = searchRequestBuilder
-                .setScroll(new TimeValue(keepAlive))
-                .setSize(SCROLL_CHUNK_SIZE).execute().actionGet();
+                .setScroll(new TimeValue(timeoutMillis))
+                .setSize(scrollChunkSize == null ? DEFAULT_SCROLL_CHUNK_SIZE : scrollChunkSize).execute().actionGet();
         while (true) {
             documents.addAll(searchResponseComponent.convertSearchResponseToDocuments(searchResponse, clazz));
-            searchResponse = esClient.prepareSearchScroll(searchResponse.getScrollId()).setScroll(new TimeValue(keepAlive)).execute().actionGet();
+            searchResponse = esClient.prepareSearchScroll(searchResponse.getScrollId()).setScroll(new TimeValue(timeoutMillis)).execute().actionGet();
             if (searchResponse.getHits().getHits().length == 0) {
                 break;
             }
