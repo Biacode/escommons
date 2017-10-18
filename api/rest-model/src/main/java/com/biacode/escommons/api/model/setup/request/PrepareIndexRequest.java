@@ -34,6 +34,11 @@ public class PrepareIndexRequest implements EsCommonsRequest {
         settings = new HashMap<>();
     }
 
+    public PrepareIndexRequest(final String alias, final List<String> types) {
+        this.alias = alias;
+        this.types = types;
+    }
+
     public PrepareIndexRequest(final String alias, final List<String> types, final Map<String, Object> settings) {
         this.alias = alias;
         this.types = types;
