@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 import java.util.*;
 
 import static com.biacode.escommons.core.model.document.DocumentConstants.DATE_FORMAT;
+import static com.biacode.escommons.core.model.document.DocumentConstants.DATE_TIME_FORMAT;
 import static com.biacode.escommons.core.model.document.DocumentConstants.FETCH_MAX_SIZE;
 import static java.util.stream.Collectors.toMap;
 import static org.elasticsearch.index.query.QueryBuilders.*;
@@ -173,6 +174,12 @@ public abstract class AbstractEsRepository<T extends AbstractEsDocument> impleme
     protected String dateValue(@Nonnull final Object date) {
         Assert.notNull(date, "The date value should not be null");
         return date instanceof Date ? DATE_FORMAT.format(date) : date.toString();
+    }
+
+    @Nonnull
+    protected String dateTimeValue(@Nonnull final Object date) {
+        Assert.notNull(date, "The date value should not be null");
+        return date instanceof Date ? DATE_TIME_FORMAT.format(date) : date.toString();
     }
 
     @Nonnull
