@@ -53,7 +53,7 @@ public class EsCommonsController {
     @RequestMapping(path = "change-alias", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON)
     public ResponseEntity<EsCommonsResultResponse<ChangeIndexAliasResponse>> changeAlias(@RequestBody final ChangeIndexAliasRequest request) {
         assertChangeIndexAliasRequest(request);
-        indexingComponent.createAliasAndDeleteOldIndices(request.getAlias(), request.getIndexName());
+        indexingComponent.addAlias(request.getAlias(), request.getIndexName());
         return ResponseEntity.ok(new EsCommonsResultResponse<>());
     }
 

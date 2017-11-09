@@ -56,7 +56,7 @@ public class EsCommonsResource {
     @JacksonFeatures(serializationDisable = {SerializationFeature.FAIL_ON_EMPTY_BEANS})
     public Response changeAlias(final ChangeIndexAliasRequest request) {
         assertChangeIndexAliasRequest(request);
-        indexingComponent.createAliasAndDeleteOldIndices(request.getAlias(), request.getIndexName());
+        indexingComponent.addAlias(request.getAlias(), request.getIndexName());
         return Response.ok(new EsCommonsResultResponse<>()).build();
     }
 

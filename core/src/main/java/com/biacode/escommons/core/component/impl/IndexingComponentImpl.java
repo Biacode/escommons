@@ -4,7 +4,6 @@ import com.biacode.escommons.core.component.ElasticsearchClientWrapper;
 import com.biacode.escommons.core.component.IndexNameGenerationComponent;
 import com.biacode.escommons.core.component.IndexingComponent;
 import com.biacode.escommons.core.component.MappingsComponent;
-import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -61,16 +59,10 @@ public class IndexingComponentImpl implements IndexingComponent {
     }
 
     @Override
-    public void createAliasAndDeleteOldIndices(@Nonnull final String originalIndex, @Nonnull final String newIndex) {
+    public void addAlias(@Nonnull final String originalIndex, @Nonnull final String newIndex) {
         assertOriginalIndexNotNull(originalIndex);
         assertNewIndexNotNull(newIndex);
         elasticsearchClientWrapper.addAlias(newIndex, originalIndex);
-        elasticsearchClientWrapper.getClusterIndices()
-                .stream()
-                .filter(indexName -> ObjectUtils.notEqual(indexName, newIndex))
-                .filter(indexName -> ObjectUtils.notEqual(indexName, originalIndex))
-                .filter(indexName -> indexName.startsWith(originalIndex))
-                .forEach(elasticsearchClientWrapper::deleteIndex);
     }
 
     @Override

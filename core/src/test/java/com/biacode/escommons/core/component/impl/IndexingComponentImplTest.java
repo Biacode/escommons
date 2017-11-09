@@ -7,7 +7,6 @@ import com.biacode.escommons.core.component.MappingsComponent;
 import com.biacode.escommons.core.test.AbstractCoreUnitTest;
 import org.easymock.Mock;
 import org.easymock.TestSubject;
-import org.elasticsearch.common.util.set.Sets;
 import org.junit.Test;
 
 import java.util.*;
@@ -122,9 +121,9 @@ public class IndexingComponentImplTest extends AbstractCoreUnitTest {
     }
     //endregion
 
-    //region createAliasAndDeleteOldIndices
+    //region addAlias
     @Test
-    public void testCreateAliasAndDeleteOldIndicesWithInvalidArguments() {
+    public void testAddAliasWithInvalidArguments() {
         // Test data
         // Reset
         resetAll();
@@ -133,13 +132,13 @@ public class IndexingComponentImplTest extends AbstractCoreUnitTest {
         replayAll();
         // Run test scenario
         try {
-            indexingComponent.createAliasAndDeleteOldIndices(null, UUID.randomUUID().toString());
+            indexingComponent.addAlias(null, UUID.randomUUID().toString());
             fail("Exception should be thrown");
         } catch (final IllegalArgumentException ex) {
             // Expected
         }
         try {
-            indexingComponent.createAliasAndDeleteOldIndices(UUID.randomUUID().toString(), null);
+            indexingComponent.addAlias(UUID.randomUUID().toString(), null);
             fail("Exception should be thrown");
         } catch (final IllegalArgumentException ex) {
             // Expected
@@ -149,30 +148,18 @@ public class IndexingComponentImplTest extends AbstractCoreUnitTest {
     }
 
     @Test
-    public void testCreateAliasAndDeleteOldIndices() {
+    public void testAddAlias() {
         // Test data
         final String newIndex = "biacode_" + UUID.randomUUID().toString();
         final String originalIndex = "biacode";
-        final String oldIndex1 = "biacode_" + UUID.randomUUID().toString();
-        final String oldIndex2 = "biacode_" + UUID.randomUUID().toString();
-        final Set<String> clusterIndices = Sets.newHashSet(
-                oldIndex1,
-                oldIndex2,
-                originalIndex,
-                newIndex,
-                "ankapIndex1"
-        );
         // Reset
         resetAll();
         // Expectations
         expect(elasticsearchClientWrapper.addAlias(newIndex, originalIndex)).andReturn(true);
-        expect(elasticsearchClientWrapper.getClusterIndices()).andReturn(clusterIndices);
-        expect(elasticsearchClientWrapper.deleteIndex(oldIndex1)).andReturn(true);
-        expect(elasticsearchClientWrapper.deleteIndex(oldIndex2)).andReturn(true);
         // Replay
         replayAll();
         // Run test scenario
-        indexingComponent.createAliasAndDeleteOldIndices(originalIndex, newIndex);
+        indexingComponent.addAlias(originalIndex, newIndex);
         // Verify
         verifyAll();
     }

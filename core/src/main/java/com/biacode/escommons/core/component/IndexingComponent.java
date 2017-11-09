@@ -33,8 +33,7 @@ public interface IndexingComponent {
      * @param originalIndex the original index
      * @param newIndex      the new index
      */
-    @Nonnull
-    void createAliasAndDeleteOldIndices(@Nonnull final String originalIndex, @Nonnull final String newIndex);
+    void addAlias(@Nonnull final String originalIndex, @Nonnull final String newIndex);
 
     /**
      * remove unfinished index if re-indexation failed

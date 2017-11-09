@@ -56,7 +56,7 @@ public class IndexingComponentIntegrationTest extends AbstractIntegrationTest {
         final String aliasName = UUID.randomUUID().toString();
         // when
         final String newIndexWithPreparedMappings = indexingComponent.createIndexAndSetupMappings(ALIAS_NAME, TYPES, null);
-        indexingComponent.createAliasAndDeleteOldIndices(aliasName, newIndexWithPreparedMappings);
+        indexingComponent.addAlias(aliasName, newIndexWithPreparedMappings);
         // then
         refreshIndex(newIndexWithPreparedMappings);
     }

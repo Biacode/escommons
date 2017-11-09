@@ -131,7 +131,7 @@ public class EsCommonsControllerTest extends EasyMockSupport {
         resetAll();
         final ChangeIndexAliasRequest request = new ChangeIndexAliasRequest(UUID.randomUUID().toString(), UUID.randomUUID().toString());
         // expectations
-        indexingComponent.createAliasAndDeleteOldIndices(request.getAlias(), request.getIndexName());
+        indexingComponent.addAlias(request.getAlias(), request.getIndexName());
         replayAll();
         // test scenario
         final ResponseEntity<EsCommonsResultResponse<ChangeIndexAliasResponse>> result = esCommonsController.changeAlias(request);
