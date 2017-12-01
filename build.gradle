@@ -29,8 +29,10 @@ allprojects {
     apply plugin: 'java'
     apply plugin: 'signing'
 
-    signing {
-        sign configurations.archives
+    if (System.env['DEPLOY_TO_NEXUS'] != null) {
+        signing {
+            sign configurations.archives
+        }
     }
 
     group = 'org.biacode.escommons'
