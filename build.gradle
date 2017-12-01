@@ -27,11 +27,29 @@ buildscript {
 allprojects {
 
     apply plugin: 'java'
-    apply plugin: 'maven'
+    apply plugin: 'signing'
 
-    group = 'com.biacode.escommons'
-    version = '0.2.0-SNAPSHOT'
+    signing {
+        sign configurations.archives
+    }
+
+    group = 'org.biacode.escommons'
+    version = '1.0.0'
     sourceCompatibility = 1.8
+
+    task javadocJar(type: Jar) {
+        classifier = 'javadoc'
+        from javadoc
+    }
+
+    task sourcesJar(type: Jar) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+
+    artifacts {
+        archives javadocJar, sourcesJar
+    }
 
     repositories {
         mavenLocal()
@@ -73,6 +91,54 @@ sonarqube {
 }
 
 project(':api:rest-rs') {
+
+    apply plugin: 'maven'
+
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2") {
+                    authentication(userName: System.getenv('NEXUS_USERNAME'), password: System.getenv('NEXUS_PASSWORD'))
+                }
+
+                snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots") {
+                    authentication(userName: System.getenv('NEXUS_USERNAME'), password: System.getenv('NEXUS_PASSWORD'))
+                }
+
+                pom.project {
+                    name 'EsCommons'
+                    packaging 'jar'
+                    // optionally artifactId can be defined here
+                    description 'Elasticsearch commons library.'
+                    url 'https://github.com/Biacode/escommons'
+
+                    scm {
+                        connection 'scm:git:git@github.com:Biacode/escommons.git'
+                        developerConnection 'scm:git:ssh://github.com:Biacode/escommons.git'
+                        url 'https://github.com/Biacode/escommons/tree/master'
+                    }
+
+                    licenses {
+                        license {
+                            name 'MIT License'
+                            url 'https://opensource.org/licenses/MIT'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id 'biacode'
+                            name 'Artur Asatryan'
+                            email 'biacoder@gmail.com'
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     dependencies {
         compile project(':core')
         compile project(':api:rest-model')
@@ -83,6 +149,54 @@ project(':api:rest-rs') {
 }
 
 project(':api:rest-boot') {
+
+    apply plugin: 'maven'
+
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2") {
+                    authentication(userName: "${System.getenv('NEXUS_USERNAME')}", password: "${System.getenv('NEXUS_PASSWORD')}")
+                }
+
+                snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots") {
+                    authentication(userName: "${System.getenv('NEXUS_USERNAME')}", password: "${System.getenv('NEXUS_PASSWORD')}")
+                }
+
+                pom.project {
+                    name 'EsCommons'
+                    packaging 'jar'
+                    // optionally artifactId can be defined here
+                    description 'Elasticsearch commons library.'
+                    url 'https://github.com/Biacode/escommons'
+
+                    scm {
+                        connection 'scm:git:git@github.com:Biacode/escommons.git'
+                        developerConnection 'scm:git:ssh://github.com:Biacode/escommons.git'
+                        url 'https://github.com/Biacode/escommons/tree/master'
+                    }
+
+                    licenses {
+                        license {
+                            name 'MIT License'
+                            url 'https://opensource.org/licenses/MIT'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id 'biacode'
+                            name 'Artur Asatryan'
+                            email 'biacoder@gmail.com'
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     dependencies {
         compile project(':core')
         compile project(':api:rest-model')
@@ -92,6 +206,54 @@ project(':api:rest-boot') {
 }
 
 project(':api:rest-client') {
+
+    apply plugin: 'maven'
+
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2") {
+                    authentication(userName: "${System.getenv('NEXUS_USERNAME')}", password: "${System.getenv('NEXUS_PASSWORD')}")
+                }
+
+                snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots") {
+                    authentication(userName: "${System.getenv('NEXUS_USERNAME')}", password: "${System.getenv('NEXUS_PASSWORD')}")
+                }
+
+                pom.project {
+                    name 'EsCommons'
+                    packaging 'jar'
+                    // optionally artifactId can be defined here
+                    description 'Elasticsearch commons library.'
+                    url 'https://github.com/Biacode/escommons'
+
+                    scm {
+                        connection 'scm:git:git@github.com:Biacode/escommons.git'
+                        developerConnection 'scm:git:ssh://github.com:Biacode/escommons.git'
+                        url 'https://github.com/Biacode/escommons/tree/master'
+                    }
+
+                    licenses {
+                        license {
+                            name 'MIT License'
+                            url 'https://opensource.org/licenses/MIT'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id 'biacode'
+                            name 'Artur Asatryan'
+                            email 'biacoder@gmail.com'
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     dependencies {
         compile project(':api:rest-model')
         compile "javax.ws.rs:javax.ws.rs-api:$javaxRsApiVersion"
@@ -99,6 +261,56 @@ project(':api:rest-client') {
 }
 
 project(':core') {
+
+    apply plugin: 'maven'
+
+//    archivesBaseName = "custom-name"
+
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2") {
+                    authentication(userName: "${System.getenv('NEXUS_USERNAME')}", password: "${System.getenv('NEXUS_PASSWORD')}")
+                }
+
+                snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots") {
+                    authentication(userName: "${System.getenv('NEXUS_USERNAME')}", password: "${System.getenv('NEXUS_PASSWORD')}")
+                }
+
+                pom.project {
+                    name 'EsCommons'
+                    packaging 'jar'
+                    // optionally artifactId can be defined here
+                    description 'Elasticsearch commons library.'
+                    url 'https://github.com/Biacode/escommons'
+
+                    scm {
+                        connection 'scm:git:git@github.com:Biacode/escommons.git'
+                        developerConnection 'scm:git:ssh://github.com:Biacode/escommons.git'
+                        url 'https://github.com/Biacode/escommons/tree/master'
+                    }
+
+                    licenses {
+                        license {
+                            name 'MIT License'
+                            url 'https://opensource.org/licenses/MIT'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id 'biacode'
+                            name 'Artur Asatryan'
+                            email 'biacoder@gmail.com'
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     dependencies {
         compile "org.elasticsearch:elasticsearch:${elasticSearchVersion}"
         compile "org.elasticsearch.client:transport:${elasticSearchVersion}"
