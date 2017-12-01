@@ -4,9 +4,9 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:component-scan base-package="com.biacode.escommons.core.*"/>
+    <context:component-scan base-package="org.biacode.escommons.core.*"/>
 
-    <bean id="esClientBuilder" class="com.biacode.escommons.core.client.impl.EsClientBuilderImpl">
+    <bean id="esClientBuilder" class="org.biacode.escommons.core.client.impl.EsClientBuilderImpl">
         <property name="plugins">
             <set>
                 <value>org.elasticsearch.transport.Netty4Plugin</value>
