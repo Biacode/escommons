@@ -36,7 +36,7 @@ allprojects {
     }
 
     group = 'org.biacode.escommons'
-    version = '1.0.0-SNAPSHOT'
+    version = '1.0.0'
     sourceCompatibility = 1.8
 
     task javadocJar(type: Jar) {
