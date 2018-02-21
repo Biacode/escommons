@@ -1,6 +1,7 @@
 package org.biacode.escommons.core.component;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +23,7 @@ public interface IndexingComponent {
      * @return new generated index name
      */
     @Nonnull
-    String createIndexAndSetupMappings(@Nonnull final String originalIndex, @Nonnull final List<String> types, final Map<String, Object> settings);
+    String createIndexAndSetupMappings(@Nonnull final String originalIndex, @Nonnull final List<String> types, @Nullable final Map<String, Object> settings);
 
     /**
      * Creates alias with originalIndex's name which points to newIndex

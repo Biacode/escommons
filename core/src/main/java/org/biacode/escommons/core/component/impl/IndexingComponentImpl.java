@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 
@@ -44,7 +45,9 @@ public class IndexingComponentImpl implements IndexingComponent {
     //region Public methods
     @Nonnull
     @Override
-    public String createIndexAndSetupMappings(@Nonnull final String originalIndex, @Nonnull final List<String> types, final Map<String, Object> settings) {
+    public String createIndexAndSetupMappings(@Nonnull final String originalIndex,
+                                              @Nonnull final List<String> types,
+                                              @Nullable final Map<String, Object> settings) {
         assertOriginalIndexNotNull(originalIndex);
         Assert.notNull(types, "The list of types should not be null");
         final String newIndexName = indexNameGenerationComponent.generateNameForGivenIndex(originalIndex);
