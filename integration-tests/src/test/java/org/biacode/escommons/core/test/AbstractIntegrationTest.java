@@ -10,9 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.Collections;
-import java.util.List;
-
 /**
  * Created by Arthur Asatryan.
  * Date: 7/18/17
@@ -25,9 +22,6 @@ public abstract class AbstractIntegrationTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractIntegrationTest.class);
 
     //region Constants
-    protected static final String ALIAS_NAME = "escommons";
-
-    protected static final List<String> TYPES = Collections.singletonList("person");
     //endregion
 
     //region Dependencies
@@ -52,10 +46,6 @@ public abstract class AbstractIntegrationTest {
     //endregion
 
     //region Protected methods
-    protected void refreshIndex() {
-        elasticsearchClientWrapper.refreshIndex(ALIAS_NAME);
-    }
-
     protected void refreshIndex(final String indexName) {
         elasticsearchClientWrapper.refreshIndex(indexName);
     }
@@ -64,22 +54,10 @@ public abstract class AbstractIntegrationTest {
     //region Utility methods
     private void prepareTestIndexes() {
         cleanUpClusterIndices();
-        createIndexAndDeleteIfExists(ALIAS_NAME);
-        for (final String documentType : TYPES) {
-            elasticsearchClientWrapper.putMapping(ALIAS_NAME, documentType, mappingsComponent.readMappings(ALIAS_NAME, documentType));
-        }
     }
 
     protected void cleanUpClusterIndices() {
-        elasticsearchClientWrapper.getClusterIndices().forEach(elasticsearchClientWrapper::deleteIndex);
-    }
-
-    private void createIndexAndDeleteIfExists(final String indexName) {
-        if (elasticsearchClientWrapper.indexExists(indexName)) {
-            elasticsearchClientWrapper.deleteIndex(indexName);
-        } else {
-            elasticsearchClientWrapper.createIndex(indexName, IntegrationTestHelper.getSettings());
-        }
+        elasticsearchClientWrapper.clusterIndices().forEach(elasticsearchClientWrapper::deleteIndex);
     }
     //endregion
 }

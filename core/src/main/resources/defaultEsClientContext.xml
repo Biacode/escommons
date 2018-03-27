@@ -5,6 +5,6 @@
 
     <import resource="defaultEsClientBuilderContext.xml"/>
 
-    <bean id="esClient" factory-bean="esClientBuilder" factory-method="build"/>
+    <bean id="esClient" factory-bean="esClientBuilder" factory-method="esCommonsRestClient"/>
 
 </beans>

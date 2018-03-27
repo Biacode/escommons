@@ -143,7 +143,7 @@ public abstract class AbstractEsRepository<T extends AbstractEsDocument> impleme
                 .setQuery(boolQuery().must(matchAllQuery()).filter(termsQuery(searchField, terms)))
                 .get();
         return Arrays.stream(searchResponse.getHits().getHits())
-                .collect(toMap(hit -> hit.getSource().get(searchField), hit -> hit.getSource().get(resultField)));
+                .collect(toMap(hit -> hit.getSourceAsMap().get(searchField), hit -> hit.getSourceAsMap().get(resultField)));
     }
     //endregion
 

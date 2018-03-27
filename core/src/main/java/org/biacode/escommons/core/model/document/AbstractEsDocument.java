@@ -5,15 +5,12 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import java.io.Serializable;
-
 /**
  * Created by Arthur Asatryan.
  * Date: 7/10/17
  * Time: 6:11 PM
  */
-public abstract class AbstractEsDocument implements Serializable {
-    private static final long serialVersionUID = 3278502006044953323L;
+public abstract class AbstractEsDocument {
 
     //region Properties
     @JsonProperty("uuid")

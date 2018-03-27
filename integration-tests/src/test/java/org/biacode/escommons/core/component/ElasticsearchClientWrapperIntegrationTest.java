@@ -1,7 +1,6 @@
 package org.biacode.escommons.core.component;
 
 import org.biacode.escommons.core.test.AbstractIntegrationTest;
-import org.elasticsearch.client.Client;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +24,6 @@ public class ElasticsearchClientWrapperIntegrationTest extends AbstractIntegrati
     //region Dependencies
     @Autowired
     private ElasticsearchClientWrapper elasticsearchClientWrapper;
-
-    @Autowired
-    private Client esClient;
     //endregion
 
     //region Constructors
@@ -50,9 +46,8 @@ public class ElasticsearchClientWrapperIntegrationTest extends AbstractIntegrati
         expectedIndices.add("address_" + UUID.randomUUID().toString());
         expectedIndices.add("address_" + UUID.randomUUID().toString());
         expectedIndices.add("address_" + UUID.randomUUID().toString());
-        expectedIndices.forEach(s -> esClient.admin().indices().prepareCreate(s).get());
         // when
-        final Set<String> clusterIndices = elasticsearchClientWrapper.getClusterIndices();
+        final Set<String> clusterIndices = elasticsearchClientWrapper.clusterIndices();
         // then
         assertNotNull(clusterIndices);
         assertTrue(expectedIndices.stream().allMatch(clusterIndices::contains));

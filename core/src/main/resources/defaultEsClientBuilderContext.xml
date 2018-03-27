@@ -6,13 +6,7 @@
 
     <context:component-scan base-package="org.biacode.escommons.core.*"/>
 
-    <bean id="esClientBuilder" class="org.biacode.escommons.core.client.impl.EsClientBuilderImpl">
-        <property name="plugins">
-            <set>
-                <value>org.elasticsearch.transport.Netty4Plugin</value>
-            </set>
-        </property>
-    </bean>
+    <bean id="esClientBuilder" class="org.biacode.escommons.core.client.impl.EsCommonsClientBuilderImpl"/>
 
     <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
         <property name="locations">
@@ -21,9 +15,9 @@
                 <value>classpath:escommons-custom.properties</value>
                 <value>file:${user.home}/escommons.properties</value>
                 <value>file:${user.home}/escommons-custom.properties</value>
-                <value>file:${user.home}/coolmonkey/escommons.properties</value>
-                <value>file:${user.home}/coolmonkey/escommons-custom.properties</value>
-                <value>file:${user.home}/coolmonkey/coolmonkey-commons.properties</value>
+                <value>file:${user.home}/escommons/escommons.properties</value>
+                <value>file:${user.home}/escommons/escommons-custom.properties</value>
+                <value>file:${user.home}/escommons/escommons-commons.properties</value>
                 <value>classpath:escommons-test.properties</value>
             </list>
         </property>
