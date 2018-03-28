@@ -8,6 +8,5 @@
     <import resource="classpath:defaultEsClientBuilderContext.xml"/>
 
     <bean id="esClient" factory-bean="esClientBuilder" factory-method="esCommonsRestClient"/>
-    <context:component-scan base-package="org.biacode.escommons.core.configuration"/>
-    <!--<bean id="embeddedServer" class="org.biacode.escommons.core.configuration.EmbeddedNodeConfiguration"/>-->
+    <context:component-scan base-package="org.biacode.escommons.core.test.configuration"/>
 </beans>

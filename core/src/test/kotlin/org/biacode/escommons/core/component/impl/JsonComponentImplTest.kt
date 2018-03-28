@@ -63,7 +63,6 @@ class JsonComponentImplTest : AbstractCoreUnitTest() {
         assertNotNull(result)
         assertEquals(expected, result)
     }
-
     //endregion
 
     //endregion

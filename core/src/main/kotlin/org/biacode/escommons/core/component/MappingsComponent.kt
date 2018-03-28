@@ -6,12 +6,5 @@ package org.biacode.escommons.core.component
  * Time: 6:11 PM
  */
 interface MappingsComponent {
-    /**
-     * Read mappings for index name and type.
-     *
-     * @param aliasName the index name
-     * @param type      the type
-     * @return the mappings
-     */
-    fun readMappings(aliasName: String, type: String): String
+    fun readMappings(mappingName: String): String
 }

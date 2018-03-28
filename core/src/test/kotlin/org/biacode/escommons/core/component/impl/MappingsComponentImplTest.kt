@@ -1,12 +1,14 @@
 package org.biacode.escommons.core.component.impl
 
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.biacode.escommons.core.component.ResourceReaderComponent
-import org.biacode.escommons.core.exception.EsCoreRuntimeException
+import org.biacode.escommons.core.exception.EsCommonsCoreRuntimeException
 import org.biacode.escommons.core.test.AbstractCoreUnitTest
 import org.easymock.EasyMock.expect
 import org.easymock.Mock
 import org.easymock.TestSubject
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Test
 import java.util.*
 
@@ -22,7 +24,7 @@ class MappingsComponentImplTest : AbstractCoreUnitTest() {
     private val mappingsComponent = MappingsComponentImpl()
 
     @Mock
-    private val resourceReaderComponent: ResourceReaderComponent? = null
+    private lateinit var resourceReaderComponent: ResourceReaderComponent
     //endregion
 
     //region Test methods
@@ -31,18 +33,17 @@ class MappingsComponentImplTest : AbstractCoreUnitTest() {
     @Test
     fun testReadMappings() {
         // Test data
-        val aliasName = UUID.randomUUID().toString()
-        val documentType = UUID.randomUUID().toString()
-        val path = "mappings/$aliasName/$documentType.json"
-        val mappings = "mappings"
+        val mappingName = UUID.randomUUID().toString()
+        val path = "mappings/$mappingName.json"
+        val mappings = UUID.randomUUID().toString()
         // Reset
         resetAll()
         // Expectations
-        expect(resourceReaderComponent!!.asString(path)).andReturn(Optional.of(mappings))
+        expect(resourceReaderComponent.asString(path)).andReturn(Optional.of(mappings))
         // Replay
         replayAll()
         // Run test scenario
-        val result = mappingsComponent.readMappings(aliasName, documentType)
+        val result = mappingsComponent.readMappings(mappingName)
         // Verify
         verifyAll()
         assertNotNull(result)
@@ -52,21 +53,17 @@ class MappingsComponentImplTest : AbstractCoreUnitTest() {
     @Test
     fun testReadMappingsWhenCanNotReadMappings() {
         // Test data
-        val aliasName = UUID.randomUUID().toString()
-        val documentType = UUID.randomUUID().toString()
-        val path = "mappings/$aliasName/$documentType.json"
+        val mappingName = UUID.randomUUID().toString()
+        val path = "mappings/$mappingName.json"
         // Reset
         resetAll()
         // Expectations
-        expect(resourceReaderComponent!!.asString(path)).andReturn(Optional.empty())
+        expect(resourceReaderComponent.asString(path)).andReturn(Optional.empty())
         // Replay
         replayAll()
         // Run test scenario
-        try {
-            mappingsComponent.readMappings(aliasName, documentType)
-            fail()
-        } catch (ignore: EsCoreRuntimeException) {
-        }
+        assertThatThrownBy { mappingsComponent.readMappings(mappingName) }
+                .isExactlyInstanceOf(EsCommonsCoreRuntimeException::class.java)
         // Verify
         verifyAll()
     }

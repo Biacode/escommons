@@ -6,6 +6,11 @@ import org.springframework.stereotype.Component
 import java.nio.charset.Charset
 import java.util.*
 
+/**
+ * Created by Arthur Asatryan.
+ * Date: 7/10/17
+ * Time: 6:11 PM
+ */
 @Component
 class ResourceReaderComponentImpl : ResourceReaderComponent {
 

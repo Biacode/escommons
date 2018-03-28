@@ -6,7 +6,7 @@
 
     <context:component-scan base-package="org.biacode.escommons.core.*"/>
 
-    <bean id="esClientBuilder" class="org.biacode.escommons.core.client.impl.EsCommonsClientBuilderImpl"/>
+    <bean id="esClientBuilder" class="org.biacode.escommons.core.client.EsCommonsRestClientConfiguration"/>
 
     <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
         <property name="locations">

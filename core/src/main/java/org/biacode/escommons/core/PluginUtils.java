@@ -1,7 +1,7 @@
 package org.biacode.escommons.core;
 
 import org.apache.commons.io.FileUtils;
-import org.biacode.escommons.core.exception.EsCoreRuntimeException;
+import org.biacode.escommons.core.exception.EsCommonsCoreRuntimeException;
 import org.elasticsearch.env.Environment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +31,7 @@ public class PluginUtils {
                 FileUtils.copyDirectory(new File(it.getFile()), pluginsFile);
             } catch (final IOException e) {
                 LOGGER.error("Error occurred while trying to load addition plugins {}", e);
-                throw new EsCoreRuntimeException("Error occurred while trying to load addition plugins", e);
+                throw new EsCommonsCoreRuntimeException("Error occurred while trying to load addition plugins", e);
             }
         });
     }
