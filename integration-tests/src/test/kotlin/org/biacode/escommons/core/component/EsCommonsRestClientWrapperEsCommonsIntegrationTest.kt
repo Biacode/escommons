@@ -1,7 +1,7 @@
 package org.biacode.escommons.core.component
 
 import org.assertj.core.api.Assertions.assertThat
-import org.biacode.escommons.core.test.AbstractIntegrationTest
+import org.biacode.escommons.core.test.AbstractEsCommonsIntegrationTest
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.util.*
@@ -11,7 +11,7 @@ import java.util.*
  * Date: 7/23/17
  * Time: 9:10 PM
  */
-class EsCommonsRestClientWrapperIntegrationTest : AbstractIntegrationTest() {
+class EsCommonsRestClientWrapperEsCommonsIntegrationTest : AbstractEsCommonsIntegrationTest() {
 
     //region Dependencies
     @Autowired
@@ -96,7 +96,7 @@ class EsCommonsRestClientWrapperIntegrationTest : AbstractIntegrationTest() {
     //endregion
 
     //region Utility methods
-    fun createDummyIndex(): String {
+    private fun createDummyIndex(): String {
         val indexName = UUID.randomUUID().toString()
         val type = UUID.randomUUID().toString()
         val mappingsName = "person"

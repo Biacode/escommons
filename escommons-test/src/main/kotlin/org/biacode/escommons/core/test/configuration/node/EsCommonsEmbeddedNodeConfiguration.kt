@@ -1,7 +1,6 @@
-package org.biacode.escommons.core.test.configuration
+package org.biacode.escommons.core.test.configuration.node
 
 import org.apache.commons.io.IOUtils
-import org.biacode.escommons.core.test.configuration.node.EsCommonsEmbeddedNode
 import org.elasticsearch.client.Client
 import org.elasticsearch.common.settings.Settings
 import org.elasticsearch.plugins.Plugin

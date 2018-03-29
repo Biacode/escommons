@@ -1,4 +1,4 @@
-package org.biacode.escommons.core.test
+package org.biacode.escommons.core.test.helper
 
 import java.util.*
 

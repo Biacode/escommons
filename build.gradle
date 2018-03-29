@@ -205,37 +205,35 @@ project(':api:rest-model') {
 project(':core') {
     dependencies {
         compile("org.elasticsearch:elasticsearch:${elasticSearchVersion}")
-        compile("org.elasticsearch.plugin:transport-netty4-client:${elasticSearchVersion}")
-        compile("org.elasticsearch.client:transport:${elasticSearchVersion}")
         compile("org.elasticsearch.client:elasticsearch-rest-high-level-client:${elasticSearchVersion}")
-    }
-}
-
-project(':integration-tests') {
-    dependencies {
-        compile project(':escommons-test')
-        compile("org.codelibs.elasticsearch.lib:plugin-classloader:${elasticSearchVersion}")
-        testCompile("org.springframework:spring-test:$springVersion")
-        testCompile("org.slf4j:slf4j-simple:$slfj4Version")
-    }
-}
-
-project(':escommons-test') {
-    dependencies {
-        compile project(':escommons-starter-core')
-        compile("org.codelibs.elasticsearch.lib:plugin-classloader:$elasticSearchVersion")
-        compile("org.springframework:spring-test:$springVersion")
-        testCompile("org.slf4j:slf4j-simple:$slfj4Version")
     }
 }
 
 project(':escommons-starter-core') {
     dependencies {
         compile project(':core')
-        compile("org.codelibs.elasticsearch.lib:plugin-classloader:$elasticSearchVersion")
-        optional("org.springframework.boot:spring-boot-configuration-processor:$springBootVersion")
         compile("org.springframework.boot:spring-boot-starter:$springBootVersion")
-        testCompile("org.springframework:spring-test:$springVersion")
-        testCompile("org.slf4j:slf4j-simple:$slfj4Version")
+        optional("org.springframework.boot:spring-boot-configuration-processor:$springBootVersion")
+        testCompile project(':escommons-test')
+    }
+}
+
+project(':escommons-test') {
+    dependencies {
+        compile project(':core')
+        compile("org.elasticsearch.plugin:transport-netty4-client:${elasticSearchVersion}")
+        compile("org.elasticsearch.client:transport:${elasticSearchVersion}")
+        compile("org.codelibs.elasticsearch.lib:plugin-classloader:$elasticSearchVersion")
+        compile("org.springframework:spring-test:$springVersion")
+        compile("junit:junit:$junitVersion")
+        compile("org.easymock:easymock:$easymockVersion")
+        compile("org.assertj:assertj-core:$assertJVersion")
+        compile("org.slf4j:slf4j-simple:$slfj4Version")
+    }
+}
+
+project(':integration-tests') {
+    dependencies {
+        testCompile project(':escommons-test')
     }
 }

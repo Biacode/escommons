@@ -7,7 +7,6 @@ include ':api:rest-boot'
 
 include 'escommons-test'
 include 'escommons-starter-core'
-include 'escommons-starter-test'
 include 'escommons-starter-web'
 
 include 'integration-tests'

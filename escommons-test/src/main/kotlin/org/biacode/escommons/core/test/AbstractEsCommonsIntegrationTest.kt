@@ -1,10 +1,10 @@
 package org.biacode.escommons.core.test
 
 import org.biacode.escommons.core.component.EsCommonsClientWrapper
+import org.biacode.escommons.core.test.configuration.EsCommonsTestAnnotationDrivenConfiguration
 import org.junit.Before
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Component
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 
@@ -13,10 +13,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
  * Date: 7/18/17
  * Time: 1:16 PM
  */
-@Component
 @RunWith(SpringJUnit4ClassRunner::class)
-@ContextConfiguration("classpath:applicationContext-escommons-core-test.xml")
-abstract class AbstractIntegrationTest {
+@ContextConfiguration(classes = [EsCommonsTestAnnotationDrivenConfiguration::class])
+abstract class AbstractEsCommonsIntegrationTest {
 
     //region Dependencies
     @Autowired
