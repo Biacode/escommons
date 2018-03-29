@@ -10,3 +10,5 @@ include 'escommons-starter-core'
 include 'escommons-starter-web'
 
 include 'integration-tests'
+
+include 'escommons-example'

@@ -30,6 +30,7 @@ buildscript {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
         classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
         classpath("io.spring.gradle:propdeps-plugin:${propDepsPluginVersion}")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
     }
 }
 
@@ -228,12 +229,33 @@ project(':escommons-test') {
         compile("junit:junit:$junitVersion")
         compile("org.easymock:easymock:$easymockVersion")
         compile("org.assertj:assertj-core:$assertJVersion")
-        compile("org.slf4j:slf4j-simple:$slfj4Version")
+        testCompile("org.slf4j:slf4j-simple:$slfj4Version")
     }
 }
 
 project(':integration-tests') {
     dependencies {
         testCompile project(':escommons-test')
+    }
+}
+
+project(':escommons-example') {
+
+    apply plugin: "org.springframework.boot"
+
+    bootRepackage {
+        mainClass = "org.biacode.escommons.example.MainApplication"
+        executable = true
+    }
+
+    dependencies {
+        compile project(':escommons-starter-core')
+        compile("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
+        compile("org.springframework.boot:spring-boot-starter-jersey:$springBootVersion")
+        compile "org.elasticsearch:elasticsearch:${elasticSearchVersion}"
+        compile "org.elasticsearch.client:transport:${elasticSearchVersion}"
+        compile "org.elasticsearch.plugin:transport-netty4-client:${elasticSearchVersion}"
+        compile("org.elasticsearch.client:elasticsearch-rest-high-level-client:${elasticSearchVersion}")
+        compile project(':escommons-test')
     }
 }

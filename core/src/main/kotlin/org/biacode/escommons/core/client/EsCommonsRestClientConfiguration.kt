@@ -16,11 +16,11 @@ import org.springframework.context.annotation.Configuration
 class EsCommonsRestClientConfiguration {
 
     //region Dependencies
-    @Value("\${escommons.host}")
+    @Value("\${escommons.http.host}")
     lateinit var esCommonsHost: String
 
     @Value("\${escommons.http.port}")
-    var esCommonsHttpPort: Int = 0
+    var esCommonsHttpPort: Int? = null
     //endregion
 
     //region Public methods

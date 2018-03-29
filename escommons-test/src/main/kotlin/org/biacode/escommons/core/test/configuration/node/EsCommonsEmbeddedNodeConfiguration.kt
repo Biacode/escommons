@@ -18,25 +18,28 @@ class EsCommonsEmbeddedNodeConfiguration {
 
     //region Dependencies
     @Value("\${escommons.host}")
-    var host: String? = null
+    lateinit var esCommonsHost: String
 
     @Value("\${escommons.port}")
-    var port: Int? = null
+    var esCommonsPort: Int? = null
 
     @Value("\${escommons.cluster.name}")
-    var esCommonsClusterName: String? = null
+    lateinit var esCommonsClusterName: String
 
     @Value("\${escommons.path.home}")
-    var esCommonsPathHome: String? = null
+    lateinit var esCommonsPathHome: String
 
     @Value("\${escommons.path.data}")
-    var esCommonsPathData: String? = null
+    lateinit var esCommonsPathData: String
 
     @Value("\${escommons.path.repo}")
-    var esCommonsPathRepo: String? = null
+    lateinit var esCommonsPathRepo: String
 
     @Value("\${escommons.http.type}")
-    var esCommonsHttpType: String? = null
+    lateinit var esCommonsHttpType: String
+
+    @Value("\${escommons.http.host}")
+    lateinit var esCommonsHttpHost: String
 
     @Value("\${escommons.http.port}")
     var esCommonsHttpPort: Int? = null
@@ -59,7 +62,10 @@ class EsCommonsEmbeddedNodeConfiguration {
                 .put("path.home", esCommonsPathHome)
                 .put("path.data", esCommonsPathData)
                 .put("path.repo", esCommonsPathRepo)
+                .put("network.host", esCommonsHost)
+                .put("transport.tcp.port", esCommonsPort!!)
                 .put("http.type", esCommonsHttpType)
+                .put("http.host", esCommonsHttpHost)
                 .put("http.port", esCommonsHttpPort!!)
                 .put("http.enabled", esCommonsHttpEnabled!!)
                 .put("node.max_local_storage_nodes", esCommonsNodeMaxLocalStorageNodes!!)
