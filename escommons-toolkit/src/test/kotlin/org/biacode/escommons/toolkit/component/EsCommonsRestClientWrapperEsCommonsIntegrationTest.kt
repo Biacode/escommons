@@ -1,8 +1,7 @@
-package org.biacode.escommons.core.component
+package org.biacode.escommons.toolkit.component
 
 import org.assertj.core.api.Assertions.assertThat
 import org.biacode.escommons.core.test.AbstractEsCommonsIntegrationTest
-import org.biacode.escommons.toolkit.component.EsCommonsClientWrapper
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.util.*
@@ -25,7 +24,7 @@ class EsCommonsRestClientWrapperEsCommonsIntegrationTest : AbstractEsCommonsInte
         // given
         val indexName = UUID.randomUUID().toString()
         val type = UUID.randomUUID().toString()
-        val mappingsName = "person"
+        val mappingsName = "escommons_test_person"
         // when
         esCommonsClientWrapper.createIndex(indexName, type, mappingsName).let {
             // then
@@ -38,7 +37,7 @@ class EsCommonsRestClientWrapperEsCommonsIntegrationTest : AbstractEsCommonsInte
         // given
         listOf(UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString())
                 .let { expectedIndices ->
-                    expectedIndices.forEach { esCommonsClientWrapper.createIndex(it, UUID.randomUUID().toString(), "person") }
+                    expectedIndices.forEach { esCommonsClientWrapper.createIndex(it, UUID.randomUUID().toString(), "escommons_test_person") }
                     // when
                     esCommonsClientWrapper.getIndices().let { indices ->
                         // then
@@ -100,7 +99,7 @@ class EsCommonsRestClientWrapperEsCommonsIntegrationTest : AbstractEsCommonsInte
     private fun createDummyIndex(): String {
         val indexName = UUID.randomUUID().toString()
         val type = UUID.randomUUID().toString()
-        val mappingsName = "person"
+        val mappingsName = "escommons_test_person"
         esCommonsClientWrapper.createIndex(indexName, type, mappingsName)
         return indexName
     }
