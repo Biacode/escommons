@@ -1,4 +1,4 @@
-package org.biacode.escommons.persistence.repository.repository;
+package org.biacode.escommons.persistence.repository;
 
 import org.biacode.escommons.core.model.document.AbstractEsDocument;
 import org.biacode.escommons.core.model.response.DocumentsAndTotalCount;

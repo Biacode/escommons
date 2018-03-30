@@ -1,4 +1,4 @@
-package org.biacode.escommons.toolkit.test
+package org.biacode.escommons.core.test
 
 import org.easymock.EasyMockRunner
 import org.easymock.EasyMockSupport
@@ -10,4 +10,4 @@ import org.junit.runner.RunWith
  * Time: 5:07 PM
  */
 @RunWith(EasyMockRunner::class)
-abstract class AbstractCoreUnitTest : EasyMockSupport()
+abstract class AbstractEsCommonsUnitTest : EasyMockSupport()

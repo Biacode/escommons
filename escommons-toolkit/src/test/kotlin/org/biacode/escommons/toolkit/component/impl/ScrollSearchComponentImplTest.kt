@@ -1,7 +1,7 @@
 package org.biacode.escommons.toolkit.component.impl
 
 import org.assertj.core.api.Assertions.assertThatThrownBy
-import org.biacode.escommons.toolkit.test.AbstractCoreUnitTest
+import org.biacode.escommons.core.test.AbstractEsCommonsUnitTest
 import org.easymock.EasyMock
 import org.easymock.EasyMock.expect
 import org.easymock.Mock
@@ -17,7 +17,7 @@ import org.junit.Test
  * Date: 9/5/17
  * Time: 5:07 PM
  */
-class ScrollSearchComponentImplTest : AbstractCoreUnitTest() {
+class ScrollSearchComponentImplTest : AbstractEsCommonsUnitTest() {
 
     //region Test subject and mocks
     @TestSubject

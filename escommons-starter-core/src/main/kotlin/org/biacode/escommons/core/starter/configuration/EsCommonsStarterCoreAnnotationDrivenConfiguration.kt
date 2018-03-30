@@ -1,6 +1,6 @@
 package org.biacode.escommons.core.starter.configuration
 
-import org.biacode.escommons.persistence.repository.configuration.EsCommonsRepositoryAnnotationDrivenConfiguration
+import org.biacode.escommons.persistence.configuration.EsCommonsRepositoryAnnotationDrivenConfiguration
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import

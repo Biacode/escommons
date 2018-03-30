@@ -1,9 +1,9 @@
-package org.biacode.escommons.persistence.repository.repository.impl;
+package org.biacode.escommons.persistence.repository.impl;
 
 import org.biacode.escommons.core.model.document.AbstractEsDocument;
 import org.biacode.escommons.core.model.document.DocumentConstants;
 import org.biacode.escommons.core.model.response.DocumentsAndTotalCount;
-import org.biacode.escommons.persistence.repository.repository.EsRepository;
+import org.biacode.escommons.persistence.repository.EsRepository;
 import org.biacode.escommons.toolkit.component.JsonComponent;
 import org.biacode.escommons.toolkit.component.SearchResponseComponent;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;

@@ -1,7 +1,7 @@
 package org.biacode.escommons.toolkit.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
-import org.biacode.escommons.toolkit.test.AbstractCoreUnitTest
+import org.biacode.escommons.core.test.AbstractEsCommonsUnitTest
 import org.easymock.TestSubject
 import org.junit.Test
 
@@ -10,7 +10,7 @@ import org.junit.Test
  * Date: 3/27/18
  * Time: 5:30 PM
  */
-class ClockComponentImplTest : AbstractCoreUnitTest() {
+class ClockComponentImplTest : AbstractEsCommonsUnitTest() {
 
     //region Test subject and mocks
     @TestSubject

@@ -1,6 +1,6 @@
 package org.biacode.escommons.toolkit.component.impl
 
-import org.biacode.escommons.toolkit.test.AbstractCoreUnitTest
+import org.biacode.escommons.core.test.AbstractEsCommonsUnitTest
 import org.easymock.TestSubject
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -12,7 +12,7 @@ import java.util.*
  * Date: 7/14/17
  * Time: 5:07 PM
  */
-class JsonComponentImplTest : AbstractCoreUnitTest() {
+class JsonComponentImplTest : AbstractEsCommonsUnitTest() {
 
     //region Test subject and mocks
     @TestSubject

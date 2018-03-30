@@ -1,8 +1,8 @@
 package org.biacode.escommons.toolkit.component.impl
 
 import org.biacode.escommons.core.model.document.AbstractEsDocument
+import org.biacode.escommons.core.test.AbstractEsCommonsUnitTest
 import org.biacode.escommons.toolkit.component.JsonComponent
-import org.biacode.escommons.toolkit.test.AbstractCoreUnitTest
 import org.easymock.EasyMock.expect
 import org.easymock.Mock
 import org.easymock.TestSubject
@@ -17,7 +17,7 @@ import java.util.*
  * Date: 7/14/17
  * Time: 5:07 PM
  */
-class SearchResponseComponentImplTest : AbstractCoreUnitTest() {
+class SearchResponseComponentImplTest : AbstractEsCommonsUnitTest() {
 
     //region Test subject and mocks
     @TestSubject
