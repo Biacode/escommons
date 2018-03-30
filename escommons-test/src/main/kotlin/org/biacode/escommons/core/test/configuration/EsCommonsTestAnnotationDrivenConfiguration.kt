@@ -1,6 +1,6 @@
 package org.biacode.escommons.core.test.configuration
 
-import org.biacode.escommons.core.configuration.EsCommonsCoreAnnotationDrivenConfiguration
+import org.biacode.escommons.persistence.repository.configuration.EsCommonsRepositoryAnnotationDrivenConfiguration
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
@@ -12,5 +12,5 @@ import org.springframework.context.annotation.Import
  */
 @Configuration
 @ComponentScan(basePackages = ["org.biacode.escommons.core.test.configuration"])
-@Import(EsCommonsCoreAnnotationDrivenConfiguration::class)
+@Import(EsCommonsRepositoryAnnotationDrivenConfiguration::class)
 class EsCommonsTestAnnotationDrivenConfiguration

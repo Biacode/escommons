@@ -1,8 +1,8 @@
 package org.biacode.escommons.example
 
-import org.biacode.escommons.core.component.EsCommonsClientWrapper
 import org.biacode.escommons.core.starter.annotation.EnableEsCommons
 import org.biacode.escommons.core.test.configuration.EsCommonsTestAnnotationDrivenConfiguration
+import org.biacode.escommons.toolkit.component.EsCommonsClientWrapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.SpringApplication

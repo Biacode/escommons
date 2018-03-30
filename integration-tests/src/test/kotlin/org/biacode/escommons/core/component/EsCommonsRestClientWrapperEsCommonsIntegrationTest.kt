@@ -2,6 +2,7 @@ package org.biacode.escommons.core.component
 
 import org.assertj.core.api.Assertions.assertThat
 import org.biacode.escommons.core.test.AbstractEsCommonsIntegrationTest
+import org.biacode.escommons.toolkit.component.EsCommonsClientWrapper
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.util.*

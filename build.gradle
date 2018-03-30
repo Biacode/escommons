@@ -165,6 +165,7 @@ allprojects {
         compile("commons-io:commons-io:$apacheCommonsIoVersion")
         compile("io.vavr:vavr:${vavrVersion}")
         compile("com.google.code.findbugs:jsr305:$jsr305Version")
+        testCompile project(':escommons-test')
         testCompile("junit:junit:$junitVersion")
         testCompile("org.easymock:easymock:$easymockVersion")
         testCompile("org.assertj:assertj-core:$assertJVersion")
@@ -175,7 +176,7 @@ allprojects {
 
 project(':api:rest-rs') {
     dependencies {
-        compile project(':core')
+        compile project(':escommons-persistence')
         compile project(':api:rest-model')
         compileOnly("javax.servlet:javax.servlet-api:$javaxServletApiVersion")
         testCompile("org.glassfish.jersey.containers:jersey-container-servlet-core:$jerseyContainterServletCoreVersion")
@@ -184,7 +185,7 @@ project(':api:rest-rs') {
 
 project(':api:rest-boot') {
     dependencies {
-        compile project(':core')
+        compile project(':escommons-persistence')
         compile project(':api:rest-model')
         compile("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
         compile("org.springframework.boot:spring-boot-starter-jersey:$springBootVersion")
@@ -203,7 +204,7 @@ project(':api:rest-model') {
     }
 }
 
-project(':core') {
+project(':escommons-core') {
     dependencies {
         compile("org.elasticsearch:elasticsearch:${elasticSearchVersion}")
         compile("org.elasticsearch.client:elasticsearch-rest-high-level-client:${elasticSearchVersion}")
@@ -212,16 +213,15 @@ project(':core') {
 
 project(':escommons-starter-core') {
     dependencies {
-        compile project(':core')
+        compile project(':escommons-persistence')
         compile("org.springframework.boot:spring-boot-starter:$springBootVersion")
         optional("org.springframework.boot:spring-boot-configuration-processor:$springBootVersion")
-        testCompile project(':escommons-test')
     }
 }
 
 project(':escommons-test') {
     dependencies {
-        compile project(':core')
+        compile project(':escommons-persistence')
         compile("org.elasticsearch.plugin:transport-netty4-client:${elasticSearchVersion}")
         compile("org.elasticsearch.client:transport:${elasticSearchVersion}")
         compile("org.codelibs.elasticsearch.lib:plugin-classloader:$elasticSearchVersion")
@@ -233,9 +233,20 @@ project(':escommons-test') {
     }
 }
 
+project(':escommons-persistence') {
+    dependencies {
+        compile project(':escommons-toolkit')
+    }
+}
+
+project(':escommons-toolkit') {
+    dependencies {
+        compile project(':escommons-core')
+    }
+}
+
 project(':integration-tests') {
     dependencies {
-        testCompile project(':escommons-test')
     }
 }
 

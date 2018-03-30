@@ -1,7 +1,7 @@
 package org.biacode.escommons.core.test
 
-import org.biacode.escommons.core.component.EsCommonsClientWrapper
 import org.biacode.escommons.core.test.configuration.EsCommonsTestAnnotationDrivenConfiguration
+import org.biacode.escommons.toolkit.component.EsCommonsClientWrapper
 import org.junit.Before
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
