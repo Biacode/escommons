@@ -20,7 +20,7 @@ import java.util.*
 class ScrollSearchComponentImpl : ScrollSearchComponent {
 
     //region Dependencies
-    @Value("\${escommons.scroll.chunk.size}")
+    @Value("\${escommons.scroll.size}")
     private var scrollChunkSize: Int? = null
 
     @Autowired
