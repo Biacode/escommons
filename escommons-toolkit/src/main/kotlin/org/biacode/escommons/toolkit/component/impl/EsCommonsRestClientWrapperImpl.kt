@@ -38,9 +38,9 @@ class EsCommonsRestClientWrapperImpl : EsCommonsClientWrapper {
     //endregion
 
     //region Public methods
-    override fun createIndex(indexName: String, type: String, mappingsName: String): Boolean {
+    override fun createIndex(indexName: String, mappingsName: String): Boolean {
         val request = CreateIndexRequest(indexName)
-        request.mapping(type, mappingsComponent.readMappings(mappingsName), XContentType.JSON)
+        request.mapping("doc", mappingsComponent.readMappings(mappingsName), XContentType.JSON)
         return esClient.indices().create(request).isAcknowledged
     }
 

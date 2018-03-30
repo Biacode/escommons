@@ -52,7 +52,7 @@ class SearchResponseComponentImplTest : AbstractEsCommonsUnitTest() {
         verifyAll()
         assertNotNull(response)
         assertEquals(document, response)
-        assertEquals(id, response.uuid)
+        assertEquals(id, response.id)
     }
     //endregion
 

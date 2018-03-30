@@ -13,8 +13,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public abstract class AbstractEsDocument {
 
     //region Properties
-    @JsonProperty("uuid")
-    private String uuid;
+    @JsonProperty("id")
+    private String id;
     //endregion
 
     //region Constructors
@@ -22,8 +22,8 @@ public abstract class AbstractEsDocument {
         // Default constructor
     }
 
-    public AbstractEsDocument(final String uuid) {
-        this.uuid = uuid;
+    public AbstractEsDocument(final String id) {
+        this.id = id;
     }
     //endregion
 
@@ -38,14 +38,14 @@ public abstract class AbstractEsDocument {
         }
         final AbstractEsDocument that = (AbstractEsDocument) o;
         return new EqualsBuilder()
-                .append(uuid, that.uuid)
+                .append(id, that.id)
                 .isEquals();
     }
 
     @Override
     public int hashCode() {
         return new HashCodeBuilder()
-                .append(uuid)
+                .append(id)
                 .toHashCode();
     }
 
@@ -53,18 +53,18 @@ public abstract class AbstractEsDocument {
     public String toString() {
         return new ToStringBuilder(this)
                 .appendSuper(super.toString())
-                .append("uuid", uuid)
+                .append("id", id)
                 .toString();
     }
     //endregion
 
     //region Properties getters and setters
-    public String getUuid() {
-        return uuid;
+    public String getId() {
+        return id;
     }
 
-    public void setUuid(final String uuid) {
-        this.uuid = uuid;
+    public void setId(final String id) {
+        this.id = id;
     }
     //endregion
 }

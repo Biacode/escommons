@@ -23,10 +23,9 @@ class EsCommonsRestClientWrapperEsCommonsIntegrationTest : AbstractEsCommonsInte
     fun `test create index`() {
         // given
         val indexName = UUID.randomUUID().toString()
-        val type = UUID.randomUUID().toString()
         val mappingsName = "escommons_test_person"
         // when
-        esCommonsClientWrapper.createIndex(indexName, type, mappingsName).let {
+        esCommonsClientWrapper.createIndex(indexName, mappingsName).let {
             // then
             assertThat(it).isTrue()
         }
@@ -37,7 +36,7 @@ class EsCommonsRestClientWrapperEsCommonsIntegrationTest : AbstractEsCommonsInte
         // given
         listOf(UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString())
                 .let { expectedIndices ->
-                    expectedIndices.forEach { esCommonsClientWrapper.createIndex(it, UUID.randomUUID().toString(), "escommons_test_person") }
+                    expectedIndices.forEach { esCommonsClientWrapper.createIndex(it, "escommons_test_person") }
                     // when
                     esCommonsClientWrapper.getIndices().let { indices ->
                         // then
@@ -98,9 +97,8 @@ class EsCommonsRestClientWrapperEsCommonsIntegrationTest : AbstractEsCommonsInte
     //region Utility methods
     private fun createDummyIndex(): String {
         val indexName = UUID.randomUUID().toString()
-        val type = UUID.randomUUID().toString()
         val mappingsName = "escommons_test_person"
-        esCommonsClientWrapper.createIndex(indexName, type, mappingsName)
+        esCommonsClientWrapper.createIndex(indexName, mappingsName)
         return indexName
     }
     //endregion

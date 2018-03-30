@@ -6,7 +6,7 @@ package org.biacode.escommons.toolkit.component
  * Time: 6:11 PM
  */
 interface EsCommonsClientWrapper {
-    fun createIndex(indexName: String, type: String, mappingsName: String): Boolean
+    fun createIndex(indexName: String, mappingsName: String): Boolean
 
     fun getIndices(): Set<String>
 

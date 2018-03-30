@@ -1,21 +1,15 @@
-package org.biacode.escommons.persistence.repository;
+package org.biacode.escommons.persistence.repository
 
-import org.biacode.escommons.core.model.document.AbstractEsDocument;
-import org.biacode.escommons.core.model.response.DocumentsAndTotalCount;
-
-import javax.annotation.Nonnull;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import org.biacode.escommons.core.model.document.AbstractEsDocument
+import org.biacode.escommons.core.model.response.DocumentsAndTotalCount
+import java.util.*
 
 /**
  * Created by Arthur Asatryan.
  * Date: 7/14/17
  * Time: 3:37 PM
- *
- * @param <T> the document which is subtype of AbstractEsDocument
  */
-public interface EsRepository<T extends AbstractEsDocument> {
+interface EsRepository<T : AbstractEsDocument> {
 
     /**
      * Saves single document.
@@ -24,8 +18,7 @@ public interface EsRepository<T extends AbstractEsDocument> {
      * @param indexName the index name where the document should be saved
      * @return the document itself
      */
-    @Nonnull
-    T save(@Nonnull final T document, @Nonnull final String indexName);
+    fun save(document: T, indexName: String): T
 
     /**
      * Save all documents.
@@ -34,8 +27,7 @@ public interface EsRepository<T extends AbstractEsDocument> {
      * @param indexName the index name where the documents should be saved
      * @return the list of documents itself
      */
-    @Nonnull
-    List<T> save(@Nonnull final List<T> documents, @Nonnull final String indexName);
+    fun save(documents: List<T>, indexName: String): List<T>
 
     /**
      * Deletes document by id.
@@ -44,8 +36,7 @@ public interface EsRepository<T extends AbstractEsDocument> {
      * @param indexName the index name
      * @return the document id itself
      */
-    @Nonnull
-    String delete(@Nonnull final String id, @Nonnull final String indexName);
+    fun delete(id: String, indexName: String): String
 
     /**
      * Deletes all documents by list of ids.
@@ -54,8 +45,7 @@ public interface EsRepository<T extends AbstractEsDocument> {
      * @param indexName the index name
      * @return the list of ids itself
      */
-    @Nonnull
-    List<String> delete(@Nonnull final List<String> ids, @Nonnull final String indexName);
+    fun delete(ids: List<String>, indexName: String): List<String>
 
     /**
      * Finds document by given id.
@@ -64,8 +54,7 @@ public interface EsRepository<T extends AbstractEsDocument> {
      * @param indexName the index name
      * @return the t
      */
-    @Nonnull
-    Optional<T> findById(@Nonnull final String id, @Nonnull final String indexName);
+    fun findById(id: String, indexName: String): Optional<T>
 
     /**
      * Finds documents by ids.
@@ -74,8 +63,7 @@ public interface EsRepository<T extends AbstractEsDocument> {
      * @param indexName the index name
      * @return the founded documents and total count
      */
-    @Nonnull
-    DocumentsAndTotalCount<T> findByIds(@Nonnull final List<String> ids, @Nonnull final String indexName);
+    fun findByIds(ids: List<String>, indexName: String): DocumentsAndTotalCount<T>
 
     /**
      * Finds documents by field map.
@@ -87,6 +75,5 @@ public interface EsRepository<T extends AbstractEsDocument> {
      * @param documentType the document type
      * @return the map where the key is search field and the value is result field
      */
-    @Nonnull
-    Map<Object, Object> findByField(@Nonnull final String searchField, @Nonnull final List<Object> terms, @Nonnull final String resultField, @Nonnull final String indexName, @Nonnull final String documentType);
+    fun findByField(searchField: String, terms: List<Any>, resultField: String, indexName: String, documentType: String): Map<Any?, Any?>
 }

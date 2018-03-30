@@ -44,7 +44,7 @@ class MainApplicationCommandLineRunner : CommandLineRunner {
     override fun run(vararg p0: String?) {
         esCommonsClientWrapper.deleteIndices("*")
         val indexName = UUID.randomUUID().toString()
-        esCommonsClientWrapper.createIndex(indexName, "person", "person")
+        esCommonsClientWrapper.createIndex(indexName, "person")
         esCommonsClientWrapper.addAlias(indexName, "person")
         esCommonsClientWrapper.getIndices().forEach { println(it) }
     }

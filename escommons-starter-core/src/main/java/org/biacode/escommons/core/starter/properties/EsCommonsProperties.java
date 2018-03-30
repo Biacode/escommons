@@ -1,6 +1,7 @@
 package org.biacode.escommons.core.starter.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
@@ -25,7 +26,8 @@ import static java.util.Collections.singletonList;
  * escommons.node.max_local_storage_nodes=10
  * escommons.plugins=org.elasticsearch.transport.Netty4Plugin
  */
-@ConfigurationProperties("escommons")
+@Configuration
+@ConfigurationProperties(prefix = "escommons")
 public class EsCommonsProperties {
 
     /**

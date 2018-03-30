@@ -35,7 +35,7 @@ class SearchResponseComponentImpl : SearchResponseComponent {
 
     override fun <T : AbstractEsDocument> convertGetResponseToDocument(getResponse: GetResponse, clazz: Class<T>): T {
         val document = jsonComponent.deserializeFromString(getResponse.sourceAsString, clazz)
-        document.uuid = getResponse.id
+        document.id = getResponse.id
         return document
     }
 
@@ -57,7 +57,7 @@ class SearchResponseComponentImpl : SearchResponseComponent {
                 .of(*searchHits.hits)
                 .map { searchHitFields ->
                     val document = jsonComponent.deserializeFromString(searchHitFields.sourceAsString, clazz)
-                    document.uuid = searchHitFields.id
+                    document.id = searchHitFields.id
                     document
                 }
                 .collect(toList())

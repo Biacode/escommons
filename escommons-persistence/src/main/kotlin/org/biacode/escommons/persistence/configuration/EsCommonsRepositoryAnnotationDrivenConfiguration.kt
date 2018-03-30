@@ -11,6 +11,6 @@ import org.springframework.context.annotation.Import
  * Time: 2:48 PM
  */
 @Configuration
-@ComponentScan("org.biacode.escommons.persistence.repository")
+@ComponentScan("org.biacode.escommons.persistence")
 @Import(EsCommonsToolkitAnnotationDrivenConfiguration::class)
 class EsCommonsRepositoryAnnotationDrivenConfiguration
