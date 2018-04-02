@@ -16,27 +16,27 @@ interface EsRepository<T : AbstractEsDocument> {
      *
      * @param document  the document to save
      * @param indexName the index name where the document should be saved
-     * @return the document itself
+     * @return executed successfully
      */
-    fun save(document: T, indexName: String): T
+    fun save(document: T, indexName: String): Boolean
 
     /**
      * Save all documents.
      *
      * @param documents the documents to save
      * @param indexName the index name where the documents should be saved
-     * @return the list of documents itself
+     * @return executed successfully
      */
-    fun save(documents: List<T>, indexName: String): List<T>
+    fun save(documents: List<T>, indexName: String): Boolean
 
     /**
      * Deletes document by id.
      *
      * @param id        the document id
      * @param indexName the index name
-     * @return the document id itself
+     * @return executed successfully
      */
-    fun delete(id: String, indexName: String): String
+    fun delete(id: String, indexName: String): Boolean
 
     /**
      * Deletes all documents by list of ids.
@@ -45,7 +45,7 @@ interface EsRepository<T : AbstractEsDocument> {
      * @param indexName the index name
      * @return the list of ids itself
      */
-    fun delete(ids: List<String>, indexName: String): List<String>
+    fun delete(ids: List<String>, indexName: String): Boolean
 
     /**
      * Finds document by given id.

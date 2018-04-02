@@ -1,15 +1,14 @@
 package org.biacode.escommons.persistence.repository
 
 import org.apache.http.message.BasicHeader
+import org.assertj.core.api.Assertions.assertThat
 import org.biacode.escommons.core.test.AbstractEsCommonsIntegrationTest
 import org.biacode.escommons.toolkit.component.EsCommonsClientWrapper
 import org.biacode.escommons.toolkit.component.SearchResponseComponent
-import org.elasticsearch.action.search.SearchRequest
 import org.elasticsearch.client.RestHighLevelClient
-import org.elasticsearch.index.query.QueryBuilders.termQuery
-import org.elasticsearch.search.builder.SearchSourceBuilder
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.ComponentScan
 import java.util.*
 
 /**
@@ -17,6 +16,7 @@ import java.util.*
  * Date: 3/30/18
  * Time: 5:05 PM
  */
+@ComponentScan("org.biacode.escommons.persistence.repository")
 class EsRepositoryIntegrationTest : AbstractEsCommonsIntegrationTest() {
 
     //region Dependencies
@@ -43,23 +43,60 @@ class EsRepositoryIntegrationTest : AbstractEsCommonsIntegrationTest() {
     }
 
     @Test
-    fun `test save`() {
+    fun `test save single document`() {
         // given
+        val indexName = prepareIndex()
+        val person = Person(UUID.randomUUID().toString())
+        person.id = UUID.randomUUID().toString()
+        assertThat(personTestRepository.save(person, indexName)).isTrue()
+    }
+
+    @Test
+    fun `test save multiple documents`() {
+        // given
+        val indexName = prepareIndex()
+        (1..100).map {
+            val person = Person(UUID.randomUUID().toString())
+            person.id = UUID.randomUUID().toString()
+            person
+        }.toList().let { persons ->
+            // when
+            personTestRepository.save(persons, indexName).let {
+                // then
+                refreshIndex(indexName)
+                assertThat(it).isTrue()
+            }
+        }
+    }
+
+    @Test
+    fun `test delete single document`() {
+        // given
+        persistPerson().let { (indexName, person) ->
+            // when
+            val delete = personTestRepository.delete(person.id, indexName)
+            refreshIndex(indexName)
+            // then
+            assertThat(delete).isTrue()
+            // then
+            assertThat(personTestRepository.findById(person.id, indexName).isPresent).isFalse()
+        }
+    }
+    //endregion
+
+    //region Utility methods
+    private fun prepareIndex(): String {
         val indexName = UUID.randomUUID().toString()
         esCommonsClientWrapper.createIndex(indexName, "escommons_test_person")
+        return indexName
+    }
+
+    private fun persistPerson(): Pair<String, Person> {
+        val indexName = prepareIndex()
         val person = Person(UUID.randomUUID().toString())
         person.id = UUID.randomUUID().toString()
         personTestRepository.save(person, indexName)
-        val findResult = personTestRepository.findById(person.id, indexName)
-        esClient.search(SearchRequest(indexName).types("doc").source(SearchSourceBuilder.searchSource().query(termQuery("firstName", person.firstName))))
-        println(findResult)
-        val documentsAndTotalCount = searchResponseComponent.convertSearchResponseToDocuments(
-                esClient.search(SearchRequest(indexName).types("doc").source(SearchSourceBuilder.searchSource().query(termQuery("firstName", person.firstName)))),
-                Person::class.java
-        )
-        println(documentsAndTotalCount)
-        val findByField = personTestRepository.findByField("firstName", listOf(person.firstName), "firstName", indexName, "doc")
-        println(findByField)
+        return indexName to person
     }
     //endregion
 

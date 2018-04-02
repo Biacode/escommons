@@ -11,7 +11,7 @@ import java.util.*
  * Date: 7/23/17
  * Time: 9:10 PM
  */
-class EsCommonsRestClientWrapperEsCommonsIntegrationTest : AbstractEsCommonsIntegrationTest() {
+class EsCommonsClientWrapperIntegrationTest : AbstractEsCommonsIntegrationTest() {
 
     //region Dependencies
     @Autowired

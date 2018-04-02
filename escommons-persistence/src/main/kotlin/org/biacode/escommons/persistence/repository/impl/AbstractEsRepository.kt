@@ -54,15 +54,13 @@ abstract class AbstractEsRepository<T : AbstractEsDocument> : EsRepository<T> {
     //endregion
 
     //region Concrete methods
-    override fun save(document: T, indexName: String): T {
-        esCommonsRestClient.index(
-                IndexRequest(indexName, DOCUMENT_TYPE, document.id)
-                        .source(jsonComponent.serialize(document, clazz), XContentType.JSON)
-        )
-        return document
+    override fun save(document: T, indexName: String): Boolean {
+        val index = esCommonsRestClient
+                .index(IndexRequest(indexName, DOCUMENT_TYPE, document.id).source(jsonComponent.serialize(document, clazz), XContentType.JSON))
+        return index.shardInfo.failed <= 0
     }
 
-    override fun save(documents: List<T>, indexName: String): List<T> {
+    override fun save(documents: List<T>, indexName: String): Boolean {
         val bulkRequest = BulkRequest()
         documents.forEach {
             bulkRequest.add(
@@ -70,19 +68,17 @@ abstract class AbstractEsRepository<T : AbstractEsDocument> : EsRepository<T> {
                             .source(jsonComponent.serialize(it, clazz), XContentType.JSON)
             )
         }
-        esCommonsRestClient.bulk(bulkRequest)
-        return documents
+        return !esCommonsRestClient.bulk(bulkRequest).hasFailures()
     }
 
-    override fun delete(id: String, indexName: String): String {
-        return esCommonsRestClient.delete(DeleteRequest(indexName, DOCUMENT_TYPE, id)).id
+    override fun delete(id: String, indexName: String): Boolean {
+        return esCommonsRestClient.delete(DeleteRequest(indexName, DOCUMENT_TYPE, id)).shardInfo.failed <= 0
     }
 
-    override fun delete(ids: List<String>, indexName: String): List<String> {
+    override fun delete(ids: List<String>, indexName: String): Boolean {
         val bulkRequest = BulkRequest()
         ids.forEach { bulkRequest.add(DeleteRequest(indexName, DOCUMENT_TYPE, it)) }
-        esCommonsRestClient.bulk(bulkRequest)
-        return ids
+        return esCommonsRestClient.bulk(bulkRequest).hasFailures()
     }
 
     override fun findById(id: String, indexName: String): Optional<T> {
