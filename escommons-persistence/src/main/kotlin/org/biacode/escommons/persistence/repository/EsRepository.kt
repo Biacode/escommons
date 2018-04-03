@@ -1,7 +1,6 @@
 package org.biacode.escommons.persistence.repository
 
 import org.biacode.escommons.core.model.document.AbstractEsDocument
-import org.biacode.escommons.core.model.response.DocumentsAndTotalCount
 import java.util.*
 
 /**
@@ -61,19 +60,7 @@ interface EsRepository<T : AbstractEsDocument> {
      *
      * @param ids       the ids
      * @param indexName the index name
-     * @return the founded documents and total count
+     * @return list of founded documents
      */
-    fun findByIds(ids: List<String>, indexName: String): DocumentsAndTotalCount<T>
-
-    /**
-     * Finds documents by field map.
-     *
-     * @param searchField  the search field
-     * @param terms        the terms
-     * @param resultField  the result field
-     * @param indexName    the index name
-     * @param documentType the document type
-     * @return the map where the key is search field and the value is result field
-     */
-    fun findByField(searchField: String, terms: List<Any>, resultField: String, indexName: String, documentType: String): Map<Any?, Any?>
+    fun findByIds(ids: List<String>, indexName: String): List<T>
 }
