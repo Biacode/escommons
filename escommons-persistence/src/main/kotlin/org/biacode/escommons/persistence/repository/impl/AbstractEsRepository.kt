@@ -2,7 +2,6 @@ package org.biacode.escommons.persistence.repository.impl
 
 import org.biacode.escommons.core.model.document.AbstractEsDocument
 import org.biacode.escommons.core.model.document.DocumentConstants
-import org.biacode.escommons.core.model.response.DocumentsAndTotalCount
 import org.biacode.escommons.persistence.repository.EsRepository
 import org.biacode.escommons.toolkit.component.JsonComponent
 import org.biacode.escommons.toolkit.component.SearchResponseComponent
@@ -11,11 +10,8 @@ import org.elasticsearch.action.delete.DeleteRequest
 import org.elasticsearch.action.get.GetRequest
 import org.elasticsearch.action.get.MultiGetRequest
 import org.elasticsearch.action.index.IndexRequest
-import org.elasticsearch.action.search.SearchRequest
 import org.elasticsearch.client.RestHighLevelClient
 import org.elasticsearch.common.xcontent.XContentType
-import org.elasticsearch.index.query.QueryBuilders.*
-import org.elasticsearch.search.builder.SearchSourceBuilder
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.GenericTypeResolver
@@ -88,25 +84,11 @@ abstract class AbstractEsRepository<T : AbstractEsDocument> : EsRepository<T> {
         } else Optional.of(searchResponseComponent.convertGetResponseToDocument(getResponse, clazz))
     }
 
-    override fun findByIds(ids: List<String>, indexName: String): DocumentsAndTotalCount<T> {
+    override fun findByIds(ids: List<String>, indexName: String): List<T> {
         val multiGetRequest = MultiGetRequest()
         ids.forEach { multiGetRequest.add(indexName, DOCUMENT_TYPE, it) }
         val multiGetResponse = esCommonsRestClient.multiGet(multiGetRequest)
-        // TODO: Find out how to pass total hit count
-        return DocumentsAndTotalCount(multiGetResponse.responses.map { jsonComponent.deserializeFromString(it.response.sourceAsString, clazz) }, 5)
-    }
-
-    override fun findByField(searchField: String,
-                             terms: List<Any>,
-                             resultField: String,
-                             indexName: String,
-                             documentType: String): Map<Any?, Any?> {
-        return esCommonsRestClient.search(SearchRequest(indexName).types(documentType).source(
-                SearchSourceBuilder.searchSource().query(boolQuery().must(matchAllQuery()).filter(termsQuery(searchField, terms)))
-        )).hits.hits.associateBy(
-                { resultField },
-                { jsonComponent.deserializeFromString(it.sourceAsString, Map::class.java)[resultField] }
-        )
+        return multiGetResponse.responses.filter { it.response.isExists }.map { jsonComponent.deserializeFromString(it.response.sourceAsString, clazz) }
     }
 
     protected fun stringValues(vararg values: Any): Array<out Any> {

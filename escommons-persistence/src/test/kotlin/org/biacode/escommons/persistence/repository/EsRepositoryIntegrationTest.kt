@@ -82,6 +82,56 @@ class EsRepositoryIntegrationTest : AbstractEsCommonsIntegrationTest() {
             assertThat(personTestRepository.findById(person.id, indexName).isPresent).isFalse()
         }
     }
+
+    @Test
+    fun `test delete multiple documents`() {
+        // given
+        val indexName = prepareIndex()
+        val otherPerson = persistPerson(indexName = indexName).second.id
+        val persons = listOf<String>(persistPerson(indexName = indexName).second.id, persistPerson(indexName = indexName).second.id)
+        refreshIndex(indexName)
+        // when
+        personTestRepository.delete(persons, indexName).let {
+            refreshIndex(indexName)
+            // then
+            assertThat(it).isFalse()
+            // then
+            assertThat(personTestRepository.findByIds(persons, indexName).size).isEqualTo(0)
+            // then
+            assertThat(personTestRepository.findById(otherPerson, indexName).isPresent).isTrue()
+        }
+    }
+
+    @Test
+    fun `test get single document`() {
+        // given
+        val indexName = prepareIndex()
+        val otherPerson = persistPerson(indexName = indexName).second
+        val person = persistPerson(indexName = indexName).second
+        refreshIndex(indexName)
+        // when
+        personTestRepository.findById(person.id, indexName).let {
+            // then
+            assertThat(it.isPresent).isTrue()
+            // then
+            assertThat(it.get()).isEqualTo(person)
+        }
+    }
+
+    @Test
+    fun `test get multiple documents`() {
+        // given
+        val indexName = prepareIndex()
+        val otherPerson = persistPerson(indexName = indexName).second
+        val persons = listOf<Person>(persistPerson(indexName = indexName).second, persistPerson(indexName = indexName).second)
+        val personIds = persons.map { person -> person.id }
+        refreshIndex(indexName)
+        // when
+        personTestRepository.findByIds(personIds, indexName).let {
+            // then
+            assertThat(it).isEqualTo(persons)
+        }
+    }
     //endregion
 
     //region Utility methods
@@ -91,10 +141,13 @@ class EsRepositoryIntegrationTest : AbstractEsCommonsIntegrationTest() {
         return indexName
     }
 
-    private fun persistPerson(): Pair<String, Person> {
-        val indexName = prepareIndex()
-        val person = Person(UUID.randomUUID().toString())
-        person.id = UUID.randomUUID().toString()
+    private fun persistPerson(
+            id: String = UUID.randomUUID().toString(),
+            firstName: String = UUID.randomUUID().toString(),
+            indexName: String = prepareIndex()
+    ): Pair<String, Person> {
+        val person = Person(firstName)
+        person.id = id
         personTestRepository.save(person, indexName)
         return indexName to person
     }
