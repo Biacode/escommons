@@ -49,6 +49,12 @@ abstract class AbstractEsRepository<T : AbstractEsDocument> : EsRepository<T> {
     }
     //endregion
 
+    //region Abstract Methods
+    abstract fun getAliasName(): String
+
+    abstract fun getDocumentType(): String
+    //endregion
+
     //region Concrete methods
     override fun save(document: T, indexName: String): Boolean {
         val index = esCommonsRestClient
