@@ -52,7 +52,7 @@ abstract class AbstractEsRepository<T : AbstractEsDocument> : EsRepository<T> {
     //region Abstract Methods
     abstract fun getAliasName(): String
 
-    abstract fun getDocumentType(): String
+    fun getDocumentType(): String = "doc"
     //endregion
 
     //region Concrete methods
