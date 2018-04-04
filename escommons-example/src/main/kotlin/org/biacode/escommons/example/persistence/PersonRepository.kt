@@ -11,6 +11,5 @@ import org.biacode.escommons.persistence.repository.EsRepository
  * Time: 5:23 PM
  */
 interface PersonRepository : EsRepository<Person> {
-
     fun filter(filter: PersonFilter, indexName: String): DocumentsAndTotalCount<Person>
 }

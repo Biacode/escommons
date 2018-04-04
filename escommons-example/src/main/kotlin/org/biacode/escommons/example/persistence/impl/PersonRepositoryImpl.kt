@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component
  * Time: 5:23 PM
  */
 @Component
-class PersonRepositoryImpl : AbstractEsRepository<Person>, PersonRepository {
+class PersonRepositoryImpl : AbstractEsRepository<Person>(), PersonRepository {
 
     //region Dependencies
     @Autowired
@@ -32,16 +32,7 @@ class PersonRepositoryImpl : AbstractEsRepository<Person>, PersonRepository {
     private lateinit var searchResponseComponent: SearchResponseComponent
     //endregion
 
-    //region Constructors
-    constructor(esCommonsRestClient: RestHighLevelClient) : super() {
-        this.esCommonsRestClient = esCommonsRestClient
-    }
-    init {
-        LOGGER.debug("Initializing - {}", javaClass.canonicalName)
-    }
-    //endregion
-
-    //region Concrete methods
+    //region Public methods
     override fun filter(filter: PersonFilter, indexName: String): DocumentsAndTotalCount<Person> {
         val filterQuery = boolQuery().should(termQuery(FIRST_NAME, filter.firstName))
         val sourceBuilder = SearchSourceBuilder()
@@ -55,10 +46,6 @@ class PersonRepositoryImpl : AbstractEsRepository<Person>, PersonRepository {
     override fun getAliasName(): String {
         return ALIAS_NAME
     }
-
-    override fun getDocumentType(): String {
-        return DOCUMENT_TYPE
-    }
     //endregion
 
     //region Companion object
@@ -66,7 +53,6 @@ class PersonRepositoryImpl : AbstractEsRepository<Person>, PersonRepository {
         private val LOGGER = LoggerFactory.getLogger(PersonRepositoryImpl::class.java)
         private const val FIRST_NAME = "firstName"
         private const val ALIAS_NAME = "person_index"
-        private const val DOCUMENT_TYPE = "doc"
     }
     //endregion
 }
