@@ -30,7 +30,7 @@ class PersonTestRepository : AbstractEsRepository<Person>() {
     //region Companion object
     companion object {
         private const val ALIAS_NAME = "person_index"
-        private const val DOCUMENT_TYPE = "person"
+        private const val DOCUMENT_TYPE = "doc"
     }
     //endregion
 }

@@ -5,6 +5,7 @@ import org.biacode.escommons.example.domain.Person
 import org.biacode.escommons.example.filter.PersonFilter
 import org.biacode.escommons.example.persistence.PersonRepository
 import org.biacode.escommons.persistence.repository.impl.AbstractEsRepository
+import org.biacode.escommons.toolkit.component.SearchResponseComponent
 import org.elasticsearch.action.search.SearchRequest
 import org.elasticsearch.client.RestHighLevelClient
 import org.elasticsearch.index.query.QueryBuilders.boolQuery
@@ -26,6 +27,9 @@ class PersonRepositoryImpl : AbstractEsRepository<Person>, PersonRepository {
     //region Dependencies
     @Autowired
     private lateinit var esCommonsRestClient: RestHighLevelClient
+
+    @Autowired
+    private lateinit var searchResponseComponent: SearchResponseComponent
     //endregion
 
     //region Constructors
@@ -45,7 +49,7 @@ class PersonRepositoryImpl : AbstractEsRepository<Person>, PersonRepository {
         val searchRequest = SearchRequest()
         searchRequest.source(sourceBuilder)
         val searchResponse = esCommonsRestClient.search(searchRequest)
-        return DocumentsAndTotalCount()
+        return searchResponseComponent.convertToDocumentsAndTotalCount(searchResponse, Person::class.java)
     }
 
     override fun getAliasName(): String {
@@ -59,10 +63,10 @@ class PersonRepositoryImpl : AbstractEsRepository<Person>, PersonRepository {
 
     //region Companion object
     companion object {
-        private val LOGGER = LoggerFactory.getLogger(AbstractEsRepository::class.java)
+        private val LOGGER = LoggerFactory.getLogger(PersonRepositoryImpl::class.java)
         private const val FIRST_NAME = "firstName"
         private const val ALIAS_NAME = "person_index"
-        private const val DOCUMENT_TYPE = "person"
+        private const val DOCUMENT_TYPE = "doc"
     }
     //endregion
 }
