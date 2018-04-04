@@ -1,6 +1,7 @@
 package org.biacode.escommons.example.domain
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import org.biacode.escommons.core.model.document.AbstractEsDocument
 
 /**
  * Created by Arthur Asatryan.
@@ -16,4 +17,4 @@ data class Person(
 
         @JsonProperty("age")
         val age: Int
-)
+): AbstractEsDocument()
