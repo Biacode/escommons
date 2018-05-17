@@ -1,9 +1,11 @@
 package org.biacode.escommons.toolkit.component.impl
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.biacode.escommons.core.test.AbstractEsCommonsUnitTest
 import org.easymock.TestSubject
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
+import org.junit.Before
 import org.junit.Test
 import java.util.*
 
@@ -17,6 +19,13 @@ class JsonComponentImplTest : AbstractEsCommonsUnitTest() {
     //region Test subject and mocks
     @TestSubject
     private val jsonComponent = JsonComponentImpl()
+    //endregion
+
+    //region Test callbacks
+    @Before
+    fun beforeThisTest() {
+        jsonComponent.objectMapper = ObjectMapper()
+    }
     //endregion
 
     //region Test methods

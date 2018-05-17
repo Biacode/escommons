@@ -11,7 +11,6 @@ import org.springframework.context.annotation.PropertySource
  * Time: 3:38 PM
  */
 @ComponentScan(basePackages = [
-    "org.biacode.escommons.core.client",
     "org.biacode.escommons.core.configuration"
 ])
 @PropertySource(value = [

@@ -3,6 +3,7 @@ package org.biacode.escommons.toolkit.component.impl
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.biacode.escommons.toolkit.component.JsonComponent
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.io.InputStream
 
@@ -14,27 +15,26 @@ import java.io.InputStream
 @Component
 class JsonComponentImpl : JsonComponent {
 
+    //region Dependencies
+    @Autowired
+    lateinit var objectMapper: ObjectMapper
+    //endregion
+
     //region Public methods
     override fun <T> deserializeFromString(source: String, clazz: Class<T>): T {
-        return OBJECT_MAPPER.reader().forType(clazz).readValue(source)
+        return objectMapper.reader().forType(clazz).readValue(source)
     }
 
     override fun <T> deserializeFromInputStream(source: InputStream, clazz: Class<T>): T {
-        return OBJECT_MAPPER.reader().forType(clazz).readValue(source)
+        return objectMapper.reader().forType(clazz).readValue(source)
     }
 
     override fun <T> deserializeFromInputStreamWithTypeReference(source: InputStream, typeReference: TypeReference<T>): T {
-        return OBJECT_MAPPER.reader().forType(typeReference).readValue(source)
+        return objectMapper.reader().forType(typeReference).readValue(source)
     }
 
     override fun <T> serialize(source: T, clazz: Class<T>): String {
-        return OBJECT_MAPPER.writer().forType(clazz).writeValueAsString(source)
-    }
-    //endregion
-
-    //region Companion objects
-    companion object {
-        private val OBJECT_MAPPER = ObjectMapper()
+        return objectMapper.writer().forType(clazz).writeValueAsString(source)
     }
     //endregion
 }

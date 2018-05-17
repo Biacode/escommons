@@ -11,6 +11,6 @@ import org.springframework.context.annotation.Import
  * Time: 12:12 PM
  */
 @Configuration
-@ComponentScan("org.biacode.escommons.toolkit.component")
+@ComponentScan(basePackages = ["org.biacode.escommons.toolkit.component", "org.biacode.escommons.toolkit.configuration"])
 @Import(EsCommonsCoreAnnotationDrivenConfiguration::class)
 class EsCommonsToolkitAnnotationDrivenConfiguration

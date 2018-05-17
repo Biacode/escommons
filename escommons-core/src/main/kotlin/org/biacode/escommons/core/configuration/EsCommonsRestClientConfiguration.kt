@@ -1,4 +1,4 @@
-package org.biacode.escommons.core.client
+package org.biacode.escommons.core.configuration
 
 import org.apache.http.HttpHost
 import org.elasticsearch.client.RestClient
