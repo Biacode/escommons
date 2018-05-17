@@ -11,7 +11,6 @@ import org.elasticsearch.client.RestHighLevelClient
 import org.elasticsearch.index.query.QueryBuilders.boolQuery
 import org.elasticsearch.index.query.QueryBuilders.termQuery
 import org.elasticsearch.search.builder.SearchSourceBuilder
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -50,7 +49,6 @@ class PersonRepositoryImpl : AbstractEsRepository<Person>(), PersonRepository {
 
     //region Companion object
     companion object {
-        private val LOGGER = LoggerFactory.getLogger(PersonRepositoryImpl::class.java)
         private const val FIRST_NAME = "firstName"
         private const val ALIAS_NAME = "person_index"
     }

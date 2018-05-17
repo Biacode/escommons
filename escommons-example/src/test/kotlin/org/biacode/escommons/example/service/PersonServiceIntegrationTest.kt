@@ -139,7 +139,7 @@ class PersonServiceIntegrationTest : AbstractServiceIntegrationTest() {
         val indexName = prepareIndex()
         val matchingPerson1 = persistPerson(firstName = matchingName, indexName = indexName)
         val matchingPerson2 = persistPerson(firstName = matchingName, indexName = indexName)
-        val matchingButNotIncludedInThePagePerson3 = persistPerson(firstName = matchingName, indexName = indexName)
+        val matchingPerson3 = persistPerson(firstName = matchingName, indexName = indexName)
         val notMatchingPerson = persistPerson(indexName = indexName)
         val personFilter = PersonFilter(matchingName, 0, 2);
         refreshIndex(indexName)
@@ -148,7 +148,7 @@ class PersonServiceIntegrationTest : AbstractServiceIntegrationTest() {
             // then
             Assertions.assertThat(it.totalCount).isEqualTo(3)
             Assertions.assertThat(it.documents.size).isEqualTo(2)
-            Assertions.assertThat(it.documents).containsExactlyInAnyOrder(matchingPerson1.second, matchingPerson2.second)
+            Assertions.assertThat(it.documents).doesNotContainAnyElementsOf(listOf(notMatchingPerson.second))
         }
     }
     //endregion
