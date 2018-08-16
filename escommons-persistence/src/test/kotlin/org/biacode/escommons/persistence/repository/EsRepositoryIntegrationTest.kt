@@ -4,7 +4,6 @@ import org.apache.http.message.BasicHeader
 import org.assertj.core.api.Assertions.assertThat
 import org.biacode.escommons.core.test.AbstractEsCommonsIntegrationTest
 import org.biacode.escommons.toolkit.component.EsCommonsClientWrapper
-import org.biacode.escommons.toolkit.component.SearchResponseComponent
 import org.elasticsearch.client.RestHighLevelClient
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -28,9 +27,6 @@ class EsRepositoryIntegrationTest : AbstractEsCommonsIntegrationTest() {
 
     @Autowired
     private lateinit var esCommonsClientWrapper: EsCommonsClientWrapper
-
-    @Autowired
-    private lateinit var searchResponseComponent: SearchResponseComponent
     //endregion
 
     //region Test methods

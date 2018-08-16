@@ -50,8 +50,6 @@ abstract class AbstractEsRepository<T : AbstractEsDocument> : EsRepository<T> {
     //endregion
 
     //region Abstract Methods
-    abstract fun getAliasName(): String
-
     fun getDocumentType(): String = "doc"
     //endregion
 

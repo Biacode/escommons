@@ -12,25 +12,9 @@ import org.springframework.stereotype.Component
  */
 @Component
 class PersonTestRepository : AbstractEsRepository<Person>() {
+
     //region Dependencies
     @Autowired
     private lateinit var esClient: RestHighLevelClient
-    //endregion
-
-    //region Concrete methods
-    override fun getAliasName(): String {
-        return ALIAS_NAME
-    }
-
-    override fun getDocumentType(): String {
-        return DOCUMENT_TYPE
-    }
-    //endregion
-
-    //region Companion object
-    companion object {
-        private const val ALIAS_NAME = "person_index"
-        private const val DOCUMENT_TYPE = "doc"
-    }
     //endregion
 }

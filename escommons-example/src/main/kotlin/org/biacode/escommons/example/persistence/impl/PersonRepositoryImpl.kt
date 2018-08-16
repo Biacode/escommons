@@ -41,16 +41,11 @@ class PersonRepositoryImpl : AbstractEsRepository<Person>(), PersonRepository {
         val searchResponse = esCommonsRestClient.search(searchRequest)
         return searchResponseComponent.convertToDocumentsAndTotalCount(searchResponse, Person::class.java)
     }
-
-    override fun getAliasName(): String {
-        return ALIAS_NAME
-    }
     //endregion
 
     //region Companion object
     companion object {
         private const val FIRST_NAME = "firstName"
-        private const val ALIAS_NAME = "person_index"
     }
     //endregion
 }
