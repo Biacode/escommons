@@ -3,7 +3,7 @@ buildscript {
         kotlinVersion = "1.2.60"
         springVersion = '5.0.8.RELEASE'
         springBootVersion = "2.0.4.RELEASE"
-        elasticSearchVersion = '6.2.2'
+        elasticSearchVersion = '6.3.2'
         jacksonVersion = '2.9.6'
         apacheCommonsLang3Version = '3.6'
         apacheCommonsIoVersion = '2.5'
@@ -14,6 +14,7 @@ buildscript {
         sonarqubeVersion = '2.6'
         vavrVersion = "0.9.0"
         slf4jVersion = "1.7.25"
+        log4jVersion = "2.11.1"
         propDepsPluginVersion = '0.0.10.RELEASE'
     }
     repositories {
@@ -69,7 +70,7 @@ allprojects {
     }
 
     group = 'org.biacode.escommons'
-    version = '6.2.2_0.5.1-SNAPSHOT'
+    version = '6.2.2_0.6.1-SNAPSHOT'
     sourceCompatibility = 1.8
 
     configurations.all {
@@ -159,6 +160,8 @@ allprojects {
         compile("org.slf4j:slf4j-api:$slf4jVersion")
         compile("org.slf4j:log4j-over-slf4j:$slf4jVersion")
         compile("org.springframework:spring-context:$springVersion")
+        compile("org.apache.logging.log4j:log4j-core:$log4jVersion")
+        compile("org.apache.logging.log4j:log4j-api:$log4jVersion")
         compile("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
         compile("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
         compile("com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion")

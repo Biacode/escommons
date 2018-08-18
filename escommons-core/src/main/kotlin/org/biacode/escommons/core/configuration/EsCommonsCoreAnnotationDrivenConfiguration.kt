@@ -20,7 +20,6 @@ import org.springframework.context.annotation.PropertySource
     "file:\${user.home}/escommons-custom.properties",
     "file:\${user.home}/escommons/escommons.properties",
     "file:\${user.home}/escommons/escommons-custom.properties",
-    "file:\${user.home}/escommons/escommons-custom.properties",
     "classpath:escommons-test.properties"
 ], ignoreResourceNotFound = true)
 @Configuration

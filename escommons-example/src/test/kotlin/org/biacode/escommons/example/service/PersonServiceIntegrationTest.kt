@@ -105,7 +105,8 @@ class PersonServiceIntegrationTest : AbstractServiceIntegrationTest() {
     fun `test get single document`() {
         // given
         val indexName = prepareIndex()
-        val otherPerson = persistPerson(indexName = indexName).second
+        // other person
+        persistPerson(indexName = indexName).second
         val person = persistPerson(indexName = indexName).second
         refreshIndex(indexName)
         // when
@@ -121,8 +122,9 @@ class PersonServiceIntegrationTest : AbstractServiceIntegrationTest() {
     fun `test get multiple documents`() {
         // given
         val indexName = prepareIndex()
-        val otherPerson = persistPerson(indexName = indexName).second
-        val persons = listOf<Person>(persistPerson(indexName = indexName).second, persistPerson(indexName = indexName).second)
+        // other person
+        persistPerson(indexName = indexName).second
+        val persons = listOf(persistPerson(indexName = indexName).second, persistPerson(indexName = indexName).second)
         val personIds = persons.map { person -> person.id }
         refreshIndex(indexName)
         // when
@@ -137,9 +139,9 @@ class PersonServiceIntegrationTest : AbstractServiceIntegrationTest() {
         // given
         val matchingName = "AbC"
         val indexName = prepareIndex()
-        val matchingPerson1 = persistPerson(firstName = matchingName, indexName = indexName)
-        val matchingPerson2 = persistPerson(firstName = matchingName, indexName = indexName)
-        val matchingPerson3 = persistPerson(firstName = matchingName, indexName = indexName)
+        persistPerson(firstName = matchingName, indexName = indexName)
+        persistPerson(firstName = matchingName, indexName = indexName)
+        persistPerson(firstName = matchingName, indexName = indexName)
         val notMatchingPerson = persistPerson(indexName = indexName)
         val personFilter = PersonFilter(matchingName, 0, 2);
         refreshIndex(indexName)

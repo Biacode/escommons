@@ -25,9 +25,8 @@ class EsCommonsRestClientConfiguration {
 
     //region Public methods
     @Bean
-    fun esCommonsRestClient(): RestHighLevelClient {
-        return RestHighLevelClient(RestClient.builder(HttpHost.create("http://$esCommonsHost:$esCommonsHttpPort")))
-    }
+    fun esCommonsRestClient(): RestHighLevelClient =
+            RestHighLevelClient(RestClient.builder(HttpHost.create("http://$esCommonsHost:$esCommonsHttpPort")))
     //endregion
 
 }
