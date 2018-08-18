@@ -255,6 +255,12 @@ project(':escommons-example') {
     bootJar {
         baseName = 'escommons-example'
         mainClassName = 'org.biacode.escommons.example.MainApplication'
+        manifest {
+            attributes 'Start-Class': 'org.biacode.escommons.example.MainApplication'
+            attributes 'Main-Class': 'org.springframework.boot.loader.PropertiesLauncher'
+        }
+        classifier = 'boot'
+        launchScript()
     }
 
     dependencies {
