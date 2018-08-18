@@ -9,5 +9,4 @@ import org.springframework.stereotype.Component
  * Time: 5:25 PM
  */
 @Component
-class PersonControllerImpl : PersonController {
-}
+class PersonControllerImpl : PersonController

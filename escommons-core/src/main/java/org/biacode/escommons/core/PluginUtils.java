@@ -20,14 +20,14 @@ public class PluginUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PluginUtils.class);
 
-    //region Utility methods
+    //region Public methods
     public void addPlugins(final Environment environment) {
         LOGGER.debug("Trying to add additional plugins from classpath.");
         getPluginsPath().ifPresent(it -> {
             try {
                 final String pluginFile = it.getFile();
                 final File pluginsFile = environment.pluginsFile().toFile();
-                LOGGER.debug("Copying plugin - {} to plugins file - {}", pluginFile);
+                LOGGER.debug("Copying plugin - {} to plugins file - {}", pluginFile, pluginFile);
                 FileUtils.copyDirectory(new File(it.getFile()), pluginsFile);
             } catch (final IOException e) {
                 LOGGER.error("Error occurred while trying to load addition plugins {}", e);
@@ -35,8 +35,10 @@ public class PluginUtils {
             }
         });
     }
+    //endregion
 
-    public Optional<URL> getPluginsPath() {
+    //region Utility methods
+    private Optional<URL> getPluginsPath() {
         return Optional.ofNullable(getClass().getClassLoader().getResource("plugins"));
     }
     //endregion

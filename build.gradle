@@ -1,14 +1,10 @@
 buildscript {
     ext {
-        kotlinVersion = "1.2.41"
-        springVersion = '4.3.9.RELEASE'
-        springBootVersion = "1.5.4.RELEASE"
+        kotlinVersion = "1.2.60"
+        springVersion = '5.0.8.RELEASE'
+        springBootVersion = "2.0.4.RELEASE"
         elasticSearchVersion = '6.2.2'
-        javaxServletApiVersion = '3.1.0'
-        javaxRsApiVersion = '2.0.1'
-        jerseyContainterServletCoreVersion = '2.25.1'
-        slfj4Version = '1.7.25'
-        jacksonVersion = '2.8.9'
+        jacksonVersion = '2.9.6'
         apacheCommonsLang3Version = '3.6'
         apacheCommonsIoVersion = '2.5'
         jsr305Version = '3.0.2'
@@ -17,7 +13,7 @@ buildscript {
         assertJVersion = '3.8.0'
         sonarqubeVersion = '2.6'
         vavrVersion = "0.9.0"
-        propDepsPluginVersion = '0.0.9.RELEASE'
+        propDepsPluginVersion = '0.0.10.RELEASE'
     }
     repositories {
         mavenLocal()
@@ -59,7 +55,6 @@ allprojects {
     apply plugin: "eclipse"
     apply plugin: 'idea'
     apply plugin: 'signing'
-    apply plugin: 'maven'
 
     apply plugin: 'propdeps'
     apply plugin: 'propdeps-maven'
@@ -73,8 +68,16 @@ allprojects {
     }
 
     group = 'org.biacode.escommons'
-    version = '6.2.2_0.1.1-SNAPSHOT'
+    version = '6.2.2_0.5.1-SNAPSHOT'
     sourceCompatibility = 1.8
+
+    configurations.all {
+        exclude group: "org.apache.logging.log4j", module: 'log4j-to-slf4j'
+    }
+
+    task makePretty(type: Delete) {
+        delete 'out'
+    }
 
     task javadocJar(type: Jar) {
         classifier = 'javadoc'
@@ -103,8 +106,6 @@ allprojects {
         mavenCentral()
         jcenter()
     }
-
-//    archivesBaseName = "custom-name"
 
     uploadArchives {
         repositories {
@@ -153,9 +154,11 @@ allprojects {
 
     dependencies {
         compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
-        compile "org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}"
+        compile("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
+        compile("org.slf4j:slf4j-api:1.7.25")
+        compile("org.slf4j:log4j-over-slf4j:1.7.25")
+//        compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
         compile("org.springframework:spring-context:$springVersion")
-        compile("org.slf4j:slf4j-api:$slfj4Version")
         compile("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
         compile("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
         compile("com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion")
@@ -173,44 +176,19 @@ allprojects {
     compileJava.dependsOn(processResources)
 }
 
-project(':api:rest-rs') {
-    dependencies {
-        compile project(':escommons-persistence')
-        compile project(':api:rest-model')
-        compileOnly("javax.servlet:javax.servlet-api:$javaxServletApiVersion")
-        testCompile("org.glassfish.jersey.containers:jersey-container-servlet-core:$jerseyContainterServletCoreVersion")
-    }
-}
-
-project(':api:rest-boot') {
-    dependencies {
-        compile project(':escommons-persistence')
-        compile project(':api:rest-model')
-        compile("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
-        compile("org.springframework.boot:spring-boot-starter-jersey:$springBootVersion")
-    }
-}
-
-project(':api:rest-client') {
-    dependencies {
-        compile project(':api:rest-model')
-    }
-}
-
-project(':api:rest-model') {
-    dependencies {
-        compile("javax.ws.rs:javax.ws.rs-api:$javaxRsApiVersion")
-    }
-}
-
 project(':escommons-core') {
+
+    apply plugin: 'maven'
+
     dependencies {
-        compile("org.elasticsearch:elasticsearch:${elasticSearchVersion}")
         compile("org.elasticsearch.client:elasticsearch-rest-high-level-client:${elasticSearchVersion}")
     }
 }
 
 project(':escommons-starter-core') {
+
+    apply plugin: 'maven'
+
     dependencies {
         compile project(':escommons-persistence')
         compile("org.springframework.boot:spring-boot-starter:$springBootVersion")
@@ -219,33 +197,46 @@ project(':escommons-starter-core') {
 }
 
 project(':escommons-test') {
+
+    apply plugin: 'maven'
+
     dependencies {
         compile project(':escommons-persistence')
-        compile("org.elasticsearch.plugin:transport-netty4-client:${elasticSearchVersion}")
         compile("org.elasticsearch.client:transport:${elasticSearchVersion}")
         compile("org.codelibs.elasticsearch.lib:plugin-classloader:$elasticSearchVersion")
         compile("org.springframework:spring-test:$springVersion")
         compile("junit:junit:$junitVersion")
         compile("org.easymock:easymock:$easymockVersion")
         compile("org.assertj:assertj-core:$assertJVersion")
-        testCompile("org.slf4j:slf4j-simple:$slfj4Version")
     }
 }
 
 project(':escommons-persistence') {
+
+    apply plugin: 'maven'
+
     dependencies {
         compile project(':escommons-toolkit')
     }
 }
 
 project(':escommons-toolkit') {
+
+    apply plugin: 'maven'
+
     dependencies {
         compile project(':escommons-core')
         compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
+        compile("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:$jacksonVersion")
+        compile("com.fasterxml.jackson.module:jackson-module-parameter-names:$jacksonVersion")
+        compile("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
     }
 }
 
 project(':integration-tests') {
+
+    apply plugin: 'maven'
+
     dependencies {
     }
 }
@@ -254,9 +245,13 @@ project(':escommons-example') {
 
     apply plugin: "org.springframework.boot"
 
-    bootRepackage {
-        mainClass = "org.biacode.escommons.example.MainApplication"
-        executable = true
+    jar {
+        enabled = true
+    }
+
+    bootJar {
+        baseName = 'escommons-example'
+        mainClassName = 'org.biacode.escommons.example.MainApplication'
     }
 
     dependencies {

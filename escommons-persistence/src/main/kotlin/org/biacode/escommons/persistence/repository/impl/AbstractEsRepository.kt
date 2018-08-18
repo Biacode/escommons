@@ -29,13 +29,13 @@ abstract class AbstractEsRepository<T : AbstractEsDocument> : EsRepository<T> {
 
     //region Dependencies
     @Autowired
+    private lateinit var jsonComponent: JsonComponent
+
+    @Autowired
     private lateinit var esCommonsRestClient: RestHighLevelClient
 
     @Autowired
     private lateinit var searchResponseComponent: SearchResponseComponent
-
-    @Autowired
-    private lateinit var jsonComponent: JsonComponent
     //endregion
 
     //region Protected methods
@@ -126,6 +126,7 @@ abstract class AbstractEsRepository<T : AbstractEsDocument> : EsRepository<T> {
     //region Companion object
     companion object {
         private val LOGGER = LoggerFactory.getLogger(AbstractEsRepository::class.java)
+
         private const val DOCUMENT_TYPE = "doc"
     }
     //endregion

@@ -39,28 +39,23 @@ class SearchResponseComponentImpl : SearchResponseComponent {
         return document
     }
 
-    override fun <T : AbstractEsDocument> convertSearchResponseToDocuments(getResponse: SearchResponse, clazz: Class<T>): List<T> {
-        return extractDocuments(getResponse.hits, clazz)
-    }
+    override fun <T : AbstractEsDocument> convertSearchResponseToDocuments(getResponse: SearchResponse, clazz: Class<T>): List<T> =
+            extractDocuments(getResponse.hits, clazz)
 
-    override fun convertToIdsList(searchResponse: SearchResponse): List<String> {
-        return Arrays
-                .stream(searchResponse.hits.hits)
-                .map<String>({ it.id })
-                .collect(toList())
-    }
+    override fun convertToIdsList(searchResponse: SearchResponse): List<String> = Arrays
+            .stream(searchResponse.hits.hits)
+            .map<String> { it.id }
+            .collect(toList())
     //endregion
 
     //region Utility methods
-    private fun <T : AbstractEsDocument> extractDocuments(searchHits: SearchHits, clazz: Class<T>): List<T> {
-        return Stream
-                .of(*searchHits.hits)
-                .map { searchHitFields ->
-                    val document = jsonComponent.deserializeFromString(searchHitFields.sourceAsString, clazz)
-                    document.id = searchHitFields.id
-                    document
-                }
-                .collect(toList())
-    }
+    private fun <T : AbstractEsDocument> extractDocuments(searchHits: SearchHits, clazz: Class<T>): List<T> = Stream
+            .of(*searchHits.hits)
+            .map { searchHitFields ->
+                val document = jsonComponent.deserializeFromString(searchHitFields.sourceAsString, clazz)
+                document.id = searchHitFields.id
+                document
+            }
+            .collect(toList())
     //endregion
 }

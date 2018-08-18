@@ -102,7 +102,8 @@ class EsRepositoryIntegrationTest : AbstractEsCommonsIntegrationTest() {
     fun `test get single document`() {
         // given
         val indexName = prepareIndex()
-        val otherPerson = persistPerson(indexName = indexName).second
+        // other person
+        persistPerson(indexName = indexName).second
         val person = persistPerson(indexName = indexName).second
         refreshIndex(indexName)
         // when
@@ -118,8 +119,9 @@ class EsRepositoryIntegrationTest : AbstractEsCommonsIntegrationTest() {
     fun `test get multiple documents`() {
         // given
         val indexName = prepareIndex()
-        val otherPerson = persistPerson(indexName = indexName).second
-        val persons = listOf<Person>(persistPerson(indexName = indexName).second, persistPerson(indexName = indexName).second)
+        // other person
+        persistPerson(indexName = indexName).second
+        val persons = listOf(persistPerson(indexName = indexName).second, persistPerson(indexName = indexName).second)
         val personIds = persons.map { person -> person.id }
         refreshIndex(indexName)
         // when
