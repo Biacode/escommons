@@ -4,7 +4,7 @@ buildscript {
         springVersion = '5.0.5.RELEASE'
         springBootVersion = "2.0.1.RELEASE"
         elasticSearchVersion = '6.3.2'
-        jacksonVersion = '2.9.6'
+        jacksonVersion = '2.9.5'
         apacheCommonsLang3Version = '3.6'
         apacheCommonsIoVersion = '2.5'
         jsr305Version = '3.0.2'
