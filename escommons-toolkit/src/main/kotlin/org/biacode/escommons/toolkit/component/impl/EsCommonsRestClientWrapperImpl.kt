@@ -83,6 +83,21 @@ class EsCommonsRestClientWrapperImpl : EsCommonsClientWrapper {
         )["acknowledged"]!!
     }
 
+    override fun removeAlias(indexName: String, aliasName: String): Boolean {
+        val serializedJson = jsonComponent.serialize(mapOf("actions" to listOf(mapOf("remove" to mapOf("index" to indexName, "alias" to aliasName)))), Map::class.java)
+        return jsonComponent.deserializeFromInputStreamWithTypeReference(
+                esClient.lowLevelClient.performRequest(
+                        HttpPost.METHOD_NAME,
+                        "/_aliases",
+                        mutableMapOf<String, String>(),
+                        StringEntity(serializedJson, ContentType.APPLICATION_JSON),
+                        BasicHeader("Content-Type", "application/json"),
+                        BasicHeader("Accept", "application/json")
+                ).entity.content,
+                object : TypeReference<Map<String, Boolean>>() {}
+        )["acknowledged"]!!
+    }
+
     override fun deleteIndices(vararg indexName: String): Boolean {
         val request = DeleteIndexRequest(*indexName)
         request.indicesOptions(IndicesOptions.lenientExpandOpen())

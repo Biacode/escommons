@@ -68,6 +68,21 @@ class EsCommonsClientWrapperIntegrationTest : AbstractEsCommonsIntegrationTest()
     }
 
     @Test
+    fun `test remove alias`() {
+        // given
+        createDummyIndex().let { indexName ->
+            // when
+            val aliasName = UUID.randomUUID().toString()
+            esCommonsClientWrapper.addAlias(indexName, aliasName)
+            esCommonsClientWrapper.refreshIndex(indexName)
+            esCommonsClientWrapper.removeAlias(indexName, aliasName).let {
+                // then
+                assertThat(it).isTrue()
+            }
+        }
+    }
+
+    @Test
     fun `test delete index`() {
         // given
         createDummyIndex().let { indexName ->

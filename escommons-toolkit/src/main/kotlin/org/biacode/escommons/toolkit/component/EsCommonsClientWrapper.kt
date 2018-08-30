@@ -14,6 +14,8 @@ interface EsCommonsClientWrapper {
 
     fun addAlias(indexName: String, aliasName: String): Boolean
 
+    fun removeAlias(indexName: String, aliasName: String): Boolean
+
     fun deleteIndices(vararg indexName: String): Boolean
 
     fun indexExists(indexName: String): Boolean
