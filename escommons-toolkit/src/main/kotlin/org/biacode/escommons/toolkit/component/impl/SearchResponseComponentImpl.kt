@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.util.*
 import java.util.stream.Collectors.toList
-import java.util.stream.Stream
 
 /**
  * Created by Arthur Asatryan.
@@ -49,13 +48,12 @@ class SearchResponseComponentImpl : SearchResponseComponent {
     //endregion
 
     //region Utility methods
-    private fun <T : AbstractEsDocument> extractDocuments(searchHits: SearchHits, clazz: Class<T>): List<T> = Stream
-            .of(*searchHits.hits)
+    private fun <T : AbstractEsDocument> extractDocuments(searchHits: SearchHits, clazz: Class<T>): List<T> = searchHits.hits
             .map { searchHitFields ->
                 val document = jsonComponent.deserializeFromString(searchHitFields.sourceAsString, clazz)
                 document.id = searchHitFields.id
                 document
             }
-            .collect(toList())
+            .toList()
     //endregion
 }
