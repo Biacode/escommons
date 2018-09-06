@@ -3,6 +3,7 @@ package org.biacode.escommons.core.model.response;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.biacode.escommons.core.model.document.AbstractEsDocument;
 
 import java.io.Serializable;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
  * Date: 7/10/17
  * Time: 6:11 PM
  */
-public class DocumentsAndTotalCount<T> implements Serializable {
+public class DocumentsAndTotalCount<T extends AbstractEsDocument> implements Serializable {
     private static final long serialVersionUID = 3178283910546145486L;
 
     //region Properties
