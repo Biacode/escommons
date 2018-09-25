@@ -10,6 +10,7 @@ import org.elasticsearch.action.delete.DeleteRequest
 import org.elasticsearch.action.get.GetRequest
 import org.elasticsearch.action.get.MultiGetRequest
 import org.elasticsearch.action.index.IndexRequest
+import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.client.RestHighLevelClient
 import org.elasticsearch.common.xcontent.XContentType
 import org.slf4j.LoggerFactory
@@ -56,7 +57,7 @@ abstract class AbstractEsRepository<T : AbstractEsDocument> : EsRepository<T> {
     //region Concrete methods
     override fun save(document: T, indexName: String): Boolean {
         val index = esCommonsRestClient
-                .index(IndexRequest(indexName, DOCUMENT_TYPE, document.id).source(jsonComponent.serialize(document, clazz), XContentType.JSON))
+                .index(IndexRequest(indexName, DOCUMENT_TYPE, document.id).source(jsonComponent.serialize(document, clazz), XContentType.JSON), RequestOptions.DEFAULT)
         return index.shardInfo.failed <= 0
     }
 
@@ -68,21 +69,21 @@ abstract class AbstractEsRepository<T : AbstractEsDocument> : EsRepository<T> {
                             .source(jsonComponent.serialize(it, clazz), XContentType.JSON)
             )
         }
-        return !esCommonsRestClient.bulk(bulkRequest).hasFailures()
+        return !esCommonsRestClient.bulk(bulkRequest, RequestOptions.DEFAULT).hasFailures()
     }
 
     override fun delete(id: String, indexName: String): Boolean {
-        return esCommonsRestClient.delete(DeleteRequest(indexName, DOCUMENT_TYPE, id)).shardInfo.failed <= 0
+        return esCommonsRestClient.delete(DeleteRequest(indexName, DOCUMENT_TYPE, id), RequestOptions.DEFAULT).shardInfo.failed <= 0
     }
 
     override fun delete(ids: List<String>, indexName: String): Boolean {
         val bulkRequest = BulkRequest()
         ids.forEach { bulkRequest.add(DeleteRequest(indexName, DOCUMENT_TYPE, it)) }
-        return esCommonsRestClient.bulk(bulkRequest).hasFailures()
+        return esCommonsRestClient.bulk(bulkRequest, RequestOptions.DEFAULT).hasFailures()
     }
 
     override fun findById(id: String, indexName: String): Optional<T> {
-        val getResponse = esCommonsRestClient.get(GetRequest(indexName, DOCUMENT_TYPE, id))
+        val getResponse = esCommonsRestClient.get(GetRequest(indexName, DOCUMENT_TYPE, id), RequestOptions.DEFAULT)
         return if (!getResponse.isExists) {
             Optional.empty()
         } else Optional.of(searchResponseComponent.convertGetResponseToDocument(getResponse, clazz))
@@ -91,7 +92,7 @@ abstract class AbstractEsRepository<T : AbstractEsDocument> : EsRepository<T> {
     override fun findByIds(ids: List<String>, indexName: String): List<T> {
         val multiGetRequest = MultiGetRequest()
         ids.forEach { multiGetRequest.add(indexName, DOCUMENT_TYPE, it) }
-        val multiGetResponse = esCommonsRestClient.multiGet(multiGetRequest)
+        val multiGetResponse = esCommonsRestClient.mget(multiGetRequest, RequestOptions.DEFAULT)
         return multiGetResponse.responses.filter { it.response.isExists }.map { jsonComponent.deserializeFromString(it.response.sourceAsString, clazz) }
     }
 
