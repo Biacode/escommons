@@ -1,9 +1,9 @@
 package org.biacode.escommons.persistence.repository
 
-import org.apache.http.message.BasicHeader
 import org.assertj.core.api.Assertions.assertThat
 import org.biacode.escommons.core.test.AbstractEsCommonsIntegrationTest
 import org.biacode.escommons.toolkit.component.EsCommonsClientWrapper
+import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.client.RestHighLevelClient
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -32,10 +32,7 @@ class EsRepositoryIntegrationTest : AbstractEsCommonsIntegrationTest() {
     //region Test methods
     @Test
     fun `test is alive`() {
-        esClient.ping(
-                BasicHeader("Content-Type", "application/json"),
-                BasicHeader("Accept", "application/json")
-        )
+        esClient.ping(RequestOptions.DEFAULT)
     }
 
     @Test

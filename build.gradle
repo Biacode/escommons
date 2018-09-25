@@ -1,9 +1,9 @@
 buildscript {
     ext {
-        kotlinVersion = "1.2.61"
+        kotlinVersion = "1.2.70"
         springVersion = '5.0.5.RELEASE'
         springBootVersion = "2.0.1.RELEASE"
-        elasticSearchVersion = '6.3.2'
+        elasticSearchVersion = '6.4.1'
         jacksonVersion = '2.9.5'
         apacheCommonsLang3Version = '3.6'
         apacheCommonsIoVersion = '2.5'
@@ -70,7 +70,7 @@ allprojects {
     }
 
     group = 'org.biacode.escommons'
-    version = '6.2.2_0.9.5-SNAPSHOT'
+    version = '6.4.1_0.0.1-SNAPSHOT'
     sourceCompatibility = 1.8
 
     configurations.all {

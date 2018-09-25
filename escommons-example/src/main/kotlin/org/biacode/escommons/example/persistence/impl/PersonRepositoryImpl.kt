@@ -7,6 +7,7 @@ import org.biacode.escommons.example.persistence.PersonRepository
 import org.biacode.escommons.persistence.repository.impl.AbstractEsRepository
 import org.biacode.escommons.toolkit.component.SearchResponseComponent
 import org.elasticsearch.action.search.SearchRequest
+import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.client.RestHighLevelClient
 import org.elasticsearch.index.query.QueryBuilders.boolQuery
 import org.elasticsearch.index.query.QueryBuilders.termQuery
@@ -38,7 +39,7 @@ class PersonRepositoryImpl : AbstractEsRepository<Person>(), PersonRepository {
         sourceBuilder.query(filterQuery).from(filter.from).size(filter.size)
         val searchRequest = SearchRequest()
         searchRequest.source(sourceBuilder)
-        val searchResponse = esCommonsRestClient.search(searchRequest)
+        val searchResponse = esCommonsRestClient.search(searchRequest, RequestOptions.DEFAULT)
         return searchResponseComponent.convertToDocumentsAndTotalCount(searchResponse, Person::class.java)
     }
     //endregion

@@ -1,12 +1,12 @@
 package org.biacode.escommons.example.service
 
 import org.apache.commons.lang3.RandomUtils
-import org.apache.http.message.BasicHeader
 import org.assertj.core.api.Assertions
 import org.biacode.escommons.example.domain.Person
 import org.biacode.escommons.example.filter.PersonFilter
 import org.biacode.escommons.example.test.AbstractServiceIntegrationTest
 import org.biacode.escommons.toolkit.component.EsCommonsClientWrapper
+import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.client.RestHighLevelClient
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -36,10 +36,7 @@ class PersonServiceIntegrationTest : AbstractServiceIntegrationTest() {
     //region Test methods
     @Test
     fun `test is alive`() {
-        esClient.ping(
-                BasicHeader("Content-Type", "application/json"),
-                BasicHeader("Accept", "application/json")
-        )
+        esClient.ping(RequestOptions.DEFAULT)
     }
 
     @Test
