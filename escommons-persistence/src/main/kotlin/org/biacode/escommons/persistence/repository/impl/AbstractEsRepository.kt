@@ -62,6 +62,9 @@ abstract class AbstractEsRepository<T : AbstractEsDocument> : EsRepository<T> {
     }
 
     override fun save(documents: List<T>, indexName: String): Boolean {
+        if (documents.isEmpty()) {
+            return false
+        }
         val bulkRequest = BulkRequest()
         documents.forEach {
             bulkRequest.add(
