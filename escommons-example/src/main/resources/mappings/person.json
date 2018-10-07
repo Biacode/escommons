@@ -1,0 +1,13 @@
+{
+  "properties": {
+    "firstName": {
+      "type": "keyword"
+    },
+    "lastName": {
+      "type": "keyword"
+    },
+    "age": {
+      "type": "integer"
+    }
+  }
+}

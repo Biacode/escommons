@@ -1,33 +1,67 @@
 buildscript {
     ext {
-        springVersion = '4.3.9.RELEASE'
-        springBootVersion = "1.5.4.RELEASE"
-        elasticSearchVersion = '5.4.0'
-        javaxServletApiVersion = '3.1.0'
-        javaxRsApiVersion = '2.0.1'
-        slfj4ApiVersion = '1.7.25'
-        log4jVersion = '2.7'
-        jacksonVersion = '2.8.9'
+        kotlinVersion = "1.2.71"
+        springVersion = '5.0.5.RELEASE'
+        springBootVersion = "2.0.1.RELEASE"
+        elasticSearchVersion = '6.4.1'
+        jacksonVersion = '2.9.5'
         apacheCommonsLang3Version = '3.6'
         apacheCommonsIoVersion = '2.5'
         jsr305Version = '3.0.2'
         junitVersion = '4.12'
         easymockVersion = '3.4'
         assertJVersion = '3.8.0'
-        sonarqubeVersion = '2.5'
+        sonarqubeVersion = '2.6'
+        vavrVersion = "0.9.0"
+        slf4jVersion = "1.7.25"
+        log4jVersion = "2.11.1"
+        propDepsPluginVersion = '0.0.10.RELEASE'
     }
     repositories {
+        mavenLocal()
         mavenCentral()
+        jcenter()
+        maven { url 'http://repo.spring.io/plugins-release' }
     }
     dependencies {
         classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:$sonarqubeVersion")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
+        classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
+        classpath("io.spring.gradle:propdeps-plugin:${propDepsPluginVersion}")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: "org.sonarqube"
+apply plugin: 'jacoco'
+
+sonarqube {
+    properties {
+        property "sonar.sourceEncoding", "UTF-8"
+        property "sonar.projectName", "escommons"
+        property "sonar.projectKey", "org.biacode.escommons"
+        property "sonar.organization", "escommons"
+        property "sonar.host.url", "https://sonarcloud.io"
+        property "sonar.language", "java"
+        property "sonar.login", System.getenv("SONAR_TOKEN")
+        property "sonar.jacoco.reportPaths", "${project.buildDir}/jacoco/test.exec"
+        property "sonar.exclusions", ["**com/biacode/escommons/api/model/**", "**com/biacode/escommons/api/client/**"]
     }
 }
 
 allprojects {
 
     apply plugin: 'java'
+    apply plugin: "kotlin"
+    apply plugin: "kotlin-spring"
+    apply plugin: "eclipse"
+    apply plugin: 'idea'
     apply plugin: 'signing'
+
+    apply plugin: 'propdeps'
+    apply plugin: 'propdeps-maven'
+    apply plugin: 'propdeps-idea'
+    apply plugin: 'propdeps-eclipse'
 
     if (System.env['DEPLOY_TO_NEXUS'] != null) {
         signing {
@@ -36,8 +70,16 @@ allprojects {
     }
 
     group = 'org.biacode.escommons'
-    version = '1.0.0'
+    version = '6.4.1_0.1.6-SNAPSHOT'
     sourceCompatibility = 1.8
+
+    configurations.all {
+        exclude group: "org.apache.logging.log4j", module: 'log4j-to-slf4j'
+    }
+
+    task makePretty(type: Delete) {
+        delete 'out'
+    }
 
     task javadocJar(type: Jar) {
         classifier = 'javadoc'
@@ -53,107 +95,20 @@ allprojects {
         archives javadocJar, sourcesJar
     }
 
+    compileKotlin {
+        kotlinOptions.jvmTarget = "1.8"
+    }
+
+    compileTestKotlin {
+        kotlinOptions.jvmTarget = "1.8"
+    }
+
     repositories {
         mavenLocal()
         mavenCentral()
         jcenter()
     }
 
-    dependencies {
-        compile "org.springframework:spring-context:$springVersion"
-        compile "org.slf4j:slf4j-api:$slfj4ApiVersion"
-        compile "com.fasterxml.jackson.core:jackson-core:$jacksonVersion"
-        compile "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
-        compile "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion"
-        compile "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:$jacksonVersion"
-        compile "org.apache.commons:commons-lang3:$apacheCommonsLang3Version"
-        compile "commons-io:commons-io:$apacheCommonsIoVersion"
-        compile "com.google.code.findbugs:jsr305:$jsr305Version"
-        testCompile "junit:junit:$junitVersion"
-        testCompile "org.easymock:easymock:$easymockVersion"
-        testCompile "org.assertj:assertj-core:$assertJVersion"
-    }
-}
-
-apply plugin: "org.sonarqube"
-apply plugin: 'jacoco'
-
-sonarqube {
-    properties {
-        property "sonar.sourceEncoding", "UTF-8"
-        property "sonar.projectName", "escommons"
-        property "sonar.projectKey", "escommons"
-        property "sonar.organization", "escommons"
-        property "sonar.host.url", "https://sonarcloud.io"
-        property "sonar.language", "java"
-        property "sonar.login", System.getenv("SONAR_TOKEN")
-        property "sonar.jacoco.reportPaths", "${project.buildDir}/jacoco/test.exec"
-        property "sonar.exclusions", ["**com/biacode/escommons/api/model/**", "**com/biacode/escommons/api/client/**"]
-    }
-}
-
-project(':api:rest-rs') {
-
-    apply plugin: 'maven'
-
-    uploadArchives {
-        repositories {
-            mavenDeployer {
-                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-
-                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2") {
-                    authentication(userName: System.getenv('NEXUS_USERNAME'), password: System.getenv('NEXUS_PASSWORD'))
-                }
-
-                snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots") {
-                    authentication(userName: System.getenv('NEXUS_USERNAME'), password: System.getenv('NEXUS_PASSWORD'))
-                }
-
-                pom.project {
-                    name 'EsCommons'
-                    packaging 'jar'
-                    // optionally artifactId can be defined here
-                    description 'Elasticsearch commons library.'
-                    url 'https://github.com/Biacode/escommons'
-
-                    scm {
-                        connection 'scm:git:git@github.com:Biacode/escommons.git'
-                        developerConnection 'scm:git:ssh://github.com:Biacode/escommons.git'
-                        url 'https://github.com/Biacode/escommons/tree/master'
-                    }
-
-                    licenses {
-                        license {
-                            name 'MIT License'
-                            url 'https://opensource.org/licenses/MIT'
-                        }
-                    }
-
-                    developers {
-                        developer {
-                            id 'biacode'
-                            name 'Artur Asatryan'
-                            email 'biacoder@gmail.com'
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    dependencies {
-        compile project(':core')
-        compile project(':api:rest-model')
-        compile "javax.ws.rs:javax.ws.rs-api:$javaxRsApiVersion"
-        compileOnly "javax.servlet:javax.servlet-api:$javaxServletApiVersion"
-        testCompile "org.glassfish.jersey.containers:jersey-container-servlet-core:2.25.1"
-    }
-}
-
-project(':api:rest-boot') {
-
-    apply plugin: 'maven'
-
     uploadArchives {
         repositories {
             mavenDeployer {
@@ -200,184 +155,123 @@ project(':api:rest-boot') {
     }
 
     dependencies {
-        compile project(':core')
-        compile project(':api:rest-model')
-        compile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
-        compile "org.springframework.boot:spring-boot-starter-jersey:$springBootVersion"
+        compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
+        compile("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
+        compile("org.slf4j:slf4j-api:$slf4jVersion")
+        compile("org.slf4j:log4j-over-slf4j:$slf4jVersion")
+        compile("org.springframework:spring-context:$springVersion")
+        compile("org.apache.logging.log4j:log4j-core:$log4jVersion")
+        compile("org.apache.logging.log4j:log4j-api:$log4jVersion")
+        compile("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
+        compile("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
+        compile("com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion")
+        compile("com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:$jacksonVersion")
+        compile("org.apache.commons:commons-lang3:$apacheCommonsLang3Version")
+        compile("commons-io:commons-io:$apacheCommonsIoVersion")
+        compile("io.vavr:vavr:${vavrVersion}")
+        compile("com.google.code.findbugs:jsr305:$jsr305Version")
+        testCompile project(':escommons-test')
+        testCompile("junit:junit:$junitVersion")
+        testCompile("org.easymock:easymock:$easymockVersion")
+        testCompile("org.assertj:assertj-core:$assertJVersion")
     }
+
+    compileJava.dependsOn(processResources)
 }
 
-project(':api:rest-client') {
+project(':escommons-core') {
 
     apply plugin: 'maven'
-
-    uploadArchives {
-        repositories {
-            mavenDeployer {
-                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-
-                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2") {
-                    authentication(userName: "${System.getenv('NEXUS_USERNAME')}", password: "${System.getenv('NEXUS_PASSWORD')}")
-                }
-
-                snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots") {
-                    authentication(userName: "${System.getenv('NEXUS_USERNAME')}", password: "${System.getenv('NEXUS_PASSWORD')}")
-                }
-
-                pom.project {
-                    name 'EsCommons'
-                    packaging 'jar'
-                    // optionally artifactId can be defined here
-                    description 'Elasticsearch commons library.'
-                    url 'https://github.com/Biacode/escommons'
-
-                    scm {
-                        connection 'scm:git:git@github.com:Biacode/escommons.git'
-                        developerConnection 'scm:git:ssh://github.com:Biacode/escommons.git'
-                        url 'https://github.com/Biacode/escommons/tree/master'
-                    }
-
-                    licenses {
-                        license {
-                            name 'MIT License'
-                            url 'https://opensource.org/licenses/MIT'
-                        }
-                    }
-
-                    developers {
-                        developer {
-                            id 'biacode'
-                            name 'Artur Asatryan'
-                            email 'biacoder@gmail.com'
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     dependencies {
-        compile project(':api:rest-model')
-        compile "javax.ws.rs:javax.ws.rs-api:$javaxRsApiVersion"
+        compile("org.elasticsearch.client:elasticsearch-rest-high-level-client:${elasticSearchVersion}")
     }
 }
 
-project(':api:rest-model') {
+project(':escommons-starter-core') {
 
     apply plugin: 'maven'
-
-    uploadArchives {
-        repositories {
-            mavenDeployer {
-                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-
-                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2") {
-                    authentication(userName: "${System.getenv('NEXUS_USERNAME')}", password: "${System.getenv('NEXUS_PASSWORD')}")
-                }
-
-                snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots") {
-                    authentication(userName: "${System.getenv('NEXUS_USERNAME')}", password: "${System.getenv('NEXUS_PASSWORD')}")
-                }
-
-                pom.project {
-                    name 'EsCommons'
-                    packaging 'jar'
-                    // optionally artifactId can be defined here
-                    description 'Elasticsearch commons library.'
-                    url 'https://github.com/Biacode/escommons'
-
-                    scm {
-                        connection 'scm:git:git@github.com:Biacode/escommons.git'
-                        developerConnection 'scm:git:ssh://github.com:Biacode/escommons.git'
-                        url 'https://github.com/Biacode/escommons/tree/master'
-                    }
-
-                    licenses {
-                        license {
-                            name 'MIT License'
-                            url 'https://opensource.org/licenses/MIT'
-                        }
-                    }
-
-                    developers {
-                        developer {
-                            id 'biacode'
-                            name 'Artur Asatryan'
-                            email 'biacoder@gmail.com'
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-project(':core') {
-
-    apply plugin: 'maven'
-
-//    archivesBaseName = "custom-name"
-
-    uploadArchives {
-        repositories {
-            mavenDeployer {
-                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-
-                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2") {
-                    authentication(userName: "${System.getenv('NEXUS_USERNAME')}", password: "${System.getenv('NEXUS_PASSWORD')}")
-                }
-
-                snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots") {
-                    authentication(userName: "${System.getenv('NEXUS_USERNAME')}", password: "${System.getenv('NEXUS_PASSWORD')}")
-                }
-
-                pom.project {
-                    name 'EsCommons'
-                    packaging 'jar'
-                    // optionally artifactId can be defined here
-                    description 'Elasticsearch commons library.'
-                    url 'https://github.com/Biacode/escommons'
-
-                    scm {
-                        connection 'scm:git:git@github.com:Biacode/escommons.git'
-                        developerConnection 'scm:git:ssh://github.com:Biacode/escommons.git'
-                        url 'https://github.com/Biacode/escommons/tree/master'
-                    }
-
-                    licenses {
-                        license {
-                            name 'MIT License'
-                            url 'https://opensource.org/licenses/MIT'
-                        }
-                    }
-
-                    developers {
-                        developer {
-                            id 'biacode'
-                            name 'Artur Asatryan'
-                            email 'biacoder@gmail.com'
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     dependencies {
-        compile "org.elasticsearch:elasticsearch:${elasticSearchVersion}"
-        compile "org.elasticsearch.client:transport:${elasticSearchVersion}"
-        compile "org.elasticsearch.plugin:transport-netty4-client:${elasticSearchVersion}"
-        compile "org.apache.logging.log4j:log4j-core:${log4jVersion}"
+        compile project(':escommons-persistence')
+        compile("org.springframework.boot:spring-boot-starter:$springBootVersion")
+        optional("org.springframework.boot:spring-boot-configuration-processor:$springBootVersion")
+    }
+}
+
+project(':escommons-test') {
+
+    apply plugin: 'maven'
+
+    dependencies {
+        compile project(':escommons-persistence')
+        compile("org.elasticsearch.client:transport:${elasticSearchVersion}")
+        compile("org.codelibs.elasticsearch.lib:plugin-classloader:$elasticSearchVersion")
+        compile("org.codelibs.elasticsearch.module:analysis-common:$elasticSearchVersion")
+        compile("org.springframework:spring-test:$springVersion")
+        compile("junit:junit:$junitVersion")
+        compile("org.easymock:easymock:$easymockVersion")
+        compile("org.assertj:assertj-core:$assertJVersion")
+    }
+}
+
+project(':escommons-persistence') {
+
+    apply plugin: 'maven'
+
+    dependencies {
+        compile project(':escommons-toolkit')
+    }
+}
+
+project(':escommons-toolkit') {
+
+    apply plugin: 'maven'
+
+    dependencies {
+        compile project(':escommons-core')
+        compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
+        compile("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:$jacksonVersion")
+        compile("com.fasterxml.jackson.module:jackson-module-parameter-names:$jacksonVersion")
+        compile("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
     }
 }
 
 project(':integration-tests') {
+
+    apply plugin: 'maven'
+
     dependencies {
-        compile project(':core')
+    }
+}
+
+project(':escommons-example') {
+
+    apply plugin: "org.springframework.boot"
+
+    jar {
+        enabled = true
+    }
+
+    bootJar {
+        baseName = 'escommons-example'
+        mainClassName = 'org.biacode.escommons.example.MainApplication'
+        manifest {
+            attributes 'Start-Class': 'org.biacode.escommons.example.MainApplication'
+            attributes 'Main-Class': 'org.springframework.boot.loader.PropertiesLauncher'
+        }
+        classifier = 'boot'
+        launchScript()
+    }
+
+    dependencies {
+        compile project(':escommons-starter-core')
+        compile("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
+        compile("org.springframework.boot:spring-boot-starter-jersey:$springBootVersion")
         compile "org.elasticsearch:elasticsearch:${elasticSearchVersion}"
         compile "org.elasticsearch.client:transport:${elasticSearchVersion}"
         compile "org.elasticsearch.plugin:transport-netty4-client:${elasticSearchVersion}"
-        compile "org.apache.logging.log4j:log4j-core:${log4jVersion}"
-        testCompile "org.springframework:spring-test:$springVersion"
+        compile("org.elasticsearch.client:elasticsearch-rest-high-level-client:${elasticSearchVersion}")
+        testCompile project(':escommons-test')
     }
 }
