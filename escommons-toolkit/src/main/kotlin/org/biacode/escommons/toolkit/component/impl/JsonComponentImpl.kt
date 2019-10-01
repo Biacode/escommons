@@ -33,8 +33,8 @@ class JsonComponentImpl : JsonComponent {
         return objectMapper.reader().forType(typeReference).readValue(source)
     }
 
-    override fun <T> serialize(source: T, clazz: Class<T>): String {
-        return objectMapper.writer().forType(clazz).writeValueAsString(source)
+    override fun serialize(source: Any): String {
+        return objectMapper.writeValueAsString(source)
     }
     //endregion
 }

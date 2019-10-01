@@ -47,5 +47,5 @@ interface JsonComponent {
      * @param clazz  the clazz
      * @return the serialize string
     </T> */
-    fun <T> serialize(source: T, clazz: Class<T>): String
+    fun serialize(source: Any): String
 }

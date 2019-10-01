@@ -26,22 +26,22 @@ class SearchResponseComponentImpl : SearchResponseComponent {
     //endregion
 
     //region Public methods
-    override fun <T : AbstractEsDocument> convertToDocumentsAndTotalCount(searchResponse: SearchResponse, clazz: Class<T>): DocumentsAndTotalCount<T> {
+    override fun <T : AbstractEsDocument> documentsAndTotalCount(searchResponse: SearchResponse, clazz: Class<T>): DocumentsAndTotalCount<T> {
         val searchHits = searchResponse.hits
         val documents = extractDocuments(searchHits, clazz)
-        return DocumentsAndTotalCount(documents, searchHits.getTotalHits())
+        return DocumentsAndTotalCount(documents, searchHits.totalHits.value)
     }
 
-    override fun <T : AbstractEsDocument> convertGetResponseToDocument(getResponse: GetResponse, clazz: Class<T>): T {
+    override fun <T : AbstractEsDocument> document(getResponse: GetResponse, clazz: Class<T>): T {
         val document = jsonComponent.deserializeFromString(getResponse.sourceAsString, clazz)
         document.id = getResponse.id
         return document
     }
 
-    override fun <T : AbstractEsDocument> convertSearchResponseToDocuments(getResponse: SearchResponse, clazz: Class<T>): List<T> =
+    override fun <T : AbstractEsDocument> documents(getResponse: SearchResponse, clazz: Class<T>): List<T> =
             extractDocuments(getResponse.hits, clazz)
 
-    override fun convertToIdsList(searchResponse: SearchResponse): List<String> = Arrays
+    override fun ids(searchResponse: SearchResponse): List<String> = Arrays
             .stream(searchResponse.hits.hits)
             .map<String> { it.id }
             .collect(toList())

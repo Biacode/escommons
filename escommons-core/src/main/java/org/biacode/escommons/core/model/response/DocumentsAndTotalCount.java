@@ -17,7 +17,7 @@ public class DocumentsAndTotalCount<T extends AbstractEsDocument> implements Ser
     private static final long serialVersionUID = 3178283910546145486L;
 
     //region Properties
-    private transient List<T> documents;
+    private List<T> documents;
 
     private long totalCount;
     //endregion

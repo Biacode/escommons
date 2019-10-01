@@ -15,7 +15,6 @@ import static java.util.Collections.singletonList;
  * escommons.http.host=elasticsearch
  * escommons.http.port=9200
  * escommons.http.type=netty4
- * escommons.http.enabled=true
  * escommons.host=localhost
  * escommons.port=9372
  * escommons.scroll.size=100
@@ -86,11 +85,6 @@ public class EsCommonsProperties {
          */
         private String type = "netty4";
 
-        /**
-         * HTTP enabled
-         */
-        private Boolean enabled = true;
-
         public String getHost() {
             return host;
         }
@@ -113,14 +107,6 @@ public class EsCommonsProperties {
 
         public void setType(final String type) {
             this.type = type;
-        }
-
-        public Boolean getEnabled() {
-            return enabled;
-        }
-
-        public void setEnabled(final Boolean enabled) {
-            this.enabled = enabled;
         }
     }
 

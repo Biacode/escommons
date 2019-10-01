@@ -10,7 +10,7 @@ import org.elasticsearch.action.search.SearchRequestBuilder
  * Time: 4:49 PM
  */
 interface ScrollSearchComponent {
-    fun <T : AbstractEsDocument> getScrollResponse(
+    fun <T : AbstractEsDocument> scroll(
             searchRequestBuilder: SearchRequestBuilder,
             clazz: Class<T>,
             timeoutMillis: Long

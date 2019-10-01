@@ -30,7 +30,7 @@ public class PluginUtils {
                 LOGGER.debug("Copying plugin - {} to plugins file - {}", pluginFile, pluginFile);
                 FileUtils.copyDirectory(new File(it.getFile()), pluginsFile);
             } catch (final IOException e) {
-                LOGGER.error("Error occurred while trying to load addition plugins {}", e);
+                LOGGER.error("Error occurred while trying to load addition plugins", e);
                 throw new EsCommonsCoreRuntimeException("Error occurred while trying to load addition plugins", e);
             }
         });

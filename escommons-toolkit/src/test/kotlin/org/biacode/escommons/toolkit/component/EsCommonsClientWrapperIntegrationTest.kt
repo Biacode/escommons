@@ -13,6 +13,8 @@ import java.util.*
  */
 class EsCommonsClientWrapperIntegrationTest : AbstractEsCommonsIntegrationTest() {
 
+    override fun mappings(): String = "escommons_test_person"
+
     //region Dependencies
     @Autowired
     private lateinit var esCommonsClientWrapper: EsCommonsClientWrapper
@@ -23,9 +25,8 @@ class EsCommonsClientWrapperIntegrationTest : AbstractEsCommonsIntegrationTest()
     fun `test create index`() {
         // given
         val indexName = UUID.randomUUID().toString()
-        val mappingsName = "escommons_test_person"
         // when
-        esCommonsClientWrapper.createIndex(indexName, mappingsName).let {
+        esCommonsClientWrapper.createIndex(indexName, mappings()).let {
             // then
             assertThat(it).isTrue()
         }
@@ -36,11 +37,11 @@ class EsCommonsClientWrapperIntegrationTest : AbstractEsCommonsIntegrationTest()
         // given
         listOf(UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString())
                 .let { expectedIndices ->
-                    expectedIndices.forEach { esCommonsClientWrapper.createIndex(it, "escommons_test_person") }
+                    expectedIndices.forEach { esCommonsClientWrapper.createIndex(it, mappings()) }
                     // when
                     esCommonsClientWrapper.getIndices().let { indices ->
                         // then
-                        assertThat(indices).isNotNull.isNotEmpty.containsExactlyInAnyOrder(*expectedIndices.toTypedArray())
+                        assertThat(indices).isNotNull.isNotEmpty.containsAll(expectedIndices)
                     }
                 }
     }
@@ -112,8 +113,7 @@ class EsCommonsClientWrapperIntegrationTest : AbstractEsCommonsIntegrationTest()
     //region Utility methods
     private fun createDummyIndex(): String {
         val indexName = UUID.randomUUID().toString()
-        val mappingsName = "escommons_test_person"
-        esCommonsClientWrapper.createIndex(indexName, mappingsName)
+        esCommonsClientWrapper.createIndex(indexName, mappings())
         return indexName
     }
     //endregion

@@ -1,7 +1,7 @@
 package org.biacode.escommons.toolkit.component.impl
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.biacode.escommons.core.test.AbstractEsCommonsUnitTest
+import org.biacode.escommons.toolkit.test.AbstractEsCommonsToolkitUnitTest
 import org.easymock.TestSubject
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -14,7 +14,7 @@ import java.util.*
  * Date: 7/14/17
  * Time: 5:07 PM
  */
-class JsonComponentImplTest : AbstractEsCommonsUnitTest() {
+class JsonComponentImplTest : AbstractEsCommonsToolkitUnitTest() {
 
     //region Test subject and mocks
     @TestSubject
@@ -66,7 +66,7 @@ class JsonComponentImplTest : AbstractEsCommonsUnitTest() {
         // Replay
         replayAll()
         // Run test scenario
-        val result = jsonComponent.serialize(source, Map::class.java)
+        val result = jsonComponent.serialize(source)
         // Verify
         verifyAll()
         assertNotNull(result)

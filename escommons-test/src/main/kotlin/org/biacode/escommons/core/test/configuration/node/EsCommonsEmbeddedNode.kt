@@ -11,4 +11,4 @@ import org.elasticsearch.plugins.Plugin
  * Time: 6:11 PM
  */
 data class EsCommonsEmbeddedNode(val settings: Settings, var classpathPlugins: Collection<Class<out Plugin>>?)
-    : Node(InternalSettingsPreparer.prepareEnvironment(settings, null), classpathPlugins)
+    : Node(InternalSettingsPreparer.prepareEnvironment(settings, emptyMap(), null) { "escommons-node" }, classpathPlugins, false)

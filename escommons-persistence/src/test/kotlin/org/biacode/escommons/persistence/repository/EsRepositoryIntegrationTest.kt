@@ -17,6 +17,7 @@ import java.util.*
  */
 @ComponentScan("org.biacode.escommons.persistence.repository")
 class EsRepositoryIntegrationTest : AbstractEsCommonsIntegrationTest() {
+    override fun mappings(): String = "escommons_test_person"
 
     //region Dependencies
     @Autowired
@@ -132,7 +133,7 @@ class EsRepositoryIntegrationTest : AbstractEsCommonsIntegrationTest() {
     //region Utility methods
     private fun prepareIndex(): String {
         val indexName = UUID.randomUUID().toString()
-        esCommonsClientWrapper.createIndex(indexName, "escommons_test_person")
+        esCommonsClientWrapper.createIndex(indexName, mappings())
         return indexName
     }
 

@@ -19,7 +19,7 @@ interface SearchResponseComponent {
      * @param clazz          the clazz
      * @return the documents and total count
     </T> */
-    fun <T : AbstractEsDocument> convertToDocumentsAndTotalCount(searchResponse: SearchResponse, clazz: Class<T>): DocumentsAndTotalCount<T>
+    fun <T : AbstractEsDocument> documentsAndTotalCount(searchResponse: SearchResponse, clazz: Class<T>): DocumentsAndTotalCount<T>
 
     /**
      * Converts get response to documents and total count
@@ -29,7 +29,7 @@ interface SearchResponseComponent {
      * @param clazz       the clazz
      * @return the documents and total count
     </T> */
-    fun <T : AbstractEsDocument> convertGetResponseToDocument(getResponse: GetResponse, clazz: Class<T>): T
+    fun <T : AbstractEsDocument> document(getResponse: GetResponse, clazz: Class<T>): T
 
     /**
      * Convert search response to documents list.
@@ -39,7 +39,7 @@ interface SearchResponseComponent {
      * @param clazz       the clazz
      * @return the documents list
     </T> */
-    fun <T : AbstractEsDocument> convertSearchResponseToDocuments(getResponse: SearchResponse, clazz: Class<T>): List<T>
+    fun <T : AbstractEsDocument> documents(getResponse: SearchResponse, clazz: Class<T>): List<T>
 
     /**
      * Extracts _id fields from given search response
@@ -47,5 +47,5 @@ interface SearchResponseComponent {
      * @param searchResponse the search response
      * @return list of ids
      */
-    fun convertToIdsList(searchResponse: SearchResponse): List<String>
+    fun ids(searchResponse: SearchResponse): List<String>
 }
