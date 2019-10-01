@@ -51,13 +51,15 @@ abstract class AbstractEsRepository<T : AbstractEsDocument> : EsRepository<T> {
     //endregion
 
     //region Abstract Methods
-    fun getDocumentType(): String = "doc"
+    fun getDocumentType(): String = "_doc"
     //endregion
 
     //region Concrete methods
     override fun save(document: T, indexName: String): Boolean {
-        val index = esCommonsRestClient
-                .index(IndexRequest(indexName, DOCUMENT_TYPE, document.id).source(jsonComponent.serialize(document, clazz), XContentType.JSON), RequestOptions.DEFAULT)
+        val indexRequest = IndexRequest(indexName)
+                .id(document.id)
+                .source(jsonComponent.serialize(document), XContentType.JSON)
+        val index = esCommonsRestClient.index(indexRequest, RequestOptions.DEFAULT)
         return index.shardInfo.failed <= 0
     }
 
@@ -67,34 +69,38 @@ abstract class AbstractEsRepository<T : AbstractEsDocument> : EsRepository<T> {
         }
         val bulkRequest = BulkRequest()
         documents.forEach {
-            bulkRequest.add(
-                    IndexRequest(indexName, DOCUMENT_TYPE, it.id)
-                            .source(jsonComponent.serialize(it, clazz), XContentType.JSON)
-            )
+            val indexRequest = IndexRequest(indexName)
+                    .id(it.id)
+                    .source(jsonComponent.serialize(it), XContentType.JSON)
+            bulkRequest.add(indexRequest)
         }
         return !esCommonsRestClient.bulk(bulkRequest, RequestOptions.DEFAULT).hasFailures()
     }
 
     override fun delete(id: String, indexName: String): Boolean {
-        return esCommonsRestClient.delete(DeleteRequest(indexName, DOCUMENT_TYPE, id), RequestOptions.DEFAULT).shardInfo.failed <= 0
+        val deleteRequest = DeleteRequest(indexName).id(id)
+        return esCommonsRestClient.delete(deleteRequest, RequestOptions.DEFAULT).shardInfo.failed <= 0
     }
 
     override fun delete(ids: List<String>, indexName: String): Boolean {
         val bulkRequest = BulkRequest()
-        ids.forEach { bulkRequest.add(DeleteRequest(indexName, DOCUMENT_TYPE, it)) }
+        ids.forEach {
+            val deleteRequest = DeleteRequest(indexName).id(it)
+            bulkRequest.add(deleteRequest)
+        }
         return esCommonsRestClient.bulk(bulkRequest, RequestOptions.DEFAULT).hasFailures()
     }
 
     override fun findById(id: String, indexName: String): Optional<T> {
-        val getResponse = esCommonsRestClient.get(GetRequest(indexName, DOCUMENT_TYPE, id), RequestOptions.DEFAULT)
+        val getResponse = esCommonsRestClient.get(GetRequest(indexName, id), RequestOptions.DEFAULT)
         return if (!getResponse.isExists) {
             Optional.empty()
-        } else Optional.of(searchResponseComponent.convertGetResponseToDocument(getResponse, clazz))
+        } else Optional.of(searchResponseComponent.document(getResponse, clazz))
     }
 
     override fun findByIds(ids: List<String>, indexName: String): List<T> {
         val multiGetRequest = MultiGetRequest()
-        ids.forEach { multiGetRequest.add(indexName, DOCUMENT_TYPE, it) }
+        ids.forEach { multiGetRequest.add(indexName, it) }
         val multiGetResponse = esCommonsRestClient.mget(multiGetRequest, RequestOptions.DEFAULT)
         return multiGetResponse.responses.filter { it.response.isExists }.map { jsonComponent.deserializeFromString(it.response.sourceAsString, clazz) }
     }
@@ -131,7 +137,7 @@ abstract class AbstractEsRepository<T : AbstractEsDocument> : EsRepository<T> {
     companion object {
         private val LOGGER = LoggerFactory.getLogger(AbstractEsRepository::class.java)
 
-        private const val DOCUMENT_TYPE = "doc"
+        private const val DOCUMENT_TYPE = "_doc"
     }
     //endregion
 }

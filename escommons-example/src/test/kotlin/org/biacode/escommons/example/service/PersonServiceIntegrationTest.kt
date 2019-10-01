@@ -22,6 +22,8 @@ import java.util.*
 @Configuration
 class PersonServiceIntegrationTest : AbstractServiceIntegrationTest() {
 
+    override fun mappings(): String = "person"
+
     //region Dependencies
     @Autowired
     private lateinit var esClient: RestHighLevelClient

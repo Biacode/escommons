@@ -10,11 +10,10 @@ import org.elasticsearch.action.search.SearchRequest
 import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.client.RestHighLevelClient
 import org.elasticsearch.index.query.QueryBuilders.boolQuery
-import org.elasticsearch.index.query.QueryBuilders.termQuery
+import org.elasticsearch.index.query.QueryBuilders.matchQuery
 import org.elasticsearch.search.builder.SearchSourceBuilder
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-
 
 /**
  * Created by Arthur Asatryan.
@@ -34,13 +33,11 @@ class PersonRepositoryImpl : AbstractEsRepository<Person>(), PersonRepository {
 
     //region Public methods
     override fun filter(filter: PersonFilter, indexName: String): DocumentsAndTotalCount<Person> {
-        val filterQuery = boolQuery().should(termQuery(FIRST_NAME, filter.firstName))
-        val sourceBuilder = SearchSourceBuilder()
-        sourceBuilder.query(filterQuery).from(filter.from).size(filter.size)
-        val searchRequest = SearchRequest()
-        searchRequest.source(sourceBuilder)
+        val filterQuery = boolQuery().must(matchQuery(FIRST_NAME, filter.firstName))
+        val sourceBuilder = SearchSourceBuilder().query(filterQuery).from(filter.from).size(filter.size)
+        val searchRequest = SearchRequest(indexName).source(sourceBuilder)
         val searchResponse = esCommonsRestClient.search(searchRequest, RequestOptions.DEFAULT)
-        return searchResponseComponent.convertToDocumentsAndTotalCount(searchResponse, Person::class.java)
+        return searchResponseComponent.documentsAndTotalCount(searchResponse, Person::class.java)
     }
     //endregion
 

@@ -1,5 +1,7 @@
 package org.biacode.escommons.toolkit.component
 
+import org.elasticsearch.common.settings.Settings
+
 /**
  * Created by Arthur Asatryan.
  * Date: 7/10/17
@@ -7,6 +9,8 @@ package org.biacode.escommons.toolkit.component
  */
 interface EsCommonsClientWrapper {
     fun createIndex(indexName: String, mappingsName: String): Boolean
+
+    fun createIndex(indexName: String, mappingsName: String, settings: Settings): Boolean
 
     fun getIndices(): Set<String>
 

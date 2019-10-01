@@ -2,8 +2,8 @@ package org.biacode.escommons.toolkit.component.impl
 
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.biacode.escommons.core.exception.EsCommonsCoreRuntimeException
-import org.biacode.escommons.core.test.AbstractEsCommonsUnitTest
 import org.biacode.escommons.toolkit.component.ResourceReaderComponent
+import org.biacode.escommons.toolkit.test.AbstractEsCommonsToolkitUnitTest
 import org.easymock.EasyMock.expect
 import org.easymock.Mock
 import org.easymock.TestSubject
@@ -17,7 +17,7 @@ import java.util.*
  * Date: 7/14/17
  * Time: 5:07 PM
  */
-class MappingsComponentImplTest : AbstractEsCommonsUnitTest() {
+class MappingsComponentImplTest : AbstractEsCommonsToolkitUnitTest() {
 
     //region Test subject and mocks
     @TestSubject

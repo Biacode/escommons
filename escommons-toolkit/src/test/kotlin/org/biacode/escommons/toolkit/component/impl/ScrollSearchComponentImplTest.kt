@@ -1,7 +1,7 @@
 package org.biacode.escommons.toolkit.component.impl
 
 import org.assertj.core.api.Assertions.assertThatThrownBy
-import org.biacode.escommons.core.test.AbstractEsCommonsUnitTest
+import org.biacode.escommons.toolkit.test.AbstractEsCommonsToolkitUnitTest
 import org.easymock.EasyMock
 import org.easymock.EasyMock.expect
 import org.easymock.Mock
@@ -17,7 +17,7 @@ import org.junit.Test
  * Date: 9/5/17
  * Time: 5:07 PM
  */
-class ScrollSearchComponentImplTest : AbstractEsCommonsUnitTest() {
+class ScrollSearchComponentImplTest : AbstractEsCommonsToolkitUnitTest() {
 
     //region Test subject and mocks
     @TestSubject
@@ -37,7 +37,7 @@ class ScrollSearchComponentImplTest : AbstractEsCommonsUnitTest() {
         expect(esClient.threadPool()).andReturn(threadPool).anyTimes()
         replayAll()
         // test scenario
-        assertThatThrownBy { scrollSearchComponent.getScrollResponse(SearchRequestBuilder(esClient, SearchAction.INSTANCE), Person::class.java, -1) }
+        assertThatThrownBy { scrollSearchComponent.scroll(SearchRequestBuilder(esClient, SearchAction.INSTANCE), Person::class.java, -1) }
                 .isExactlyInstanceOf(IllegalArgumentException::class.java)
         verifyAll()
     }

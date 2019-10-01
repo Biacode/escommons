@@ -44,9 +44,6 @@ class EsCommonsEmbeddedNodeConfiguration {
     @Value("\${escommons.http.port}")
     var esCommonsHttpPort: Int? = null
 
-    @Value("\${escommons.http.enabled}")
-    var esCommonsHttpEnabled: Boolean? = null
-
     @Value("\${escommons.node.max_local_storage_nodes}")
     var esCommonsNodeMaxLocalStorageNodes: Int? = null
 
@@ -67,7 +64,6 @@ class EsCommonsEmbeddedNodeConfiguration {
                 .put("http.type", esCommonsHttpType)
                 .put("http.host", esCommonsHttpHost)
                 .put("http.port", esCommonsHttpPort!!)
-                .put("http.enabled", esCommonsHttpEnabled!!)
                 .put("node.max_local_storage_nodes", esCommonsNodeMaxLocalStorageNodes!!)
                 .build()
         val node = EsCommonsEmbeddedNode(settings, plugins)

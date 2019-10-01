@@ -31,16 +31,16 @@ class ScrollSearchComponentImpl : ScrollSearchComponent {
     //endregion
 
     //region Public methods
-    override fun <T : AbstractEsDocument> getScrollResponse(searchRequestBuilder: SearchRequestBuilder,
-                                                            clazz: Class<T>,
-                                                            timeoutMillis: Long): DocumentsAndTotalCount<T> {
+    override fun <T : AbstractEsDocument> scroll(searchRequestBuilder: SearchRequestBuilder,
+                                                 clazz: Class<T>,
+                                                 timeoutMillis: Long): DocumentsAndTotalCount<T> {
         Assert.isTrue(timeoutMillis > 0, "The timeout millis should be greater than 0")
         val documents = ArrayList<T>()
         var searchResponse = searchRequestBuilder
                 .setScroll(TimeValue(timeoutMillis))
                 .setSize(scrollChunkSize ?: DEFAULT_SCROLL_CHUNK_SIZE).execute().actionGet()
         while (true) {
-            documents.addAll(searchResponseComponent.convertSearchResponseToDocuments(searchResponse, clazz))
+            documents.addAll(searchResponseComponent.documents(searchResponse, clazz))
             searchResponse = esClient.prepareSearchScroll(searchResponse.scrollId).setScroll(TimeValue(timeoutMillis)).execute().actionGet()
             if (searchResponse.hits.hits.isEmpty()) {
                 break

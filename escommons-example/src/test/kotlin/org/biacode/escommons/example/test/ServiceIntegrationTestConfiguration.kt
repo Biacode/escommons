@@ -11,5 +11,4 @@ import org.springframework.context.annotation.Configuration
  */
 @Configuration
 @ComponentScan("org.biacode.escommons.example")
-class ServiceIntegrationTestConfiguration {
-}
+class ServiceIntegrationTestConfiguration

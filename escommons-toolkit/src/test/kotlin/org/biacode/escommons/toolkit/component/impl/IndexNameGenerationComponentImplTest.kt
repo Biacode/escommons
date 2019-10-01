@@ -1,8 +1,8 @@
 package org.biacode.escommons.toolkit.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
-import org.biacode.escommons.core.test.AbstractEsCommonsUnitTest
 import org.biacode.escommons.toolkit.component.ClockComponent
+import org.biacode.escommons.toolkit.test.AbstractEsCommonsToolkitUnitTest
 import org.easymock.EasyMock.expect
 import org.easymock.Mock
 import org.easymock.TestSubject
@@ -14,7 +14,7 @@ import java.util.*
  * Date: 7/14/17
  * Time: 5:07 PM
  */
-class IndexNameGenerationComponentImplTest : AbstractEsCommonsUnitTest() {
+class IndexNameGenerationComponentImplTest : AbstractEsCommonsToolkitUnitTest() {
 
     //region Test subject and mocks
     @TestSubject

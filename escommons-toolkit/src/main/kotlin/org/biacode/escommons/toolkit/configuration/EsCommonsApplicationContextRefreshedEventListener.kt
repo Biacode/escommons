@@ -2,14 +2,14 @@ package org.biacode.escommons.toolkit.configuration
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer
+import com.fasterxml.jackson.module.kotlin.KotlinModule
+import com.fasterxml.jackson.module.paramnames.ParameterNamesModule
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationListener
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.event.ContextRefreshedEvent
-import java.time.LocalDateTime
 
 /**
  * Created by Arthur Asatryan.
@@ -26,11 +26,11 @@ class EsCommonsApplicationContextRefreshedEventListener : ApplicationListener<Co
 
     //region Public methods
     override fun onApplicationEvent(contextRefreshedEvent: ContextRefreshedEvent) {
-        val javaTimeModule = JavaTimeModule()
-                .addSerializer(LocalDateTime::class.java, LocalDateTimeSerializer.INSTANCE)
-                .addDeserializer(LocalDateTime::class.java, LocalDateTimeDeserializer.INSTANCE)
         objectMapper
-                .registerModule(javaTimeModule)
+                .registerModule(Jdk8Module())
+                .registerModule(KotlinModule())
+                .registerModule(JavaTimeModule())
+                .registerModule(ParameterNamesModule())
                 .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
     }
     //endregion
