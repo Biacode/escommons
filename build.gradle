@@ -52,6 +52,8 @@ sonarqube {
 
 allprojects {
 
+    ext['elasticsearch.version'] = elasticSearchVersion
+
     apply plugin: "idea"
     apply plugin: "io.spring.dependency-management"
     apply plugin: "org.jetbrains.kotlin.jvm"
@@ -73,7 +75,7 @@ allprojects {
     }
 
     group = 'org.biacode.escommons'
-    version = '7.3.2_0.0.0-SNAPSHOT'
+    version = '7.3.2_0.0.5-SNAPSHOT'
     sourceCompatibility = 1.8
 
     configurations.all {
@@ -161,8 +163,8 @@ allprojects {
         runtimeOnly "org.slf4j:log4j-over-slf4j:$slf4jVersion"
         runtimeOnly "org.apache.logging.log4j:log4j-core:$log4jVersion"
         runtimeOnly "org.apache.logging.log4j:log4j-api:$log4jVersion"
-        api "org.elasticsearch.client:elasticsearch-rest-high-level-client:$elasticSearchVersion"
-        api "org.springframework:spring-context"
+        compile "org.elasticsearch.client:elasticsearch-rest-high-level-client:$elasticSearchVersion"
+        implementation "org.springframework:spring-context"
         implementation 'org.jetbrains.kotlin:kotlin-stdlib'
         implementation 'org.slf4j:slf4j-api'
         implementation "com.fasterxml.jackson.core:jackson-databind"
@@ -177,23 +179,6 @@ allprojects {
     }
 
     dependencyManagement {
-        dependencies {
-            dependencySet(group: 'org.elasticsearch.client', version: elasticSearchVersion) {
-                entry 'elasticsearch-rest-client'
-                entry 'transport'
-            }
-            dependencySet(group: 'org.elasticsearch.plugin', version: elasticSearchVersion) {
-                entry 'percolator-client'
-                entry 'reindex-client'
-                entry 'transport-netty4-client'
-            }
-            dependencySet(group: 'org.elasticsearch', version: elasticSearchVersion) {
-                entry 'elasticsearch'
-                entry 'elasticsearch-cli'
-                entry 'elasticsearch-core'
-                entry 'elasticsearch-secure-sm'
-            }
-        }
         imports {
             mavenBom("org.springframework.boot:spring-boot-dependencies:2.1.8.RELEASE") {
                 bomProperty("kotlin.version", kotlinVersion)
@@ -205,11 +190,7 @@ allprojects {
 }
 
 project(':escommons-core') {
-
     apply plugin: 'maven'
-
-    dependencies {
-    }
 }
 
 project(':escommons-starter-core') {
@@ -217,9 +198,9 @@ project(':escommons-starter-core') {
     apply plugin: 'maven'
 
     dependencies {
-        api project(':escommons-core')
-        api project(':escommons-toolkit')
-        api project(':escommons-persistence')
+        compile project(':escommons-core')
+        compile project(':escommons-toolkit')
+        compile project(':escommons-persistence')
         implementation "org.springframework.boot:spring-boot-starter"
         optional "org.springframework.boot:spring-boot-configuration-processor"
     }
@@ -230,15 +211,15 @@ project(':escommons-test') {
     apply plugin: 'maven'
 
     dependencies {
-        api project(':escommons-core')
-        api project(':escommons-toolkit')
-        api project(':escommons-persistence')
-        api "junit:junit"
-        api "org.springframework:spring-test"
-        api "org.elasticsearch.client:transport:$elasticSearchVersion"
-        api "org.elasticsearch.plugin:transport-netty4-client:$elasticSearchVersion"
-        api "org.codelibs.elasticsearch.lib:plugin-classloader:$elasticSearchVersion"
-        api "org.codelibs.elasticsearch.module:analysis-common:$elasticSearchVersion"
+        compile project(':escommons-core')
+        compile project(':escommons-toolkit')
+        compile project(':escommons-persistence')
+        compile "org.elasticsearch.client:transport:$elasticSearchVersion"
+        compile "org.elasticsearch.plugin:transport-netty4-client:$elasticSearchVersion"
+        compile "org.codelibs.elasticsearch.lib:plugin-classloader:$elasticSearchVersion"
+        compile "org.codelibs.elasticsearch.module:analysis-common:$elasticSearchVersion"
+        implementation "junit:junit"
+        implementation "org.springframework:spring-test"
     }
 }
 
@@ -247,7 +228,7 @@ project(':escommons-persistence') {
     apply plugin: 'maven'
 
     dependencies {
-        implementation project(':escommons-toolkit')
+        compile project(':escommons-toolkit')
         testImplementation project(":escommons-test")
     }
 }
@@ -257,7 +238,7 @@ project(':escommons-toolkit') {
     apply plugin: 'maven'
 
     dependencies {
-        api project(":escommons-core")
+        compile project(":escommons-core")
         implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
         implementation "com.fasterxml.jackson.datatype:jackson-datatype-jdk8"
         implementation "com.fasterxml.jackson.module:jackson-module-parameter-names"
@@ -270,8 +251,9 @@ project(':escommons-example') {
     apply plugin: "org.springframework.boot"
 
     dependencies {
-        implementation project(':escommons-starter-core')
+        implementation "org.biacode.escommons:escommons-starter-core:$version"
         implementation "org.springframework.boot:spring-boot-starter-web"
-        testImplementation project(':escommons-test')
+        testImplementation "org.biacode.escommons:escommons-test:$version"
+        testImplementation "org.springframework:spring-test"
     }
 }
