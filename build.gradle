@@ -9,8 +9,8 @@ buildscript {
         easymockVersion = '3.4'
         sonarqubeVersion = '2.6'
         vavrVersion = "0.9.0"
-        slf4jVersion = "1.7.25"
-        log4jVersion = "2.11.1"
+        slf4jVersion = "1.7.28"
+        log4jVersion = "2.12.1"
         propDepsPluginVersion = '0.0.10.RELEASE'
     }
     repositories {
@@ -75,7 +75,7 @@ allprojects {
     }
 
     group = 'org.biacode.escommons'
-    version = '7.3.2_0.0.5-SNAPSHOT'
+    version = '7.3.2_0.0.6-SNAPSHOT'
     sourceCompatibility = 1.8
 
     configurations.all {
@@ -160,13 +160,10 @@ allprojects {
     }
 
     dependencies {
-        runtimeOnly "org.slf4j:log4j-over-slf4j:$slf4jVersion"
-        runtimeOnly "org.apache.logging.log4j:log4j-core:$log4jVersion"
-        runtimeOnly "org.apache.logging.log4j:log4j-api:$log4jVersion"
         compile "org.elasticsearch.client:elasticsearch-rest-high-level-client:$elasticSearchVersion"
+        compile 'org.slf4j:slf4j-api'
         implementation "org.springframework:spring-context"
         implementation 'org.jetbrains.kotlin:kotlin-stdlib'
-        implementation 'org.slf4j:slf4j-api'
         implementation "com.fasterxml.jackson.core:jackson-databind"
         implementation "org.apache.commons:commons-lang3:$apacheCommonsLang3Version"
         implementation "commons-io:commons-io:$apacheCommonsIoVersion"
@@ -201,6 +198,8 @@ project(':escommons-starter-core') {
         compile project(':escommons-core')
         compile project(':escommons-toolkit')
         compile project(':escommons-persistence')
+        compile "org.apache.logging.log4j:log4j-core:$log4jVersion"
+        compile "org.apache.logging.log4j:log4j-to-slf4j:$log4jVersion"
         implementation "org.springframework.boot:spring-boot-starter"
         optional "org.springframework.boot:spring-boot-configuration-processor"
     }
@@ -218,6 +217,8 @@ project(':escommons-test') {
         compile "org.elasticsearch.plugin:transport-netty4-client:$elasticSearchVersion"
         compile "org.codelibs.elasticsearch.lib:plugin-classloader:$elasticSearchVersion"
         compile "org.codelibs.elasticsearch.module:analysis-common:$elasticSearchVersion"
+        compile "org.apache.logging.log4j:log4j-core:$log4jVersion"
+        compile "org.apache.logging.log4j:log4j-to-slf4j:$log4jVersion"
         implementation "junit:junit"
         implementation "org.springframework:spring-test"
     }
@@ -251,9 +252,10 @@ project(':escommons-example') {
     apply plugin: "org.springframework.boot"
 
     dependencies {
-        implementation "org.biacode.escommons:escommons-starter-core:$version"
+        compile project(":escommons-starter-core")
         implementation "org.springframework.boot:spring-boot-starter-web"
-        testImplementation "org.biacode.escommons:escommons-test:$version"
+        runtimeOnly group: 'ch.qos.logback', name: 'logback-classic'
+        testCompile project(":escommons-test")
         testImplementation "org.springframework:spring-test"
     }
 }
