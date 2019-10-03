@@ -75,7 +75,7 @@ allprojects {
     }
 
     group = 'org.biacode.escommons'
-    version = '7.3.2_0.0.6-SNAPSHOT'
+    version = '7.3.2_0.0.6'
     sourceCompatibility = 1.8
 
     configurations.all {
