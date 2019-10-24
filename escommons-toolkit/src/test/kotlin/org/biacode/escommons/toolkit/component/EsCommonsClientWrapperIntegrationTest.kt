@@ -108,6 +108,18 @@ class EsCommonsClientWrapperIntegrationTest : AbstractEsCommonsIntegrationTest()
             }
         }
     }
+
+    @Test
+    fun `test index exists when does not exists`() {
+        // given
+        createDummyIndex().let { _ ->
+            // when
+            esCommonsClientWrapper.indexExists(UUID.randomUUID().toString()).let {
+                // then
+                assertThat(it).isFalse()
+            }
+        }
+    }
     //endregion
 
     //region Utility methods

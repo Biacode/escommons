@@ -93,8 +93,7 @@ class EsCommonsRestClientWrapperImpl : EsCommonsClientWrapper {
 
     override fun indexExists(indexName: String): Boolean = Try
             .ofSupplier {
-                esClient.lowLevelClient.performRequest(request("/$indexName", HttpHead.METHOD_NAME))
-                return@ofSupplier true
+                esClient.lowLevelClient.performRequest(request("/$indexName", HttpHead.METHOD_NAME)).statusLine.statusCode == 200
             }
             .getOrElse(false)
     //endregion
