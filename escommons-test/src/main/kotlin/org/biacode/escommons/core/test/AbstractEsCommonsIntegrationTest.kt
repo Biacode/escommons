@@ -44,25 +44,25 @@ abstract class AbstractEsCommonsIntegrationTest {
     //endregion
 
     //region Protected methods
-    protected fun refreshIndex(indexName: String) {
+    protected open fun refreshIndex(indexName: String) {
         esCommonsClientWrapper.refreshIndex(indexName)
     }
 
-    protected fun refreshIndex() {
+    protected open fun refreshIndex() {
         esCommonsClientWrapper.refreshIndex(indexName)
     }
 
-    protected fun settings(): Settings {
+    protected open fun settings(): Settings {
         return this.settings
     }
 
-    protected fun settings(settings: Settings) {
+    protected open fun settings(settings: Settings) {
         this.settings = settings
     }
     //endregion
 
     //region Utility methods
-    protected fun cleanUpIndices() {
+    protected open fun cleanUpIndices() {
         esCommonsClientWrapper.deleteIndices("*")
     }
     //endregion
