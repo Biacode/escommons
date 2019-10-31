@@ -34,8 +34,8 @@ abstract class AbstractEsCommonsIntegrationTest {
     @Before
     fun beforeEsCommonsTests() {
         cleanUpIndices()
-        assert(esCommonsClientWrapper.createIndex(indexName, mappings(), settings))
-        refreshIndex(indexName)
+        assert(esCommonsClientWrapper.createIndex(indexName, mappings(), settings()))
+        refreshIndex()
     }
     //endregion
 
@@ -46,6 +46,18 @@ abstract class AbstractEsCommonsIntegrationTest {
     //region Protected methods
     protected fun refreshIndex(indexName: String) {
         esCommonsClientWrapper.refreshIndex(indexName)
+    }
+
+    protected fun refreshIndex() {
+        esCommonsClientWrapper.refreshIndex(indexName)
+    }
+
+    protected fun settings(): Settings {
+        return this.settings
+    }
+
+    protected fun settings(settings: Settings) {
+        this.settings = settings
     }
     //endregion
 
