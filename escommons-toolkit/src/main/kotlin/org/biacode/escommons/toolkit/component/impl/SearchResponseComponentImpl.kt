@@ -29,7 +29,7 @@ class SearchResponseComponentImpl : SearchResponseComponent {
     override fun <T : AbstractEsDocument> documentsAndTotalCount(searchResponse: SearchResponse, clazz: Class<T>): DocumentsAndTotalCount<T> {
         val searchHits = searchResponse.hits
         val documents = extractDocuments(searchHits, clazz)
-        return DocumentsAndTotalCount(documents, searchHits.totalHits.value)
+        return DocumentsAndTotalCount(documents, searchHits.totalHits.value.toInt())
     }
 
     override fun <T : AbstractEsDocument> document(getResponse: GetResponse, clazz: Class<T>): T {

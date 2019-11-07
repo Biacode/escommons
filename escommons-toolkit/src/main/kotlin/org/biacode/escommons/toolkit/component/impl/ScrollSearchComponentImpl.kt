@@ -46,7 +46,7 @@ class ScrollSearchComponentImpl : ScrollSearchComponent {
                 break
             }
         }
-        return DocumentsAndTotalCount(documents, documents.size.toLong())
+        return DocumentsAndTotalCount(documents, documents.size)
     }
     //endregion
 

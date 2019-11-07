@@ -19,7 +19,7 @@ public class DocumentsAndTotalCount<T extends AbstractEsDocument> implements Ser
     //region Properties
     private List<T> documents;
 
-    private long totalCount;
+    private int totalCount;
     //endregion
 
     //region Constructors
@@ -27,7 +27,7 @@ public class DocumentsAndTotalCount<T extends AbstractEsDocument> implements Ser
         // Default constructor
     }
 
-    public DocumentsAndTotalCount(final List<T> documents, final long totalCount) {
+    public DocumentsAndTotalCount(final List<T> documents, final int totalCount) {
         this.documents = documents;
         this.totalCount = totalCount;
     }
@@ -75,11 +75,11 @@ public class DocumentsAndTotalCount<T extends AbstractEsDocument> implements Ser
         this.documents = documents;
     }
 
-    public long getTotalCount() {
+    public int getTotalCount() {
         return totalCount;
     }
 
-    public void setTotalCount(final long totalCount) {
+    public void setTotalCount(final int totalCount) {
         this.totalCount = totalCount;
     }
     //endregion
