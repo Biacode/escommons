@@ -1,7 +1,7 @@
 buildscript {
     ext {
-        kotlinVersion = "1.3.50"
-        springBootVersion = "2.1.8.RELEASE"
+        kotlinVersion = "1.3.70"
+        springBootVersion = "2.2.5.RELEASE"
         elasticSearchVersion = '7.3.2'
         apacheCommonsLang3Version = '3.6'
         apacheCommonsIoVersion = '2.5'
@@ -17,7 +17,7 @@ buildscript {
         mavenLocal()
         mavenCentral()
         jcenter()
-        maven { url 'http://repo.spring.io/plugins-release' }
+        maven { url 'https://repo.spring.io/plugins-release' }
     }
     dependencies {
         classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:$sonarqubeVersion")
@@ -29,8 +29,8 @@ buildscript {
 }
 
 plugins {
-    id 'org.springframework.boot' version '2.1.8.RELEASE' apply false
-    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'org.springframework.boot' version '2.2.5.RELEASE' apply false
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 }
 
 apply plugin: "org.sonarqube"
@@ -75,7 +75,7 @@ allprojects {
     }
 
     group = 'org.biacode.escommons'
-    version = '7.3.2_0.1.0-SNAPSHOT'
+    version = '7.3.2_0.1.0'
     sourceCompatibility = 1.8
 
     configurations.all {
@@ -112,6 +112,7 @@ allprojects {
         mavenLocal()
         mavenCentral()
         jcenter()
+        maven { url 'https://repo.spring.io/plugins-release' }
     }
 
     uploadArchives {
