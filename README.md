@@ -4,10 +4,10 @@ Elasticsearch commons library.
 # Dependencies
 Gradle
 ```groovy
-implementation "org.biacode.escommons:escommons-core:7.3.2_0.0.8"
-implementation "org.biacode.escommons:escommons-persistence:7.3.2_0.0.8"
-implementation "org.biacode.escommons:escommons-starter-core:7.3.2_0.0.8"
-implementation "org.biacode.escommons:escommons-test:7.3.2_0.0.8"
+implementation "org.biacode.escommons:escommons-core:7.3.2_0.1.0"
+implementation "org.biacode.escommons:escommons-persistence:7.3.2_0.1.0"
+implementation "org.biacode.escommons:escommons-starter-core:7.3.2_0.1.0"
+implementation "org.biacode.escommons:escommons-test:7.3.2_0.1.0"
 ```
 
 | CI | Status |
